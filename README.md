@@ -44,7 +44,7 @@ Além de ser uma plataforma de customização, ele funcionará como um **e-comme
 ## 👥 Autores
 
 
-| [<img src="https://github.com/ferreiravih.png" width="100px;"/><br><sub>Vitória Nascimento Ferreira</sub>](https://github.com/ferreiravih) | [<img src="https://github.com/usuario1.png" width="100px;"/><br><sub>Nome do Integrante 1</sub>](https://github.com/usuario1) | [<img src="https://github.com/usuario2.png" width="100px;"/><br><sub>Nome do Integrante 2</sub>](https://github.com/usuario2) | [<img src="https://github.com/usuario3.png" width="100px;"/><br><sub>Nome do Integrante 3</sub>](https://github.com/usuario3) | [<img src="https://github.com/usuario4.png" width="100px;"/><br><sub>Nome do Integrante 4</sub>](https://github.com/usuario4) | [<img src="https://github.com/usuario5.png" width="100px;"/><br><sub>Nome do Integrante 5</sub>](https://github.com/usuario5) |
+| [<img src="https://github.com/ferreiravih.png" width="100px;"/><br><sub>Vih Ferreira</sub>](https://github.com/ferreiravih) | [<img src="https://github.com/maiasantoss.png" width="100px;"/><br><sub>Maia Santos</sub>](https://github.com/maiasantoss.) | [<img src="https://github.com/usuario2.png" width="100px;"/><br><sub>Bianca Vitória</sub>](https://github.com/usuario2) | [<img src="https://github.com/usuario3.png" width="100px;"/><br><sub>Amanda Cíntra</sub>](https://github.com/usuario3) | [<img src="https://github.com/usuario4.png" width="100px;"/><br><sub>João Victor</sub>](https://github.com/usuario4) | [<img src="https://github.com/usuario5.png" width="100px;"/><br><sub>José Ricardo</sub>](https://github.com/usuario5) |
 | :---: | :---: | :---: | :---: | :---: | :---: |
 
 
