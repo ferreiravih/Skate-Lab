@@ -1,0 +1,45 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; 
+}
+
+
+.headerb {
+  background-color: #482770;              
+  color: white;                       
+  display: flex;                       
+  justify-content: space-between;    
+  align-items: center;                
+  padding: 15px 30px;                 
+}
+
+header ul{
+  display: flex; 
+  gap: 30px;  
+}
+
+
+.logo {
+  font-size: 24px;       
+  font-weight: bold;     
+  font-family: 'nosifer', cursive;
+  color: #E07330;
+}
+
+.lista {
+  list-style: none;      
+  display: flex;         
+  align-items: center;    
+  gap: 30px;              
+}
+
+  
+.lista li a {
+  color: white;                         
+  text-decoration: none;               
+  font-size: 16px;                     
+  display: flex;                       
+  align-items: center;  
+  font-family: 'poppins', sans-serif;               
+}

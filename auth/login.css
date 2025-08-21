@@ -1,0 +1,11 @@
+.containerlogin{
+    background-color: rgb(220, 245, 220);
+    border-radius: 25px;
+    width: 450px;
+    height: 5000px;
+    margin: 20px;
+}
+
+main {
+  flex: 1;              /* ocupa todo o espaço disponível */
+}
