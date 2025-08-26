@@ -1,0 +1,228 @@
+/* Home - Capa */
+#capa {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  background-image: url("../img/imgs-home/img-capa.png");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  padding-left: 5vw; /* responsivo */
+  box-sizing: border-box;
+}
+
+.capa-conteudo {
+  max-width: 90%;
+  color: white;
+}
+
+.capa-conteudo h1 {
+  font-size: clamp(2.5rem, 6vw, 90px); /* escala automática */
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 15px;
+}
+
+.capa-conteudo p {
+  font-size: clamp(1rem, 2vw, 25px);
+  margin-bottom: 25px;
+}
+
+.btn-saiba-mais {
+  display: inline-block;
+  background-color: #F3732C;
+  color: white;
+  font-weight: bold;
+  padding: 0.9rem 1.8rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: clamp(0.9rem, 1.2vw, 18px);
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.btn-saiba-mais:hover {
+  background-color: #d65d1d;
+  transform: translateY(-3px);
+}
+
+/*Rolagem suave*/
+html {
+  scroll-behavior: smooth;
+}
+
+
+/* Home - Beneficios */
+#beneficios {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  align-items: center;
+  padding: 30px 40px;
+  background: #fff;
+}
+
+.beneficio-item {
+  text-align: center;
+  max-width: 200px;
+  margin: auto;
+}
+
+.beneficio-item img {
+  width: 50px;
+  max-width: 100%;
+  margin-bottom: 8px;
+}
+
+.beneficio-item p {
+  font-size: clamp(0.8rem, 1.2vw, 14px);
+  font-weight: bold;
+  line-height: 1.3;
+}
+
+.beneficio-item span {
+  font-weight: normal;
+  font-size: clamp(0.7rem, 1vw, 13px);
+  color: #555;
+}
+
+
+/* Home - Customização */
+#customizacao {
+  padding: 60px 5vw;
+  background: #fff;
+}
+
+.customizacao-conteudo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: nowrap; /* impede de jogar a imagem para baixo */
+}
+
+.customizacao-conteudo .texto {
+  flex: 1 1 45%; /* ocupa ~45% */
+}
+
+.customizacao-conteudo h2 {
+  font-size: clamp(2rem, 5vw, 60px);
+  font-weight: 900;
+  margin-bottom: 20px;
+}
+
+.customizacao-conteudo p {
+  font-size: clamp(1rem, 2vw, 25px);
+  line-height: 1.5;
+  margin-bottom: 25px;
+}
+
+.btn-customizacao {
+  display: inline-block;
+  background-color: #F3732C;
+  color: white;
+  font-weight: bold;
+  padding: 0.9rem 1.8rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: clamp(0.9rem, 1.2vw, 16px);
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.btn-customizacao:hover {
+  background-color: #d65d1d;
+  transform: translateY(-3px);
+}
+
+.img-skate {
+  flex: 1 1 50%; /* ocupa ~50% */
+  display: flex;
+  justify-content: center;
+}
+
+.img-skate img {
+  width: 100%;
+  max-width: 700px;  /* aumenta o tamanho sem quebrar layout */
+  height: auto;
+}
+
+
+/* Home - Passos */
+.passos-container {
+  display: flex;
+  justify-content: space-between;
+  background-color: #55185D; /* Cor de fundo roxa da imagem */
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.passo {
+  background-color: #fff; /* fundo branco das cards */
+  width: 30%;
+  text-align: center;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.passo-numero {
+  font-size: 24px;
+  font-weight: bold;
+  color: #55185D;
+  margin-bottom: 10px;
+}
+
+.passo-image img {
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.passo-text {
+  font-size: 14px;
+  font-weight: bold;
+  color: #000;
+}
+
+/* ===================== MEDIA QUERIES ===================== */
+
+/* Tablets */
+@media (max-width: 992px) {
+  #capa {
+    padding-left: 30px;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .customizacao-conteudo {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .customizacao-conteudo .texto {
+    max-width: 90%;
+  }
+}
+
+/* Celulares */
+@media (max-width: 600px) {
+  #capa {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .btn-saiba-mais,
+  .btn-customizacao {
+    width: 100%;
+    text-align: center;
+  }
+
+  .passos {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .passo img {
+    width: 60px;
+  }
+}
