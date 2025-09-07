@@ -1,11 +1,70 @@
-.containerlogin{
-    background-color: rgb(220, 245, 220);
-    border-radius: 25px;
-    width: 450px;
-    height: 5000px;
-    margin: 20px;
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  background: linear-gradient(to right, white 50%, #f08644 50%, #8e24aa); 
+  font-family: 'poppins', sans-serif;
 }
 
-main {
-  flex: 1;              /* ocupa todo o espaço disponível */
+h3 {
+  font-size: 3rem;
+  font-weight: bold;
+  background: linear-gradient(90deg, #f08644, #8E44AD); 
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
+
+.containerlogin{
+  margin-top: 200px;
+  max-width: 50%;
+  align-items: center;
+  text-align: center;
+  margin-left: px;
+}
+
+main{
+  flex: 1;
+
+}
+.containerlogin h6{
+  margin-bottom: 50px;
+}
+
+label{
+  font-weight: bolder;
+  font-size: large;
+  padding: 6px;
+}
+
+.inputcss{
+  margin: 20px 0;
+  border-radius: 12px;
+  width: 400px;
+  height: 50px;
+  border: 2px solid #ddd;
+  padding: 4px;
+}
+
+.inputconfirmarsenha{
+  margin: 20px 0;
+  border-radius: 12px;
+  width: 268px;
+  height: 50px;
+  border: 2px solid #ddd;
+  padding: 4px;
+}
+
+
+.formbotao{
+  margin: 20px 0;
+  border-radius: 12px;
+  width: 250px;
+  height: 50px;
+  background: linear-gradient(to right,  #f08644, #8e24aa);
+  align-items: center;
+  border: none;
+  font-weight: bolder;
+  font-size: medium;
+  color: white;
+}
+
