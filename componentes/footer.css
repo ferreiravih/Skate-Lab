@@ -6,11 +6,11 @@ body {
 .footerb {
   background-color: #482770;
   color: white;
-  bottom: 0;
   padding: 10px;
   width: 100%;
   align-items: flex-start;
 }
+
 .footercontainer {
   display: flex;
   justify-content: space-between; 
