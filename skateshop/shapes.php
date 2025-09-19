@@ -20,9 +20,9 @@
     </div>
   </section>
   <nav class="categoria" aria-label="Categorias">
-    <a href="../skateshop/skateshop.php" class="cate is-active">Todos</a>
+    <a href="#" class="cate">Todos</a>
     <a href="../skateshop/skatescompleto.php" class="cate">Completos</a>
-    <a href="../skateshop/shapes.php" class="cate">Shapes</a>
+    <a href="../skateshop/shapes.php" class="cate is-active">Shapes</a>
     <a href="../skateshop/rodas.php" class="cate">Rodas</a>
     <a href="../skateshop/trucks.php" class="cate">Trucks</a>
     <a href="../skateshop/acessorios.php" class="cate">Acessórios</a>

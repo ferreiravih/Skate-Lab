@@ -20,8 +20,8 @@
     </div>
   </section>
   <nav class="categoria" aria-label="Categorias">
-    <a href="../skateshop/skateshop.php" class="cate is-active">Todos</a>
-    <a href="../skateshop/skatescompleto.php" class="cate">Completos</a>
+    <a href="../skateshop/skateshop.php" class="cate">Todos</a>
+    <a href="../skateshop/skatescompleto.php" class="cate is-active">Completos</a>
     <a href="../skateshop/shapes.php" class="cate">Shapes</a>
     <a href="../skateshop/rodas.php" class="cate">Rodas</a>
     <a href="../skateshop/trucks.php" class="cate">Trucks</a>
@@ -57,6 +57,37 @@
         </div>
       </div>
     </article>
+
+     <article class="cardproduto">
+      <div class="simbolooferta">Novo</div>
+      <div class="skateimagem">
+        <img src="placeholder.jpg" alt="Skate Completo Classic">
+      </div>
+      <div class="skateinfo">
+        <span class="tag">Completo</span>
+        <h3>Skate Completo Classic</h3>
+        <div class="nota">⭐ 4.9</div>
+        <div class="preco">
+          <span>R$ 450,00</span>
+        </div>
+      </div>
+    </article>
+
+     <article class="cardproduto">
+      <div class="simbolooferta">Novo</div>
+      <div class="skateimagem">
+        <img src="placeholder.jpg" alt="Skate Completo Classic">
+      </div>
+      <div class="skateinfo">
+        <span class="tag">Completo</span>
+        <h3>Skate Completo Classic</h3>
+        <div class="nota">⭐ 4.9</div>
+        <div class="preco">
+          <span>R$ 450,00</span>
+        </div>
+      </div>
+    </article>
+    
 
     <article class="cardproduto">
       <div class="simbolooferta">Novo</div>
