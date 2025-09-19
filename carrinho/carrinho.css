@@ -1,0 +1,206 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #fff;
+    color: #333;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    border-bottom: 1px solid #ddd;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    color: #4B1D63;
+}
+
+.menu a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.icons span {
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+.cart-count {
+    background: #E06A27;
+    color: #fff;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
+
+.titulo {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.item-count {
+    font-size: 14px;
+    background: #E06A27;
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 12px;
+    margin-left: 8px;
+}
+
+.carrinho-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.carrinho-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.produto-img {
+    width: 100px;
+    border-radius: 6px;
+}
+
+.produto-info {
+    flex: 1;
+    margin: 0 15px;
+}
+
+.produto-nome {
+    font-size: 18px;
+    margin: 0;
+}
+
+.produto-desc {
+    font-size: 14px;
+    color: #555;
+}
+
+.quantidade button {
+    padding: 5px 10px;
+    margin: 0 3px;
+    border: 1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+}
+
+.quantidade input {
+    width: 40px;
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+.produto-preco {
+    text-align: right;
+    min-width: 120px;
+}
+
+.preco {
+    font-size: 18px;
+    font-weight: bold;
+    color: #E06A27;
+    margin: 0;
+}
+
+.remover {
+    margin-top: 5px;
+    background: #E74C3C;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.resumo-pedido {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    max-width: 300px;
+    margin-bottom: 20px;
+}
+
+.resumo-pedido h2 {
+    margin-top: 0;
+}
+
+.resumo-pedido p {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+}
+
+.resumo-pedido .total {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.resumo-pedido .gratis {
+    color: green;
+    font-weight: bold;
+}
+
+.finalizar {
+    background: #E06A27;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.adicionar {
+    border: 1px solid #E06A27;
+    color: #E06A27;
+    background: #fff;
+    padding: 10px;
+    width: 100%;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.frete-cupom {
+    margin-top: 20px;
+}
+
+.frete-cupom input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.calcular {
+    background: #4B1D63;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
