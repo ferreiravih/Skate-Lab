@@ -1,0 +1,236 @@
+.imgebarra {
+  position: relative;
+  height: 200px; 
+  background: url("../img/imgs-skateshop/banner.jpg") center/cover no-repeat;
+  height: 250px;
+  border-radius: 15px;
+  margin: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 40px;
+  color: white;
+  overflow: hidden;
+}
+
+.texto {
+  position: absolute;
+  top: 50%;
+  right: 8%; /* Ajuste para mais ou menos distância da borda */
+  transform: translateY(-50%);
+  color: #ff6a1f;
+  text-align: right;
+  max-width: 400px;
+}
+
+.texto h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  font-family: 'poppins', sans-serif;
+}
+
+.texto p {
+  font-family: 'poppins', sans-serif;
+  font-weight: 900;
+}
+
+.categories {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.categories button {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  transition: 0.3s;
+  width: 250px;
+  height: 50px;
+  font-family: 'poppins', sans-serif;
+  justify-content: center;
+}
+
+.categories button:hover {
+  border-color: #4B0082;
+  color: #4B0082;
+  background-color: #ece5f2;
+  transform: scale(1.05);
+}
+
+.categories button.active {
+  background: #482770;
+  color: white;
+  box-shadow: 0px 4px 12px rgba(75,0,130,0.4);
+}
+
+.desta {
+  font-family: 'poppins', sans-serif;
+  font-weight: bold;
+  margin-top: 50px;
+  margin-left: 176px;
+}
+
+.parag{
+  font-family: 'poppins', sans-serif;
+  margin-bottom: 10px;
+  margin-left: 176px;
+
+}
+
+.produtos {
+margin-top: 50px;
+margin-bottom: 50px;
+background: #f8f8fc;
+}
+
+.produtos .container {
+justify-content: center;
+  display: flex;
+  flex-wrap: wrap;           /* permite quebrar linha */
+  gap: 30px;                 /* espaço fixo entre os cards */
+  font-family: 'poppins', sans-serif;
+}
+
+
+
+
+/* Card do produto */
+.produtos .card {
+  align-items: center;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.205);
+  overflow: hidden;
+  position: relative;
+  width: 360px;
+  height: 450px;
+
+}
+
+.produtos .card:hover {
+   transform: scale(1.05);
+}
+
+
+.produtos .card img {
+  width: 250px;
+  height: 250px;
+  display: block;
+  margin: 0 auto;
+}
+
+
+
+
+/* selo de oferta e novo */
+.produtos .selos {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  gap: 6px;
+}
+
+.produtos .oferta, .novo{
+  color: #fff;
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 8px;
+}
+
+.produtos .novo {
+   background: #ff6a1f; 
+}
+
+.produtos .oferta { 
+background: #400080; 
+}
+
+
+
+
+
+/* Info */
+.produtos .info {
+  padding: 12px;
+}
+
+.produtos .categoria {
+  font-size: 12px;
+  color: gray;
+  text-transform: uppercase;
+}
+
+.produtos h3 {
+  margin: 5px 0;
+  font-size: 15px;
+  color: #ff6a1f;
+}
+
+.produtos .rating {
+  color: #482770;
+  font-size: 13px;
+}
+
+.produtos .preco {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+.produtos .preco .antigo {
+  font-size: 13px;
+  color: #999;
+  text-decoration: line-through;
+  margin-left: 5px;
+}
+
+
+
+
+
+
+/* Botão */
+.botaocomprar {
+  background: #400080;
+  color: white;
+  border: none;
+  margin: 0;
+  width: 270px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 5px;
+  justify-content: center;
+}
+
+.info button{
+  text-align: center;
+}
+
+.botaocarrinho{
+  background: #400080 ;
+  color: white;
+  border: none;
+  margin: 0;
+  width: 57px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 5px;
+  justify-content: center;
+}
+
+.botaocomprar:hover {
+  background: #ff6a1f;
+}
+
+.botaocarrinho:hover {
+  background: #ff6a1f;
+}
