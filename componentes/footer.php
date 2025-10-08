@@ -48,7 +48,7 @@
                 </ul>
             </div>
         </div>
-        <button><i class="fa-solid fa-headphones" style="color: #ff914d;"></i>fale conosco </button>
+        <button class="faleconosco"><i class="fa-solid fa-headphones" style="color: #ff914d;"></i>fale conosco </button>
         <hr>
     </footer>
 </body>

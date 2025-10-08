@@ -13,10 +13,9 @@
 
 <body>
     <?php include '../componentes/navbar.php'; ?>
-
     <div class="carrinho">
         <i class="fa-solid fa-bag-shopping" style="color: #e46a25; font-size: 50px;"></i>
-        <h1 class="cart-text">Meu Carrinho</h1>
+        <h1 class="textocarrinho">Meu Carrinho</h1>
         <span class="qtdcarrinho">3 itens</span>
     </div>
 
@@ -87,5 +86,7 @@
             <button class="additens">Adicionar Mais Itens</button>
         </div>
     </div>
+
+    <?php include '../componentes/footer.php'; ?>
 </body>
 </html>
