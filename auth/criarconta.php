@@ -39,6 +39,7 @@
             <h5>Ja tem uma conta?<a href="../auth/login.php"> Login<a></a></h5>
         </div>
     </main>
+      <?php include '../componentes/footer.php'; ?>
 </body>
 
 </html>

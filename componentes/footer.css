@@ -1,7 +1,3 @@
-body {
-  height: 100%;      
-  margin: 0;          
-}
 
 .footerb {
   background-color: #482770;
@@ -9,6 +5,7 @@ body {
   padding: 10px;
   width: 100%;
   align-items: flex-start;
+  margin-top: auto;
 }
 
 .footercontainer {
@@ -45,7 +42,7 @@ body {
   list-style: none;
 }
 
-button {
+.faleconosco {
   display: inline-flex;       
   align-items: center;        
   gap: 8px;                   
@@ -62,7 +59,7 @@ button {
   margin: 20px;
 }
 
-hr{
+.footerb hr{
   margin-bottom: 20px;
 }
 

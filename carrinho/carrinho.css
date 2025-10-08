@@ -5,7 +5,7 @@
   font-family: 'poppins', sans-serif;
   font-size: 20px;
   font-weight: bold;
-  margin-top: 50px;
+  margin-top: 35px;
   margin-left: 100px;
 }
 
@@ -22,9 +22,9 @@
   display: flex;
   gap: 20px;
   margin-top: 40px;
+  margin-bottom: 60px;
   margin-left: 60px;
-  width: 1500px;
-  height: 300px;
+  max-width: 1500px;
   font-family: 'poppins', sans-serif;
 }
 
@@ -47,7 +47,7 @@
 
 
 .itens img {
-  width: 170px;
+  max-width: 170px;
   border-radius: 8px;
   justify-content: center;
 }
@@ -65,7 +65,7 @@
 }
 
 .quantidade {
-    margin-top: 30px;
+  margin-top: 30px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -80,7 +80,7 @@
 }
 
 .preco{ 
-    display: flex;
+  display: flex;
   flex-direction: column;
   justify-content: space-between; 
   align-items: flex-end;
@@ -92,7 +92,7 @@
 }
 
 .precounitario{
-    font-size: 14px;
+  font-size: 14px;
   color: #666;
 }
 
@@ -103,8 +103,8 @@
   border-radius: 6px;
   cursor: pointer;
   height: 35px;
-  margin-top: 50px;
-  width: 90px;
+  margin-top: 8px;
+  max-width: 90px;
   font-weight: bold;
 }
 
@@ -124,6 +124,7 @@
   background: #f4f4f4;
   padding: 20px;
   border-radius: 10px;
+  height: 320px;
 }
 
 .cardtotal h3 {

@@ -208,6 +208,7 @@ background: #400080;
   transition: background 0.2s;
   margin-top: 5px;
   justify-content: center;
+  height: 43px;
 }
 
 .info button{
@@ -225,6 +226,7 @@ background: #400080;
   transition: background 0.2s;
   margin-top: 5px;
   justify-content: center;
+  height: 43px;
 }
 
 .botaocomprar:hover {
