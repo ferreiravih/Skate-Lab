@@ -40,7 +40,7 @@
 <section class="produtos">
   <div class="container">
 
-    <!-- Produto 1 -->
+  <a href="../produto/produto.php" class="card-link">
     <div class="card">
       <div class="selos">
         <span class="novo">Novo</span>
@@ -50,13 +50,13 @@
       <div class="info">
         <span class="categoria">COMPLETOS</span>
         <h3>skate preto completo</h3>
-        <div class="rating">⭐⭐⭐⭐⭐ <span>(5.0)</span></div>
-        <p class="preco">
-          R$ 299.90 <span class="antigo">R$ 349.90</span>
-        </p>
-        <button class="botaocomprar">comprar</button> <button class="botaocarrinho">🛒</button>
+        <div class="rating">⭐⭐⭐⭐⭐<span>(5.0)</span></div>
+        <p class="preco">R$ 299.90 <span class="antigo">R$ 349.90</span></p>
+        <button class="botaocomprar" onclick="window.location.href= '../pagamento/pagamento.php'"> comprar </button> 
+        <button class="botaocarrinho">🛒</button>
       </div>
     </div>
+  </a>
 
     <!-- Produto 2 -->
     <div class="card">
