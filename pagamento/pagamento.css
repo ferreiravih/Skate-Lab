@@ -15,9 +15,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 8rem;
+    gap: 5rem;
     padding: 3rem;
-    max-width: 1200px;
+    max-width: 3500px;
     font-family: 'poppins', sans-serif;
 }
 
@@ -25,12 +25,11 @@ body {
     background: #ffffff;
     border-radius: 12px;
     padding: 2rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.205);
 }
 
 .containerdados {
     flex: 2;
-    max-width: 1200px;
+    max-width: 800px;
 }
 
 .container {
@@ -78,27 +77,6 @@ input:focus {
     font-size: 0.9rem;
 }
 
-.delivery-options {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.delivery-option {
-    padding: 0.6rem 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.delivery-option.active,
-.delivery-option:hover {
-    border-color: #e66b1a;
-    color: #e66b1a;
-    background: #fff4ec;
-}
-
 .separarcheckbox {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -126,16 +104,16 @@ input:focus {
     font-weight: 600;
 }
 
-.discount-box {
+.cupomdedesconto {
     display: flex;
     gap: 0.5rem;
 }
 
-.discount-box input {
+.cupomdedesconto input {
     flex: 1;
 }
 
-.discount-box button {
+.cupomdedesconto button {
     background: #e66b1a;
     color: #fff;
     border: none;
@@ -145,7 +123,7 @@ input:focus {
     transition: 0.2s;
 }
 
-.discount-box button:hover {
+.cupomdedesconto button:hover {
     background: #c55c13;
 }
 
@@ -154,19 +132,19 @@ input:focus {
     font-size: 0.95rem;
 }
 
-.summary-totals p {
+.totalcard p {
     display: flex;
     justify-content: space-between;
     margin: 0.4rem 0;
 }
 
-.summary-totals .total {
+.totalcard .total {
     font-weight: 600;
     color: #e66b1a;
     font-size: 1.1rem;
 }
 
-.pay-btn {
+.botaopagar {
     width: 100%;
     background: #e66b1a;
     color: #fff;
@@ -179,13 +157,180 @@ input:focus {
     transition: 0.3s;
 }
 
-.pay-btn:hover {
+.botaopagar:hover {
     background: #c55c13;
 }
 
-.secure-text {
+.textodeseguranca {
     text-align: center;
     font-size: 0.85rem;
     color: #777;
     margin-top: 0.7rem;
+}
+
+.containerdadoss {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.205);
+    flex: 2;
+    max-width: 600px;
+    transition: top 0.3s ease; 
+    position: sticky;
+    top: 20px; 
+
+}
+
+
+
+/* PAGAMENTO CONTAINER */
+
+
+.pagamentocontainer {
+  width: 90%;
+  max-width: 900px;
+  text-align: center;
+}
+
+.pagamentocontainer h2 {
+  font-size: 2rem;
+  margin-bottom: 5px;
+  margin-top: 40px;
+}
+
+ .pagamentocontainer p {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.opcoesdepagamento {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.opcao {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  width: 250px;
+  padding: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.opcao:hover,
+.opcao.ativo {
+  background: #fff4ed;
+  border-color: #f97316;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.opcao i {
+  font-size: 30px;
+  color: #f97316;
+  margin-bottom: 10px;
+}
+
+.opcao h3 {
+  margin-bottom: 5px;
+}
+
+.conteudopagamento {
+  display: none;
+  margin-top: 30px;
+  padding: 25px;
+  border-radius: 16px;
+  background: #fafafa;
+  border: 1px solid #eee;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.pixcard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  margin-bottom: 15px;
+}
+
+.qrcode {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  font-size: 40px;
+  border: 1px solid #eee;
+}
+
+.pixinput {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pixinput input {
+  width: 300px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.btn-copy {
+  background: #f97316;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}
+
+.botaolaranja {
+  background: #f97316;
+  color: white;
+  border: none;
+  padding: 14px 30px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.botaolaranja:hover {
+  background: #e05e00;
+}
+
+.linha {
+  display: flex;
+  gap: 15px;
+}
+
+.linha div {
+  flex: 1;
+}
+
+.conteudopagamento input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.boletocard {
+  text-align: center;
+}
+
+.barcode {
+  background: white;
+  display: inline-block;
+  padding: 30px 60px;
+  border-radius: 12px;
+  border: 1px solid #eee;
+  font-size: 40px;
+  margin-bottom: 10px;
 }
