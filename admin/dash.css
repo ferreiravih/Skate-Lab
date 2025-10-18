@@ -1,0 +1,303 @@
+/* ===== RESET E BASE ===== */
+
+body {
+  font-family: 'poppins', sans-serif;
+  background-color: #ffffff;
+  color: #1a1a1a;
+}
+
+main.dashboard-container {
+  max-width: 90vw;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+}
+
+/* ===== TÍTULO ===== */
+h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 0.3rem;
+}
+
+.subtitle {
+  color: #6b7280;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+/* ===== CARDS DE RESUMO ===== */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .06);
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 1.5rem;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .06);
+}
+
+.card h3 {
+  font-size: 1rem;
+  color: #444;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.card .value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 0.3rem;
+}
+
+.card span {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+/* ===== SEÇÃO DE PRODUTOS ===== */
+.recent-products {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+  padding: 1.5rem 1.5rem 1.8rem;
+  margin-top: 24px
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.header-section h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.btn-add {
+  background: #5a2472; 
+  border: none;
+  color: white;
+  padding: 0.7rem 1.4rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(71, 68, 65, 0.3);
+  transition: all 0.2s ease;
+}
+
+.btn-add:hover {
+  transform: scale(1.05);
+}
+
+/* ===== TABELA ===== */
+.products-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 12px; 
+}
+
+.products-table th,
+.products-table td {
+  padding: 20px 15px; /* Aumenta o espaço interno (horizontal e vertical) */
+  text-align: left;
+  vertical-align: middle;
+}
+
+.products-table th {
+  font-weight: 600;
+  color: #444;
+   font-size: 0.85rem; 
+  text-transform: uppercase; 
+  letter-spacing: 0.5px;
+}
+/* Coluna STATUS - move mais para a esquerda */
+.products-table th:nth-child(6),
+.products-table td:nth-child(6) {
+  padding-right: 40px; /* Mais espaço após a coluna Status */
+}
+/* Coluna AÇÕES - fica mais à direita */
+.products-table th:last-child,
+.products-table td:last-child {
+  padding-left: 10px; 
+  width: 200px; 
+}
+.products-table td {
+  font-size: 0.95rem;
+  color: #333;
+}
+/* .products-table thead tr th {
+  color: #6b7280;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: left;
+  padding-bottom: 0.75rem 1rem;
+} */
+ .products-table tbody tr {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  transition: transform 0.1s linear;
+}
+.products-table tbody tr:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Sombra mais forte no hover */
+}
+
+.products-table tbody tr {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  transition: transform 0.1s ease;
+}
+.products-table tbody tr:hover {
+  transform: scale(1.01);
+}
+/* .products-table td {
+  padding: 1rem;
+  vertical-align: middle;
+  font-size: 0.95rem;
+  border-top: 1px solid #f3f4f6;
+} */
+
+.products-table tbody tr td:first-child {
+  width: 60px;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  padding-left: 20px; /* Espaço extra na primeira célula */
+}
+
+.products-table tbody tr td:last-child {
+  width: 200px;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+  padding-right: 20px; /* Espaço extra na última célula */
+}
+
+.products-table img {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+}
+
+/* ===== STATUS ===== */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.status::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.status.ativo {
+  background-color: #e8f9ef;
+  color: #22c55e;
+}
+
+.status.ativo::before {
+  background-color: #22c55e;
+}
+
+.status.inativo {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
+.status.inativo::before {
+  background-color: #9ca3af;
+}
+
+/* ===== BOTÕES ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  gap: 2px;
+  border-radius: 10px;
+  padding: 0.6rem 1.4rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn.editar {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  color: #333;
+}
+
+.btn.ver {
+  background: #ff7a00;
+  color: #fff;
+}
+
+.btn.excluir {
+  background:#5a2472  ;
+  color: #fff;
+}
+
+.btn:hover {
+  transform: scale(1.03);
+  opacity: 0.95;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 900px) {
+  .cards {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .products-table td {
+    padding: 0.8rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .header-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .products-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

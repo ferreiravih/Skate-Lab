@@ -1,0 +1,52 @@
+.header {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  padding: 5px 30px;
+  border-bottom: 1px solid #ddd;
+  background-color: #fff;
+  font-family: 'poppins', sans-serif;
+  height: 60px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .06);
+}
+
+.logo {
+  font-weight: bold;   
+  font-family: 'nosifer', cursive;
+  background: linear-gradient(90deg, #5a2472,  #f08644); 
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 20px;
+}
+
+
+/* MENU */
+.menu {
+  display: flex;
+  gap: 50px;
+}
+
+.menu a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+  transition: color 0.3s;
+  font-size: 18px;
+
+}
+.menu i {
+  margin-right: 6px;
+
+}
+.menu a:hover {
+  color: #e96b3f;
+}
+.user i {
+  margin-right: 10px;
+  font-size: 20px;
+  transition: color 0.3s;
+}
+.user a:hover {
+  color: #e96b3f;
+}
+
