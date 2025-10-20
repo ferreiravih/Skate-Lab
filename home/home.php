@@ -14,9 +14,12 @@
 </head>
 
 <body>
+
+<header>
     <nav>
         <?php include '../componentes/navbar.php'; ?>
     </nav>
+</header>
 
     <main>
 
