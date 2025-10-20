@@ -1,4 +1,11 @@
-.header {
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+.hea {
   display: flex;
   justify-content: space-between; 
   align-items: center;
@@ -8,6 +15,7 @@
   font-family: 'poppins', sans-serif;
   height: 60px;
   box-shadow: 0 6px 24px rgba(0, 0, 0, .06);
+
 }
 
 .logo {
@@ -16,17 +24,15 @@
   background: linear-gradient(90deg, #5a2472,  #f08644); 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 20px;
+  margin-top: 10px;
 }
-
-
-/* MENU */
-.menu {
+  /* MENU */
+.vika {
   display: flex;
   gap: 50px;
 }
 
-.menu a {
+.vika a {
   text-decoration: none;
   color: #000;
   font-weight: 500;
@@ -34,11 +40,11 @@
   font-size: 18px;
 
 }
-.menu i {
+.vika i {
   margin-right: 6px;
 
 }
-.menu a:hover {
+.vika a:hover {
   color: #e96b3f;
 }
 .user i {
@@ -49,4 +55,3 @@
 .user a:hover {
   color: #e96b3f;
 }
-
