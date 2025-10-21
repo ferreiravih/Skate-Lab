@@ -21,7 +21,7 @@
             <h1>SKATELAB</h1>
         </div>
         <nav class="vika">
-            <a href="#"><i class="ri-box-3-line"></i>Produtos</a>
+            <a href="../../../Skate-Lab/admin/produtos/produtos.php"><i class="ri-box-3-line"></i>Produtos</a>
             <a href="#"><i class="ri-folder-line"></i>Categorias</a>
             <a href="#"><i class="ri-shopping-cart-2-line"></i>Pedidos</a>
         </nav>
