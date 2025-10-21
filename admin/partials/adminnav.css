@@ -1,7 +1,6 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 
@@ -9,12 +8,12 @@
   display: flex;
   justify-content: space-between; 
   align-items: center;
-  padding: 5px 30px;
   border-bottom: 1px solid #ddd;
   background-color: #fff;
   font-family: 'poppins', sans-serif;
   height: 60px;
   box-shadow: 0 6px 24px rgba(0, 0, 0, .06);
+  
 
 }
 
@@ -30,20 +29,20 @@
 .vika {
   display: flex;
   gap: 50px;
+  margin-left: 40px;
 }
 
 .vika a {
   text-decoration: none;
   color: #000;
-  font-weight: 500;
   transition: color 0.3s;
   font-size: 18px;
 
 }
 .vika i {
   margin-right: 6px;
-
 }
+
 .vika a:hover {
   color: #e96b3f;
 }

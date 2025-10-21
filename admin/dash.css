@@ -1,4 +1,4 @@
-/* ===== RESET E BASE ===== */
+/*  RESET E BASE  */
 
 body {
   font-family: 'poppins', sans-serif;
@@ -12,12 +12,7 @@ main.dashboard-container {
   padding: 1rem 1.5rem;
 }
 
-/*  TÍTULO  */
-h1 {
-  font-size: 2.2rem;
-  font-weight: 800;
-  margin-bottom: 0.3rem;
-}
+
 
 .subtitle {
   color: #6b7280;

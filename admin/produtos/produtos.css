@@ -5,10 +5,13 @@ body {
     color: #333;
 }
 
-.container {
+/* .container {
     padding: 40px 60px;
+} */
+.container {
+    margin-top: 80px; /* espaço abaixo do header */
+    padding: 20px 30px; /* padding menor e alinhado */
 }
-
 .header-section {
     display: flex;
     justify-content: space-between;
@@ -132,7 +135,7 @@ tr:hover {
     transition: 0.2s;
 }
 i {
- 
+    
 }
 .btn-editar:hover { background: #eaf5ff; border-color: #007bff; }
 .btn-ver:hover { background: #f5f5f5; border-color: #bbb; }
