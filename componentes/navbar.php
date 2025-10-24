@@ -22,13 +22,28 @@
             <a href="#">Customizar</a>
         </nav>
         <div class="icones1">
-            <a><i class="fa-regular fa-user"></i></a>
+            <i class="fa-regular fa-user user-icon" id="userIcon"></i>
+                <div id="sidebar" class="sidebar">
+                    <h2>Login</h2>
+                    <form>
+                        <label>Usuário</label>
+                        <input type="text" placeholder="Digite seu usuário" />
+                        <label>Senha</label>
+                        <input type="password" placeholder="Digite sua senha" />
+                        <button type="submit">Entrar</button>
+                    </form>
+                    <button id="editarPerfil">Continuar com E-mail </button>
+                    <br>
+                    <button id="sair">Sair</button>
+                </div>
             <a><i class="fa-regular fa-heart"></i></a>
             <div class="carrinho1">
                 <a href="../carrinho/carrinho.php"><i class="fa-solid fa-cart-shopping"></i></a>
                 <span class="itenscarrinho1">3</span>
             </div>
         </div>
+        
     </header>
+    <script src="../componentes/nav.js"></script>
 </body>
 </html>

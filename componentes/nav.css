@@ -76,3 +76,226 @@
   padding: 2px 6px;
   font-weight: bold;
 }
+
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  padding: 5px 30px;
+  border-bottom: 1px solid #ddd;
+  background-color: #fff;
+  font-family: 'poppins', sans-serif;
+  height: 70px;
+}
+
+.logo {
+  font-weight: bold;   
+  font-family: 'nosifer', cursive;
+  background: linear-gradient(90deg, #5a2472,  #f08644); 
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* MENU */
+.menu {
+  display: flex;
+  gap: 20px;
+}
+
+.menu a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.menu a:hover {
+  color: #e96b3f;
+}
+
+
+/* ICONES */
+.icones1 {
+  display: flex !important;
+  align-items: center;
+  gap: 25px;
+  position: relative;
+}
+
+.icones1 i {
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.3s;
+  color: #000;
+}
+
+.icones1 i:hover {
+  color: #e96b3f;
+}
+
+/* Carrinho com o contador */
+.carrinho1 {
+  position: relative;
+}
+
+.itenscarrinho1 {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background-color: #e96b3f;
+  color: white;
+  font-size: 12px;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-weight: bold;
+}
+
+
+/* Estilo do menu lateral */
+
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -300px; /* começa fora da tela */
+  width: 300px;
+  height: 100%;
+  background: #fff;
+  box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+  padding: 20px;
+  transition: right 0.3s ease;
+  z-index: 1000;
+}
+
+/* Quando estiver ativa */
+.sidebar.active {
+  right: 0;
+}
+
+/* Ícone do usuário */
+.user-icon {
+  cursor: pointer;
+  font-size: 24px;
+  transition: transform 0.2s;
+}
+
+.user-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Fundo da sidebar */
+.sidebar {
+  background: linear-gradient(135deg, #4b0082, #6a0dad); /* tons de roxo */
+  color: #fff;
+  padding: 30px 25px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  box-shadow: -4px 0 10px rgba(0, 0, 0, 0.3);
+  width: 300px;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: -300px;
+  transition: right 0.3s ease;
+  z-index: 1000;
+}
+
+/* Sidebar visível */
+.sidebar.active {
+  right: 0;
+}
+
+/* Título */
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  letter-spacing: 1px;
+  color: #ff9800; /* laranja */
+}
+
+/* Labels */
+.sidebar label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 500;
+  color: white; /* laranja claro */
+}
+
+/* Inputs */
+.sidebar input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Botão principal (Entrar) */
+.sidebar button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  background-color: #ff9800;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-size: 15px;
+  transition: background 0.3s ease;
+}
+
+.sidebar button[type="submit"]:hover {
+  background-color: #e68900;
+}
+
+/* Botões adicionais */
+#editarPerfil,
+#sair {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  margin-top: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+/* "Continuar com e-mail" – botão secundário */
+#editarPerfil {
+  background: #fff;
+  color: #6a0dad;
+  font-weight: 600;
+}
+
+#editarPerfil:hover {
+  background: #f2f2f2;
+  transform: scale(1.03);
+}
+
+/* "Sair" – botão de destaque negativo */
+#sair {
+  background: transparent;
+  color: #ff9800;
+  border: 2px solid #ff9800;
+  font-weight: 600;
+}
+
+#sair:hover {
+  background: #ff9800;
+  color: #fff;
+  transform: scale(1.03);
+}
