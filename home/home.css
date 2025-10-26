@@ -251,8 +251,8 @@ html, body {
     font-size: 1.7em;
     font-weight: 600;
     color: var(--laranja-principal);
-    position: absolute;
     top: -30px;
+    margin-bottom: 5px;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -539,10 +539,10 @@ body {
     color: var(--roxo-escuro);
 }
 
-/* BOTÃO SETA - mantém arredondamento redondo */
+/* BOTÃO SETA */
 .seta {
     background: #e67e00;
-    color: #000000;
+    color: #ffffff;
     border: none;
     border-radius: 50%;
     width: 40px;
@@ -554,7 +554,7 @@ body {
 
 .seta:hover {
     background-color: #482770;
-    transform: translateY(-3px);
+    transform: translateX(3px);
 }
 
 /* ===============================
@@ -563,7 +563,6 @@ body {
 
 section, div, header, footer, main {
   max-width: 100vw;
-  overflow-x: hidden;
   box-sizing: border-box;
 }
 
@@ -608,8 +607,4 @@ img, video {
 
 * {
   box-sizing: border-box;
-}
-
-html, body {
-  overflow-x: hidden;
 }
