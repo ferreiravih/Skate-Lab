@@ -15,7 +15,7 @@
 <body>
     <header class="header">
         <div class="logo">
-            <h1>SKATELAB</h1>
+            <h1><a href="../../Skate-Lab/home/home.php">SKATELAB</h1></a>
         </div>
         <nav class="menu">
             <a href="../skateshop/skateee.php">SkateShop</a>

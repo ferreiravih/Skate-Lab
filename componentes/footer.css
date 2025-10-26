@@ -1,65 +1,78 @@
-
-.footerb {
-  background-color: #482770;
-  color: white;
-  padding: 10px;
-  width: 100%;
-  align-items: flex-start;
-  margin-top: auto;
+/* --- ESTILO GERAL --- */
+.footer {
+  background-color: #ffffff;
+  padding: 30px 100px 30px;
+  font-family: "Poppins", sans-serif;
+  border-top: 1px solid #ddd; /* Laranja do tema */
 }
 
-.footercontainer {
+/* --- CONTAINER PRINCIPAL --- */
+.footer-container {
   display: flex;
-  justify-content: space-between; 
-  align-items: flex-start;        
-  padding: 20px 40px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 40px;
+  align-items: flex-start; /* alterado de center para flex-start */
 }
 
-.foot{
-  gap: 50px;
-  display: inline-block;
-  padding: 0 20px;
-  font-family: 'poppins', sans-serif;
-  flex: 1;
+/* --- COLUNAS --- */
+.footer-column {
+  min-width: 250px;
 }
 
-.foot ul, a {
+.footer-column h3 {
+  color: #ec6b2d; /* Laranja */
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.footer-column ul {
   list-style: none;
-  color: white;
-  padding: 0;
-  text-decoration: none;
-}
-
-.foot ul li {
-  margin-bottom: 0.5rem;
-}
-
-.foots {
-  display: flex;
-  gap: 15px;
   padding: 0;
   margin: 0;
-  list-style: none;
 }
 
-.faleconosco {
-  display: inline-flex;       
-  align-items: center;        
-  gap: 8px;                   
-  padding: 12px 20px;         
-  border: 2px solid #ff914d;  
-  border-radius: 10px;        
-  background: transparent;   
-  color: #ff914d;            
-  font-weight: bold; 
-  font-family: 'poppins', sans-serif;         
-  text-decoration: none;      
-  transition: all 0.3s ease; 
-  cursor: pointer;
-  margin: 20px;
+.footer-column ul li {
+  margin-bottom: 8px;
+  color: #666565;
+  font-size: 14px;
 }
 
-.footerb hr{
-  margin-bottom: 20px;
+.footer-column a {
+  text-decoration: none;
+  color: #666565;
+  transition: color 0.2s;
 }
 
+.footer-column i {
+  margin-right: 5px;
+}
+
+.footer-column a:hover {
+  color: #ec6b2d;
+}
+
+.footer-column p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #666565;
+}
+
+/* --- DIVISÓRIA --- */
+.footer-divider {
+  border: none;
+  border-top: 1px solid rgb(207, 207, 207);
+  margin: 30px 0 15px;
+}
+
+/* --- PARTE INFERIOR --- */
+.footer-bottom {
+  text-align: center;
+}
+
+.footer-bottom p {
+  font-size: 13px;
+  color: #666565;
+  margin: 0;
+}

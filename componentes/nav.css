@@ -1,30 +1,38 @@
+/* ======== RESET E BASE ======== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+/* ======== HEADER ======== */
 .header {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
   padding: 5px 30px;
   border-bottom: 1px solid #ddd;
   background-color: #fff;
-  font-family: 'poppins', sans-serif;
   height: 70px;
+  position: sticky;
+  top: 0;
+  z-index: 9999;
 }
 
+/* ======== LOGO ======== */
 .logo {
-  font-weight: bold;   
-  font-family: 'nosifer', cursive;
-  background: linear-gradient(90deg, #5a2472,  #f08644); 
+  font-weight: bold;
+  font-family: "Nosifer", cursive;
+  background: linear-gradient(90deg, #5a2472, #f08644);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-
-/* MENU */
+/* ======== MENU ======== */
 .menu {
   display: flex;
   gap: 20px;
@@ -41,7 +49,7 @@
   color: #e96b3f;
 }
 
-/* ICONES */
+/* ======== ICONES ======== */
 .icones1 {
   display: flex !important;
   align-items: center;
@@ -77,88 +85,78 @@
   font-weight: bold;
 }
 
+/* ======== RESPONSIVIDADE ======== */
 
+/* Telas médias (até 1024px) */
+@media (max-width: 1024px) {
+  .header {
+    padding: 5px 20px;
+  }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  .menu a {
+    font-size: 0.95rem;
+  }
+
+  .icones1 {
+    gap: 18px;
+  }
 }
 
-.header {
-  display: flex;
-  justify-content: space-between; 
-  align-items: center;
-  padding: 5px 30px;
-  border-bottom: 1px solid #ddd;
-  background-color: #fff;
-  font-family: 'poppins', sans-serif;
-  height: 70px;
+/* Telas pequenas (até 768px) */
+@media (max-width: 768px) {
+  .header {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 10px 20px;
+  }
+
+  .logo {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+  }
+
+  /* Transforma o menu em coluna e centraliza */
+  .menu {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .menu a {
+    font-size: 1rem;
+  }
+
+  /* Ícones centralizados abaixo */
+  .icones1 {
+    justify-content: center;
+    width: 100%;
+    gap: 20px;
+    margin-top: 5px;
+  }
 }
 
-.logo {
-  font-weight: bold;   
-  font-family: 'nosifer', cursive;
-  background: linear-gradient(90deg, #5a2472,  #f08644); 
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Telas muito pequenas (até 480px) */
+@media (max-width: 480px) {
+  .logo {
+    font-size: 1.2rem;
+  }
+
+  .menu a {
+    font-size: 0.9rem;
+  }
+
+  .icones1 i {
+    font-size: 18px;
+  }
+
+  .itenscarrinho1 {
+    top: -6px;
+    right: -8px;
+    font-size: 10px;
+  }
 }
-
-
-/* MENU */
-.menu {
-  display: flex;
-  gap: 20px;
-}
-
-.menu a {
-  text-decoration: none;
-  color: #000;
-  font-weight: 500;
-  transition: color 0.3s;
-}
-
-.menu a:hover {
-  color: #e96b3f;
-}
-
-
-/* ICONES */
-.icones1 {
-  display: flex !important;
-  align-items: center;
-  gap: 25px;
-  position: relative;
-}
-
-.icones1 i {
-  font-size: 20px;
-  cursor: pointer;
-  transition: color 0.3s;
-  color: #000;
-}
-
-.icones1 i:hover {
-  color: #e96b3f;
-}
-
-/* Carrinho com o contador */
-.carrinho1 {
-  position: relative;
-}
-
-.itenscarrinho1 {
-  position: absolute;
-  top: -8px;
-  right: -10px;
-  background-color: #e96b3f;
-  color: white;
-  font-size: 12px;
-  border-radius: 50%;
-  padding: 2px 6px;
-  font-weight: bold;
-}
-
 
 /* Estilo do menu lateral */
 

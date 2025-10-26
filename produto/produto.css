@@ -2,29 +2,38 @@ body {
   font-family: "Poppins", sans-serif;
   background-color: #ffffff;
   color: #333;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+/* CONTAINER GERAL */
 .container {
   display: flex;
   justify-content: center;
   gap: 60px;
   padding: 40px;
+  flex-wrap: wrap; /* permite quebrar linha em telas menores */
 }
 
+/* GALERIA DE IMAGENS */
 .galeria {
   display: flex;
   gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .miniimg {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  align-items: center;
 }
 
 .miniimg img {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   border-radius: 8px;
   cursor: pointer;
   border: 2px solid transparent;
@@ -32,15 +41,17 @@ body {
 }
 
 .miniimg img:hover {
-  border: 2px solid  #5a2472;
+  border: 2px solid #5a2472;
 }
 
 .imgprincipal img {
-  width: 600px;
+  width: 100%;
+  max-width: 500px;
   border-radius: 12px;
   border: 1px solid #ddd;
 }
 
+/* INFORMAÇÕES DO PRODUTO */
 .info {
   max-width: 500px;
 }
@@ -106,44 +117,33 @@ body {
   color: #333;
 }
 
+.botaocomprar1,
+.botaoadcarrinho {
+  display: inline-block;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.3s ease;
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+  margin-top: 10px;
+}
 
 .botaocomprar1 {
-  display: inline-block;
   background-color: #ff6f00;
-  color: #fff;
-  padding: 12px 24px;
-  border-radius: 10px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: 0.3s ease;
-  width: 360px;
-  text-align: center;
-  margin-top: 10px;
 }
 
-.botaocomprar1:hover {
-  transform: scale(1.03);
-}
-
-.botaoadcarrinho{
-  display: inline-block;
-  background-color: #3d0076;
-  color: #fff;
-  padding: 12px 24px;
-  border-radius: 10px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: 0.3s ease;
-  width: 360px;
-  margin-top: 10px;
-  text-align: center;
-}
-
+.botaocomprar1:hover,
 .botaoadcarrinho:hover {
   transform: scale(1.03);
 }
 
-
+.botaoadcarrinho {
+  background-color: #3d0076;
+}
 
 .frete {
   margin-top: 20px;
@@ -164,11 +164,13 @@ body {
   cursor: pointer;
 }
 
+/* DESCRIÇÃO */
 .descricaogeral {
   color: #400080;
   max-width: 900px;
   margin: 40px auto;
   line-height: 1.6;
+  padding: 0 20px;
 }
 
 .descricaogeral h2 {
@@ -213,9 +215,11 @@ body {
   color: #3d0076;
 }
 
+/* AVALIAÇÕES */
 .avaliacoes {
   max-width: 900px;
   margin: 50px auto;
+  padding: 0 20px;
 }
 
 .avaliacoes h2 {
@@ -234,51 +238,30 @@ body {
   color: #3d0076;
 }
 
-.avaliacoescard i {
-  font-size: 2.5rem;
-  opacity: 0.5;
-  margin-bottom: 10px;
-}
-
-.avaliacoescard p {
-  margin: 5px 0;
-  font-weight: 600;
-}
-
-.avaliacoescard span {
-  color: #7a6da9;
-  font-size: 0.9rem;
-}
-
-
-
-
+/* PRODUTOS EM DESTAQUE */
 .desta {
-  font-family: 'poppins', sans-serif;
+  font-family: "poppins", sans-serif;
   font-weight: bold;
   margin-top: 80px;
-  margin-left: 176px;
+  text-align: center;
 }
-
 
 .produtos {
-margin-top: 30px;
-margin-bottom: 50px;
-background: #f8f8fc;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  background: #f8f8fc;
 }
 
-.produtos .container {
-justify-content: center;
+/* Container dos cards */
+.produtos .containershop {
+  justify-content: center;
   display: flex;
-  flex-wrap: wrap;          
-  gap: 30px;                
+  flex-wrap: wrap;
+  gap: 40px;
   font-family: 'poppins', sans-serif;
 }
 
-
-
-
-/* Card do produto */
+/* Card */
 .produtos .card {
   align-items: center;
   background: #fff;
@@ -288,13 +271,12 @@ justify-content: center;
   position: relative;
   width: 360px;
   height: 450px;
-
+  transition: transform 0.3s ease;
 }
 
 .produtos .card:hover {
-   transform: scale(1.05);
+  transform: scale(1.05);
 }
-
 
 .produtos .card img {
   width: 250px;
@@ -303,10 +285,7 @@ justify-content: center;
   margin: 0 auto;
 }
 
-
-
-
-/* selo de oferta e novo */
+/* Selos */
 .produtos .selos {
   position: absolute;
   top: 10px;
@@ -315,7 +294,7 @@ justify-content: center;
   gap: 6px;
 }
 
-.produtos .oferta, .novo{
+.produtos .oferta, .novo {
   color: #fff;
   font-size: 12px;
   padding: 3px 8px;
@@ -323,20 +302,25 @@ justify-content: center;
 }
 
 .produtos .novo {
-   background: #ff6a1f; 
+  background: #ff6a1f;
 }
 
-.produtos .oferta { 
-background: #400080; 
+.produtos .oferta {
+  background: #400080;
 }
-
-
-
-
 
 /* Info */
+
+.containershop a{
+  text-decoration: none;
+  color: inherit;
+}
+
+
 .produtos .info {
   padding: 12px;
+  text-align: center;
+  
 }
 
 .produtos .categoria {
@@ -360,7 +344,7 @@ background: #400080;
   font-size: 16px;
   font-weight: bold;
   margin: 8px 0;
-  color: #000000;
+  color: #000;
 }
 
 .produtos .preco .antigo {
@@ -370,52 +354,85 @@ background: #400080;
   margin-left: 5px;
 }
 
+/* Botões */
+.botaocomprar,
+.botaocarrinho {
+  background: #400080;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 5px;
+  height: 43px;
+}
 
-
-
-
-
-/* Botão */
 .botaocomprar {
-  background:#400080 ;
-  color: white;
-  border: none;
-  margin: 0;
   width: 270px;
-  border-radius: 15px;
-  cursor: pointer;
-  transition: background 0.2s;
-  margin-top: 5px;
-  justify-content: center;
-  height: 43px;
 }
 
-.info button{
-  text-align: center;
-}
-
-.botaocarrinho{
-  background: #400080 ;
-  color: white;
-  border: none;
-  margin: 0;
+.botaocarrinho {
   width: 57px;
-  border-radius: 15px;
-  cursor: pointer;
-  transition: background 0.2s;
-  margin-top: 5px;
-  justify-content: center;
-  height: 43px;
 }
 
-.botaocomprar:hover {
-  background: #ff6a1f;
-}
-
+.botaocomprar:hover,
 .botaocarrinho:hover {
   background: #ff6a1f;
 }
-
 .card-link {
   text-decoration: none;
+}
+
+/* --- RESPONSIVIDADE --- */
+
+/* Tablets */
+@media (max-width: 992px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .imgprincipal img {
+    max-width: 450px;
+  }
+
+  .info {
+    max-width: 90%;
+  }
+
+  .produtos .card img {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+/* Celulares */
+@media (max-width: 600px) {
+  .container {
+    padding: 20px;
+  }
+
+  .imgprincipal img {
+    max-width: 100%;
+  }
+
+  .botaocomprar1,
+  .botaoadcarrinho {
+    max-width: 100%;
+  }
+
+  .desta {
+    font-size: 1.2rem;
+    margin: 40px 0 20px;
+  }
+
+  .produtos .card {
+    max-width: 90%;
+  }
+
+  .produtos .card img {
+    width: 180px;
+    height: 180px;
+  }
 }
