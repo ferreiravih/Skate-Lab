@@ -26,7 +26,7 @@ html, body {
 
 /* CAPA */
 #capa {
-  background: url("../img/imgs-home/home-capa.svg") no-repeat center center;
+  background: url("../img/imgs-home/home-capa.png") no-repeat center center;
   background-size: cover;
   background-position: center;
   background-color: #fff;
@@ -43,7 +43,7 @@ html, body {
 .capa-conteudo {
   width: 100%;
   max-width: 1200px;
-  color: #482770;
+  color: #ffffff;
   z-index: 1;
 }
 
@@ -52,29 +52,30 @@ html, body {
   font-weight: 900;
   line-height: 1.2;
   margin-bottom: 15px;
-  color: #482770;
+  color: #ffffff;
 }
 
 .capa-conteudo p {
   font-size: clamp(1rem, 2vw, 25px);
   margin-bottom: 25px;
-  color: #482770;
+  color: #ffffff;
 }
 
+/* BOTÕES PADRONIZADOS */
 .btn-saiba-mais {
   display: inline-block;
-  background-color: #482770;
+  background-color: #e67e00;
   color: #fff;
   font-weight: bold;
   padding: 0.9rem 1.8rem;
-  border-radius: 6px;
+  border-radius: 8px;
   text-decoration: none;
   font-size: clamp(0.9rem, 1.2vw, 18px);
   transition: transform 0.3s ease, background 0.3s ease;
 }
 
 .btn-saiba-mais:hover {
-  background-color: #2f1a4d;
+  background-color: #482770;
   transform: translateY(-3px);
 }
 
@@ -94,29 +95,68 @@ html, body {
 
 /*-----------------------------------------------*/
 
-
 /*HOME - BENEFICIOS*/
 #beneficios {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 20px;
+  display: flex;
+  justify-content: space-around;
   align-items: center;
-  padding: 30px 40px;
-  background: #fff;
+  flex-wrap: wrap; /* permite quebrar linha em telas pequenas */
+  gap: 2rem;
+  padding: 2rem 1rem;
+  text-align: center; /* centraliza os textos */
 }
 
 .beneficio-item {
-  text-align: center;
-  max-width: 200px;
-  margin: auto;
+  display: flex;
+  flex-direction: column; /* ícone em cima, texto embaixo */
+  align-items: center; /* centraliza o conteúdo horizontalmente */
+  justify-content: center;
+  max-width: 220px;
 }
 
 .beneficio-item img {
-  width: 50px;
+  width: 60px;
+  height: auto;
+  margin-bottom: 10px;
+  display: block;
+}
+
+/* Texto */
+.beneficio-item p {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #000;
+  line-height: 1.4;
+}
+
+.beneficio-item span {
+  display: block;
+  font-weight: normal;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* ===== Responsividade ===== */
+@media (max-width: 768px) {
+  #beneficios {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .beneficio-item img {
+    width: 50px;
+  }
+
+  .beneficio-item p {
+    font-size: 0.95rem;
+  }
+
+  .beneficio-item span {
+    font-size: 0.85rem;
+  }
 }
 
 /*-----------------------------------------------*/
-
 
 /*HOME - CUSTOMIZAÇÃO*/
 #customizacao {
@@ -129,11 +169,11 @@ html, body {
   justify-content: space-between;
   align-items: center;
   gap: 40px;
-  flex-wrap: nowrap; /* impede de jogar a imagem para baixo */
+  flex-wrap: nowrap;
 }
 
 .customizacao-conteudo .texto {
-  flex: 1 1 45%; /* ocupa ~45% */
+  flex: 1 1 45%;
 }
 
 .customizacao-conteudo h2 {
@@ -148,13 +188,14 @@ html, body {
   margin-bottom: 25px;
 }
 
+/* BOTÃO CUSTOMIZAÇÃO */
 .btn-customizacao {
   display: inline-block;
-  background-color: #F3732C;
+  background-color: #e67e00;
   color: white;
   font-weight: bold;
   padding: 0.9rem 1.8rem;
-  border-radius: 6px;
+  border-radius: 8px;
   text-decoration: none;
   font-size: clamp(0.9rem, 1.2vw, 16px);
   transition: transform 0.3s ease, background 0.3s ease;
@@ -166,19 +207,18 @@ html, body {
 }
 
 .img-skate {
-  flex: 1 1 50%; /* ocupa ~50% */
+  flex: 1 1 50%;
   display: flex;
   justify-content: center;
 }
 
 .img-skate img {
   width: 100%;
-  max-width: 700px;  /* aumenta o tamanho sem quebrar layout */
+  max-width: 700px;
   height: auto;
 }
 
 /*-----------------------------------------------*/
-
 
 /*HOME - PASSOS*/
 .passos {
@@ -223,34 +263,50 @@ html, body {
     text-transform: uppercase;
 }
 
-/*-----------------------------------------------*/
+.passo img:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
 
+/*-----------------------------------------------*/
 
 /*HOME - KITS*/
 .kits {
     background-color: #fff;
-    padding: 80px 5%;
+    padding: 80px 5% 120px;
     text-align: center;
+    position: relative;
+    z-index: 1;
 }
 
 .kits h3 {
     color: var(--roxo-escuro);
     margin-bottom: 50px;
+    font-weight: 900;
+    text-align: center;
 }
 
+/* Galeria de kits */
 .galeria-kits {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto 60px; 
 }
 
+/* Cartão de kit */
 .kit {
     background-color: #fcfafa;
     border-radius: 10px;
-    padding: 20px;
+    padding: 25px 20px;
     width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* centraliza tudo */
+    justify-content: space-between;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -261,15 +317,25 @@ html, body {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
+/* Imagens */
 .kit img {
-    width: 80%;
+    width: 85%;
     height: auto;
     margin-bottom: 15px;
+    object-fit: contain;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
+/* Textos */
 .nome-kit {
     font-weight: 700;
-    min-height: 40px; /* Garante altura para manter alinhamento */
+    font-size: 1rem;
+    color: #000;
+    line-height: 1.3;
+    margin-bottom: 10px;
+    text-transform: uppercase;
 }
 
 .preco-kit {
@@ -285,31 +351,39 @@ html, body {
     margin-bottom: 15px;
 }
 
+/* Botão Ver Mais */
 .botao-ver-mais {
     background-color: #e67e00;
     color: #fff;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 10px 25px;
+    border-radius: 8px;
     text-decoration: none;
     font-weight: 700;
-    transition: background-color 0.3s ease;
+    transition: transform 0.3s ease, background 0.3s ease;
+    display: inline-block;
 }
 
 .botao-ver-mais:hover {
     background-color: #482770;
+    transform: translateY(-3px);
+}
+
+/* Botão Descubra Mais */
+.nov {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
 }
 
 .nov .botao-nov {
-  display: inline-block;
-  margin-top: 70px;
-  background-color: #e67e00;
-  color: white;
-  font-weight: bold;
-  padding: 20px 40px;
-  border-radius: 20px;
-  text-decoration: none;
-  font-size: 20px;
-  transition: transform 0.3s ease, background 0.3s ease
+    background-color: #e67e00;
+    color: white;
+    font-weight: bold;
+    padding: 20px 50px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 20px;
+    transition: transform 0.3s ease, background 0.3s ease;
 }
 
 .botao-nov:hover {
@@ -317,8 +391,53 @@ html, body {
     transform: translateY(-3px);
 }
 
-/*-----------------------------------------------*/
+/* ===== Responsividade ===== */
+@media (max-width: 992px) {
+    .galeria-kits {
+        gap: 20px;
+    }
+    .kit {
+        width: 45%;
+    }
+}
 
+@media (max-width: 600px) {
+    .kits {
+        padding: 50px 5% 100px; /* mantém espaçamento no mobile */
+    }
+
+    .kit {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .kit img {
+        width: 80%;
+    }
+
+    .nome-kit {
+        font-size: 0.95rem;
+    }
+
+    .preco-kit {
+        font-size: 1.2rem;
+    }
+
+    .nov {
+        margin-top: 40px;
+    }
+
+    .botao-nov {
+        font-size: 18px;
+        padding: 15px 40px;
+    }
+}
+
+body {
+  padding-top: 80px; /* ajuste de acordo com a altura do seu header fixo */
+}
+
+/*-----------------------------------------------*/
 
 /*HOME - NOVIDADES*/
 .novidades {
@@ -354,15 +473,15 @@ html, body {
     font-size: 1em;
     border: solid 2px #000000;
     border-radius: 3px;
-
 }
 
+/* BOTÃO CADASTRAR */
 .formulario-novidades .botao-cadastrar {
     padding: 15px 40px;
     background-color: #e67e00;
     color: #fff;
-    border-radius: 5%;
-    transition: transform 0.3s ease, background 0.3s ease
+    border-radius: 8px;
+    transition: transform 0.3s ease, background 0.3s ease;
 }
 
 .botao-cadastrar:hover {
@@ -370,9 +489,7 @@ html, body {
     transform: translateY(-3px);
 }
 
-
 /*-----------------------------------------------*/
-
 
 /*HOME - AVALIAÇÕES*/
 .avaliacoes {
@@ -422,8 +539,9 @@ html, body {
     color: var(--roxo-escuro);
 }
 
+/* BOTÃO SETA - mantém arredondamento redondo */
 .seta {
-    background: var(--roxo-escuro);
+    background: #e67e00;
     color: #000000;
     border: none;
     border-radius: 50%;
@@ -431,36 +549,30 @@ html, body {
     height: 40px;
     font-size: 1.5em;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: transform 0.3s ease, background 0.3s ease;
 }
 
 .seta:hover {
-    background-color: var(--roxo-claro);
-}
-
-* {
-  outline: 1px solid red !important;
+    background-color: #482770;
+    transform: translateY(-3px);
 }
 
 /* ===============================
    AJUSTES GERAIS RESPONSIVOS
    =============================== */
 
-/* Evita que qualquer seção estoure a tela */
 section, div, header, footer, main {
   max-width: 100vw;
   overflow-x: hidden;
   box-sizing: border-box;
 }
 
-/* Garante que imagens e elementos grandes não quebrem a largura */
 img, video {
   max-width: 100%;
   height: auto;
   display: block;
 }
 
-/* Ajusta a seção PASSOS para telas menores */
 .passos {
   flex-wrap: wrap;
   justify-content: center;
@@ -468,13 +580,11 @@ img, video {
   gap: 20px;
 }
 
-/* Ajusta imagens dos passos para caberem */
 .passo img {
   max-width: 100%;
   width: 250px;
 }
 
-/* Ajusta CUSTOMIZAÇÃO (antes estava nowrap) */
 .customizacao-conteudo {
   flex-wrap: wrap;
   justify-content: center;
@@ -486,7 +596,6 @@ img, video {
   max-width: 600px;
 }
 
-/* Ajusta formulário de novidades para não quebrar em telas pequenas */
 .formulario-novidades {
   flex-wrap: wrap;
   gap: 20px;
@@ -497,12 +606,10 @@ img, video {
   width: 100%;
 }
 
-/* Garante que nada passe de 100% */
 * {
   box-sizing: border-box;
 }
 
-/* Remove o scroll lateral de vez */
 html, body {
   overflow-x: hidden;
 }

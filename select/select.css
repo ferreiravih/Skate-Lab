@@ -1,0 +1,60 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+}
+
+.estilo-skate {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.estilo-skate h2 {
+    color: #55185D; /* roxo escuro */
+    margin-bottom: 40px;
+}
+
+.cards {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background-color: #ffffff;
+    border: 2px solid #55185D;
+    border-radius: 10px;
+    width: 250px;
+    padding: 20px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.card .imagem img {    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+    align-items: center;
+    object-fit: contain;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.card h3 {
+    color: #000000; /* texto preto */
+    margin-bottom: 10px;
+    font-size: 1.3em;
+}
+
+.card p {
+    color: #000000; /* texto preto */
+    font-size: 0.9em;
+}
