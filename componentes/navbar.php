@@ -19,7 +19,7 @@
         </div>
         <nav class="menu">
             <a href="../skateshop/skateee.php">SkateShop</a>
-            <a href="#">Customizar</a>
+            <a href="../select/select.php"">Customizar</a>
         </nav>
         <div class="icones1">
             <i class="fa-regular fa-user user-icon" id="userIcon"></i>
