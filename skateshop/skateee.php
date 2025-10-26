@@ -30,6 +30,7 @@
     <button>Shapes</button>
     <button>Rodas</button>
     <button>Trucks</button>
+    <button>Acessórios</button>
   </nav>
 
 
@@ -38,7 +39,7 @@
 
   
 <section class="produtos">
-  <div class="container">
+  <div class="containershop">
 
   <a href="../produto/produto.php" class="card-link">
     <div class="card">
@@ -52,7 +53,7 @@
         <h3>skate preto completo</h3>
         <div class="rating">⭐⭐⭐⭐⭐<span>(5.0)</span></div>
         <p class="preco">R$ 299.90 <span class="antigo">R$ 349.90</span></p>
-        <button class="botaocomprar" onclick="window.location.href= '../pagamento/pagamento.php'"> comprar </button> 
+        <button class="botaocomprar" onclick="window.location.href='../pagamento/pagamento.php'"> comprar </button> 
         <button class="botaocarrinho">🛒</button>
       </div>
     </div>
@@ -106,7 +107,7 @@
 </section> 
 
 <section class="produtos">
-  <div class="container">
+  <div class="containershop">
 
     <!-- Produto 1 -->
     <div class="card">
