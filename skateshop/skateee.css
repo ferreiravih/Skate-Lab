@@ -1,58 +1,44 @@
-/* ========================== */
-/* ESTILO GERAL */
-/* ========================== */
-body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background-color: #f8f8fc;
-}
-
-/* BANNER PRINCIPAL */
 .imgebarra {
   position: relative;
-  width: 90%;           /* espaço lateral */
-  max-width: 1920px;    /* limita em telas grandes */
-  height: 250px;
+  height: 200px; 
   background: url("../img/imgs-skateshop/banner.jpg") center/cover no-repeat;
+  height: 250px;
   border-radius: 15px;
-  margin: 20px auto;
+  margin: 20px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  padding-left: 40px;
   color: white;
   overflow: hidden;
 }
 
 .texto {
-  max-width: 400px;
-  color: #ff6a1f;
   position: absolute;
-  right: 20px; /* distancia da borda direita */
-  top: 50%;    /* centraliza verticalmente */
-  transform: translateY(-50%); /* ajuste fino do centramento vertical */
-  text-align: right; /* alinha o texto à direita */
-
+  top: 50%;
+  right: 8%; /* Ajuste para mais ou menos distância da borda */
+  transform: translateY(-50%);
+  color: #ff6a1f;
+  text-align: right;
+  max-width: 400px;
 }
 
 .texto h1 {
   font-size: 32px;
   margin-bottom: 10px;
+  font-family: 'poppins', sans-serif;
 }
 
 .texto p {
+  font-family: 'poppins', sans-serif;
   font-weight: 900;
 }
 
-/* ========================== */
-/* CATEGORIAS / BOTÕES */
-/* ========================== */
 .categories {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
   gap: 15px;
   margin: 20px 0;
-  padding: 0 10px;
 }
 
 .categories button {
@@ -60,13 +46,14 @@ body {
   border: 1px solid #ddd;
   padding: 10px 20px;
   border-radius: 25px;
-  font-weight: 700;
+  font-weight: 600;
   color: #333;
   cursor: pointer;
   transition: 0.3s;
-  width: 100%;
-  max-width: 220px;
+  width: 250px;
   height: 50px;
+  font-family: 'poppins', sans-serif;
+  justify-content: center;
 }
 
 .categories button:hover {
@@ -79,71 +66,69 @@ body {
 .categories button.active {
   background: #482770;
   color: white;
-  box-shadow: 0px 4px 12px rgba(75, 0, 130, 0.4);
-}
-
-/* ========================== */
-/* TEXTOS DE DESTAQUE */
-/* ========================== */
-.desta, .parag {
-  text-align: center;
-  margin: 20px auto;
-  max-width: 90%;
+  box-shadow: 0px 4px 12px rgba(75,0,130,0.4);
 }
 
 .desta {
+  font-family: 'poppins', sans-serif;
   font-weight: bold;
   margin-top: 50px;
+  margin-left: 176px;
 }
 
-.parag {
+.parag{
+  font-family: 'poppins', sans-serif;
   margin-bottom: 10px;
+  margin-left: 176px;
+
 }
 
-/* ========================== */
-/* PRODUTOS / CARDS */
-/* ========================== */
 .produtos {
-  margin-top: 50px;
-  margin-bottom: 80px;
+margin-top: 50px;
+margin-bottom: 50px;
+background: #f8f8fc;
 }
 
-.produtos .containershop {
+.produtos .container {
+justify-content: center;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 17px;
+  flex-wrap: wrap;           /* permite quebrar linha */
+  gap: 30px;                 /* espaço fixo entre os cards */
+  font-family: 'poppins', sans-serif;
 }
 
+
+
+
+/* Card do produto */
 .produtos .card {
+  align-items: center;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.205);
   overflow: hidden;
   position: relative;
-  width: 320px;        /* largura padrão */
-  max-width: 350px;    /* não estoura */
-  min-width: 280px;    /* evita ficar muito estreito */
-  height: auto;
-  transition: transform 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 360px;
+  height: 450px;
+
 }
 
 .produtos .card:hover {
-  transform: scale(1.05);
+   transform: scale(1.05);
 }
+
 
 .produtos .card img {
-  width: 70%;
-  max-width: 220px; /* não deixa gigante */
-  height: auto;
-  object-fit: contain;
-  margin-top: 15px;
+  width: 250px;
+  height: 250px;
+  display: block;
+  margin: 0 auto;
 }
 
-/* Selos */
+
+
+
+/* selo de oferta e novo */
 .produtos .selos {
   position: absolute;
   top: 10px;
@@ -152,7 +137,7 @@ body {
   gap: 6px;
 }
 
-.produtos .novo, .produtos .oferta {
+.produtos .oferta, .novo{
   color: #fff;
   font-size: 12px;
   padding: 3px 8px;
@@ -160,17 +145,20 @@ body {
 }
 
 .produtos .novo {
-  background: #ff6a1f;
+   background: #ff6a1f; 
 }
 
-.produtos .oferta {
-  background: #400080;
+.produtos .oferta { 
+background: #400080; 
 }
+
+
+
+
 
 /* Info */
 .produtos .info {
   padding: 12px;
-  text-align: center;
 }
 
 .produtos .categoria {
@@ -194,7 +182,7 @@ body {
   font-size: 16px;
   font-weight: bold;
   margin: 8px 0;
-  color: #000;
+  color: #000000;
 }
 
 .produtos .preco .antigo {
@@ -204,96 +192,48 @@ body {
   margin-left: 5px;
 }
 
-/* Botões de compra */
-.botaocomprar,
-.botaocarrinho {
+
+
+
+
+
+/* Botão */
+.botaocomprar {
   background: #400080;
   color: white;
   border: none;
+  margin: 0;
+  width: 270px;
   border-radius: 15px;
   cursor: pointer;
   transition: background 0.2s;
   margin-top: 5px;
+  justify-content: center;
   height: 43px;
 }
 
-.botaocomprar {
-  width: 200px;   /* largura fixa confortável */
+.info button{
+  text-align: center;
 }
 
-.botaocarrinho {
+.botaocarrinho{
+  background: #400080 ;
+  color: white;
+  border: none;
+  margin: 0;
   width: 57px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 5px;
+  justify-content: center;
+  height: 43px;
 }
 
-.botaocomprar:hover,
-.botaocarrinho:hover {
+.botaocomprar:hover {
   background: #ff6a1f;
 }
 
-/* ========================== */
-/* RESPONSIVIDADE */
-/* ========================== */
-@media (max-width: 1024px) {
-  .texto h1 {
-    font-size: 26px;
-  }
-
-  .desta, .parag {
-    max-width: 80%;
-  }
-
-  .produtos .card {
-    max-width: 280px;
-  }
-}
-
-@media (max-width: 768px) {
-  .imgebarra {
-    width: 95%;
-    padding: 0 20px;
-    height: 200px;
-  }
-
-  .texto {
-    text-align: center;
-    margin: 0 auto;
-  }
-
-  .texto h1 {
-    font-size: 22px;
-  }
-
-  .texto p {
-    font-size: 14px;
-  }
-
-  .categories {
-    gap: 10px;
-    padding: 0 10px;
-  }
-
-  .categories button {
-    max-width: 100%;
-    height: 45px;
-  }
-
-  .produtos .containershop {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .produtos .card {
-    width: 90%;
-    max-width: 320px;
-    min-width: 250px;
-  }
-
-  .produtos .card img {
-    width: 80%;
-    max-width: 180px;
-  }
-
-  .botaocomprar {
-    width: 90%;
-  }
+.botaocarrinho:hover {
+  background: #ff6a1f;
 }
