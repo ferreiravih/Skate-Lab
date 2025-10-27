@@ -10,8 +10,8 @@ body {
 /* BANNER PRINCIPAL */
 .imgebarra {
   position: relative;
-  width: 90%;           /* espaço lateral */
-  max-width: 1920px;    /* limita em telas grandes */
+  width: 90%;
+  max-width: 1920px;
   height: 250px;
   background: url("../img/imgs-skateshop/banner.jpg") center/cover no-repeat;
   border-radius: 15px;
@@ -27,11 +27,10 @@ body {
   max-width: 400px;
   color: #ff6a1f;
   position: absolute;
-  right: 20px; /* distancia da borda direita */
-  top: 50%;    /* centraliza verticalmente */
-  transform: translateY(-50%); /* ajuste fino do centramento vertical */
-  text-align: right; /* alinha o texto à direita */
-
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: right;
 }
 
 .texto h1 {
@@ -110,22 +109,23 @@ body {
 
 .produtos .containershop {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* agora os cards quebram de forma responsiva */
   justify-content: center;
   gap: 17px;
 }
 
+/* Cards responsivos fluidos */
 .produtos .card {
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.205);
   overflow: hidden;
   position: relative;
-  width: 320px;        /* largura padrão */
-  max-width: 350px;    /* não estoura */
-  min-width: 280px;    /* evita ficar muito estreito */
+  flex: 1 1 250px; /* flex-grow, flex-shrink, flex-basis */
+  max-width: 320px; /* limite máximo */
+  min-width: 220px; /* limite mínimo */
   height: auto;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, width 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -137,7 +137,7 @@ body {
 
 .produtos .card img {
   width: 70%;
-  max-width: 220px; /* não deixa gigante */
+  max-width: 220px;
   height: auto;
   object-fit: contain;
   margin-top: 15px;
@@ -218,7 +218,7 @@ body {
 }
 
 .botaocomprar {
-  width: 200px;   /* largura fixa confortável */
+  width: 200px;
 }
 
 .botaocarrinho {
@@ -228,6 +228,12 @@ body {
 .botaocomprar:hover,
 .botaocarrinho:hover {
   background: #ff6a1f;
+}
+
+.card-link {
+  display: block;  /* faz o <a> se comportar como div */
+  text-decoration: none;
+  color: inherit;  /* mantém cores do card */
 }
 
 /* ========================== */
@@ -243,6 +249,7 @@ body {
   }
 
   .produtos .card {
+    flex: 1 1 220px; /* cards menores em telas médias */
     max-width: 280px;
   }
 }
@@ -277,15 +284,9 @@ body {
     height: 45px;
   }
 
-  .produtos .containershop {
-    flex-direction: column;
-    align-items: center;
-  }
-
   .produtos .card {
-    width: 90%;
-    max-width: 320px;
-    min-width: 250px;
+    flex: 1 1 200px; /* cards ainda menores em telas pequenas */
+    max-width: 250px;
   }
 
   .produtos .card img {
