@@ -1,0 +1,228 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #ffffff;
+  color: #222;
+  font-family: 'Poppins', sans-serif;
+}
+
+.container {
+  padding: 30px 50px;
+}
+
+.page-header {
+  margin-bottom: 24px;
+}
+.page-header h1 {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.page-header p {
+  color: #6b7280;
+  font-size: 18px;
+}
+
+
+.form-container {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+  padding: 24px;
+}
+
+/* GRID PRINCIPAL */
+.form-produto {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+/* PAINEL DIREITO */
+.painel-direito {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  align-self: start;
+}
+
+/* CARD DE CATEGORIA */
+.categoria-status {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px 8px 8px 8px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.categoria-status h2 {
+  margin-bottom: 16px;
+  color: #111;
+}
+
+/* STATUS */
+.status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+/* BOTÕES COLADOS ABAIXO */
+.botoes-form {
+  background: #fff;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  padding: 20px;
+}
+
+.btn-criar,
+.btn-cancelar {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.btn-criar {
+  background: #f08644;
+  color: #fff;
+}
+
+.btn-criar:hover {
+  background: #e25500;
+}
+
+.btn-cancelar {
+  background: #f9f9f9;
+  color: #333;
+}
+
+.btn-cancelar:hover {
+  background: #e0e0e0;
+}
+
+/* CAMPOS GERAIS */
+label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  transition: all 0.3s ease;
+}
+input:hover, select:hover, textarea:hover {
+  transition: all 0.3s ease;
+  box-shadow: 0 0 6px 2px rgba(0, 0, 5, 0.10);
+}
+input[type="number"] {
+  width: 176%;
+}
+.linha {
+  display: flex;
+  gap: 180px;  
+}
+
+
+/* SWITCH */
+
+ .status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: #ccc;
+  border-radius: 24px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: 0.3s;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+input:checked + .slider {
+  background-color: #5a2472;
+}
+
+input:checked + .slider::before {
+  transform: translateX(22px);
+}
+
+/* Estilo do popup */
+/* Estilo do popup */
+#popup-sucesso {
+  position: fixed;
+  bottom: 20px;      /* distância da parte inferior */
+  right: 20px;       /* distância da lateral direita */
+  background-color: #ffffff;
+  color: #5a2472;
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+  font-weight: 800;
+  font-size: 20px;
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s, transform 0.4s;
+  min-width: 350px;
+  max-width: 450px;
+  text-align: center;
+}
+
+/* Quando visível */
+#popup-sucesso.show {
+  opacity: 1;
+  transform: translateY(0);
+}

@@ -18,11 +18,11 @@
 <body>
     <header class="hea">
         <div class="logo">
-            <h1>SKATELAB</h1>
+            <h1><a href="../dashboard.php">SKATELAB</a></h1>
         </div>
         <nav class="vika">
             <a href="../../../Skate-Lab/admin/produtos/produtos.php"><i class="ri-box-3-line"></i>Produtos</a>
-            <a href="#"><i class="ri-folder-line"></i>Categorias</a>
+            <a href="../../../Skate-Lab/admin/categorias/categoria.php"><i class="ri-folder-line"></i>Categorias</a>
             <a href="#"><i class="ri-shopping-cart-2-line"></i>Pedidos</a>
         </nav>
     <div class="user"><a href="#"><i class="ri-user-line"></i></a> </div>
