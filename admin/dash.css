@@ -1,4 +1,7 @@
-/*  RESET E BASE  */
+
+html {
+  overflow-y: scroll;  
+}
 
 body {
   font-family: 'poppins', sans-serif;
@@ -7,21 +10,22 @@ body {
 }
 
 main.dashboard-container {
-  max-width: 90vw;
-  margin: 0 auto;
-  padding: 1rem 1.5rem;
+  padding: 30px 50px;
 }
-
-
 
 .subtitle {
   color: #6b7280;
   margin-bottom: 2rem;
-  font-size: 1rem;
+  font-size: 18px;
+}
+
+.title {
+ font-size: 28px;
+  font-weight: 600;
+  color: #222;
 }
 
 /*  Cards de cima  */
-
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -34,7 +38,7 @@ main.dashboard-container {
   background: #fff;
   border-radius: 14px;
   padding: 22px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.10);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   position: relative;
   display: flex;
@@ -139,7 +143,7 @@ main.dashboard-container {
   border: 1px solid #e5e7eb;
   border-radius: 14px;
   padding: 22px;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.10);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   position: relative;
   gap: 10px;

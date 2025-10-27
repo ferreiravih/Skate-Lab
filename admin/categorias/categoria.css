@@ -1,0 +1,142 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #ffffff;
+  color: #333;
+}
+
+.conteudo {
+  padding: 30px 50px;
+}
+
+.topo-pagina {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.topo-pagina h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #222;
+}
+
+.topo-pagina p {
+  color: #6b7280;
+  font-size: 18px;
+}
+
+.btn-nova-categoria {
+  background-color: #7b3fe4;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.btn-nova-categoria:hover {
+  background-color: #692ccf;
+}
+
+.area-categorias {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.15);
+}
+
+.campo-busca {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 20px;
+}
+
+.campo-busca i {
+  color: #999;
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.input-busca {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+}
+
+.tabela-categorias {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabela-categorias th {
+  text-align: left;
+  color: #666;
+  font-size: 14px;
+  padding: 10px 5px;
+  border-bottom: 2px solid #f3f3f3;
+}
+
+.tabela-categorias td {
+  padding: 12px 5px;
+  border-bottom: 1px solid #f3f3f3;
+  font-size: 14px;
+}
+
+.qtd-itens {
+  background: #f6f6f6;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 13px;
+}
+
+.status {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  color: #fff;
+  font-weight: 500;
+}
+
+.status.ativo {
+  background-color: #d1fae5;
+  color: #10b981;
+}
+.status.inativo {
+    background-color: #f3f4f6;
+    color: #6b7280;
+}
+
+.coluna-acoes {
+  display: flex;
+  gap: 8px;
+}
+
+.botao-acao {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.botao-acao:hover {
+  background: #e7e7e7;
+}
+
+.botao-acao i {
+  font-size: 18px;
+  color: #555;
+}

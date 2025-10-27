@@ -13,38 +13,8 @@
   <?php include '../admin/partials/headeradmin.php'; ?>
   <main class="dashboard-container">
 
-    <h1>Dashboard</h1>
+    <h1 class="title">Dashboard</h1>
     <p class="subtitle">Visão geral do seu e-commerce de skate</p>
-
-    <!-- <section class="cards">
-    <div class="card">
-      <div class="icon" style="background:#F39C12;">📦</div>
-      <h3>Produtos</h3>
-      <p class="value">21</p>
-      <span>Total cadastrados</span>
-    </div>
-
-    <div class="card">
-      <div class="icon" style="background:#2ECC71;">✅</div>
-      <h3>Ativos</h3>
-      <p class="value">17</p>
-      <span>Produtos visíveis na loja</span>
-    </div>
-
-    <div class="card">
-      <div class="icon" style="background:#E74C3C;">📉</div>
-      <h3>Estoque baixo</h3>
-      <p class="value">5</p>
-      <span>Itens com 5 ou menos</span>
-    </div>
-
-    <div class="card">
-      <div class="icon" style="background:#9B59B6;">🗂️</div>
-      <h3>Categorias</h3>
-      <p class="value">5</p>
-      <span>Tipos de produto</span>
-    </div>
-  </section> -->
 
     <section class="cards">
       <div class="card">
