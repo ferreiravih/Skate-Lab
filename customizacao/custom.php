@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>PP</title>
+  <title>customização</title>
   <link rel="stylesheet" href="custom.css">
   <link rel="stylesheet" href="nav.css">
   
@@ -51,10 +51,10 @@
         <img class="btn-imagem" src="image/killjoy.jpg" alt="killjoy"><br>
         Killjoy
     </button>
-    <button class="pena" onclick="mostrarShape('shanks')">
+    <!-- <button class="pena" onclick="mostrarShape('shanks')">
         <img class="btn-imagem" src="image/" alt="shanks"><br>
         Shanks
-      </button>
+      </button> -->
       <button class="pena" id="btnYoru" onclick="mostrarShape('yoru')">
         <img class="btn-imagem" src="image/yoru.jpg" alt="Yoru"><br>
         Yoru
@@ -106,17 +106,9 @@
       <img class="btn-imagem" src="image/miranhat.jpg" alt="miranha"><br>
       spider
       </button>
-      <button class="pena" onclick="selecionarTrucks('brasil')">
-      <img class="btn-imagem" src="image/brasilt.jpg" alt="brasil"><br>
-      brasil
-      </button>
       <button class="pena" onclick="selecionarTrucks('hq')">
       <img class="btn-imagem" src="image/hqt.jpg" alt="hq"><br>
       HQ
-      </button>
-      <button class="pena" onclick="selecionarTrucks('fire')">
-      <img class="btn-imagem" src="image/firet.jpg" alt="fire"><br>
-      fire
       </button>
       <button class="pena" onclick="selecionarTrucks('lisa')">
       <img class="btn-imagem" src="image/lisat.jpg" alt="lisa"><br>
@@ -163,11 +155,6 @@
         <img class="btn-imagem" src="image/kuromi.jpg" alt="shanks"><br>
         kuro
       </button>
-      <button class="pena" onclick="mostrarRodinhas('dragon')">
-        <img class="btn-imagem" src="image/dragon.jpg" alt="shanks"><br>
-        dragon
-      </button>
-  
   </div>
 
    
@@ -345,7 +332,6 @@ mostrarRodinhas = function(tipo) {
     white: ['Object_15004', 'Object_15005', 'Object_16002'],
     luffy: ['Object_15037', 'Object_15038', 'Object_16020'],
     killjoy: ['Object_15021', 'Object_15022', 'Object_16019'],
-    shanks: ['Object_15045', 'Object_15046', 'Object_16023'],
     yoru: ['Object_15013', 'Object_15040', 'Object_16011'],
     witcher: ['Object_150139', 'Object_150149', 'Object_160079'],
     viper: ['Object_15333', 'Object_16333', 'Object_15332'],
@@ -356,7 +342,6 @@ mostrarRodinhas = function(tipo) {
     whiteBase: ['Object_15004'],
     luffyBase: ['Object_15037'],
     killjoyBase: ['Object_15021'],
-    shanksBase: ['Object_15045'],
     yoruBase: ['Object_15013'],
     witcherBase: ['Object_150139'],
     viperBase: ['Object_15333'],
@@ -415,12 +400,6 @@ mostrarRodinhas = function(tipo) {
       'Cylinder044','Cylinder044_1','Cylinder044_2','Cylinder044_3','Cylinder044_4',
       'Cylinder045','Cylinder045_1','Cylinder045_2','Cylinder045_3','Cylinder045_4'
     ],
-    dragon: [
-      'Cylinder046','Cylinder046_1','Cylinder046_2','Cylinder046_3','Cylinder046_4',
-      'Cylinder047','Cylinder047_1','Cylinder047_2','Cylinder047_3','Cylinder047_4',
-      'Cylinder048','Cylinder048_1','Cylinder048_2','Cylinder048_3','Cylinder048_4',
-      'Cylinder049','Cylinder049_1','Cylinder049_2','Cylinder049_3','Cylinder049_4'
-    ],
     lisa: []
   };
 
@@ -446,17 +425,9 @@ mostrarRodinhas = function(tipo) {
     'Circle005','Circle005_1','Circle005_2','Circle005_3','Circle005_4',
     'Circle015','Circle015_1','Circle015_2','Circle015_3','Circle015_4'
   ];
-  const trucks_brasil = [
-    'Circle007','Circle007_1','Circle007_2','Circle007_3','Circle007_4',
-    'Circle013','Circle013_1','Circle013_2','Circle013_3','Circle013_4'
-  ];
   const trucks_hq = [
     'Circle012','Circle012_1','Circle012_2','Circle012_3','Circle012_4',
     'Circle014','Circle014_1','Circle014_2','Circle014_3','Circle014_4'
-  ];
-  const trucks_fire = [
-    'Circle019','Circle019_1','Circle019_2','Circle019_3','Circle019_4',
-    'Circle020','Circle020_1','Circle020_2','Circle020_3','Circle020_4'
   ];
   const trucks_lisa = [
     'Circle024','Circle024_1','Circle024_2','Circle024_3','Circle024_4',
@@ -470,9 +441,7 @@ mostrarRodinhas = function(tipo) {
     black:  trucks_black,
     hello:  trucks_hello,
     miranha: trucks_miranha,
-    brasil: trucks_brasil,
     hq:     trucks_hq,
-    fire:   trucks_fire,
     lisa:   trucks_lisa
   };
   let trucks = trucksModelos.padrao; // conjunto ativo de trucks

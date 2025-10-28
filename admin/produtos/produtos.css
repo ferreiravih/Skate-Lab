@@ -18,21 +18,20 @@ body {
 .topo h1 {
     font-size: 28px;
     font-weight: 600;
-  color: #222;
-    
+    color: #222;
 }
 
 .topo p {
     color: #6b7280;
     font-size: 18px;
 }
-.area-produtos {
-  background: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 6px 24px rgba(0,0,0,0.15);
-}
 
+.area-produtos {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.15);
+}
 
 .barra-pesquisa {
     display: flex;
@@ -40,7 +39,6 @@ body {
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 8px 12px;
-   
 }
 
 .barra-pesquisa i {
@@ -54,7 +52,6 @@ body {
     outline: none;
     flex: 1;
     font-size: 14px;
-   
 }
 
 .barra-pesquisa input::placeholder {
@@ -62,7 +59,7 @@ body {
 }
 
 .btn-novo {
-    background-color: #7b2cbf;
+    background-color: #5a2472;
     color: #fff;
     border: none;
     padding: 10px 18px;
@@ -73,17 +70,20 @@ body {
 }
 
 .btn-novo:hover {
-    background-color: #5a189a;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 26px 8px rgba(59, 5, 85, 0.2);
+    transform: translateY(-3px);
 }
+
 .tabela-container {
     margin-top: 30px;
     overflow-x: auto;
 }
+
 .tabela {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
-
 }
 
 .tabela thead {
@@ -100,16 +100,16 @@ body {
     color: #666;
     border-bottom: 2px solid #f3f3f3;
 }
+
 .tabela td { 
     padding: 12px 16px;
     font-size: 14px;
-    vertical-align: middle !important; 
+    vertical-align: top; /* força o conteúdo a começar no topo */
 }
 
 .tabela tbody tr {
     border-bottom: 1px solid #eee;
     transition: background 0.2s;
-    
 }
 
 .tabela tbody tr:hover {
@@ -118,10 +118,10 @@ body {
 
 td:last-child,
 th:last-child {
- 
-  text-align: left;
+    text-align: center;
 }
 
+/* imagens da tabela */
 .tabela img {
     width: 70px;
     height: 70px;
@@ -148,13 +148,15 @@ th:last-child {
     color: #6b7280;
 }
 
+/* ======== BOTÕES DE AÇÕES (lado a lado e alinhados ao topo) ======== */
 .acoes {
     display: flex;
+    flex-direction: row; /* lado a lado */
     gap: 8px;
-    justify-content: center;
-    align-items: center;
-    padding: 8px;
-            
+    justify-content: center; /* centraliza horizontalmente */
+    align-items: flex-start; /* alinha ao topo */
+    padding-top: 6px;
+    height: 100%;
 }
 
 .btn-acao {
@@ -177,4 +179,11 @@ th:last-child {
 .btn-acao i {
     font-size: 18px;
     color: #000000;
+}
+
+/* garante alinhamento correto da coluna de ações */
+.tabela td:last-child {
+    vertical-align: top;
+    text-align: center;
+    width: 120px;
 }

@@ -7,7 +7,7 @@ if (formProduto) {
   popup.textContent = 'Produto cadastrado com sucesso!';
   document.body.appendChild(popup);
 
-  formProduto.addEventListener('submit', function(e) {
+  formProduto.addEventListener('submit', function (e) {
     e.preventDefault();
 
     // Só dispara para o botão "Criar Produto"
@@ -31,4 +31,14 @@ if (formProduto) {
       }, 5000);
     }
   });
+}
+
+// --- Alternar texto do switch ---
+const switchAtivo = document.getElementById('switchAtivo');
+const statusTexto = document.getElementById('statusTexto');
+
+if (switchAtivo && statusTexto) {
+switchAtivo.addEventListener('change', () => {
+  statusTexto.textContent = switchAtivo.checked ? 'Produto Ativo' : 'Produto Inativo';
+});
 }

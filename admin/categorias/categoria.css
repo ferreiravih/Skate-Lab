@@ -27,18 +27,21 @@ body {
 }
 
 .btn-nova-categoria {
-  background-color: #7b3fe4;
+  background-color: #5a2472;
   color: #fff;
   border: none;
   padding: 10px 18px;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 500;
-  transition: 0.3s;
+  transition: all 0.3s ease;
 }
 
 .btn-nova-categoria:hover {
-  background-color: #692ccf;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 26px 8px rgba(59, 5, 85, 0.2);
+  transform: translateY(-3px);
+  
 }
 
 .area-categorias {
@@ -140,3 +143,120 @@ body {
   font-size: 18px;
   color: #555;
 }
+/* ---------- Modal Nova Categoria ---------- */
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-categoria {
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  width: 400px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+  animation: aparecer 0.25s ease;
+}
+
+@keyframes aparecer {
+  from {opacity: 0; transform: translateY(-10px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-categoria h2 {
+  margin-top: 0;
+  color: #2e1065;
+}
+
+.modal-categoria label {
+  display: block;
+  font-weight: 500;
+  margin-top: 15px;
+  color: #333;
+}
+
+.modal-categoria input,
+.modal-categoria textarea {
+  width: 95%;
+  padding: 8px;
+  margin-top: 6px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.modal-categoria input:focus,
+.modal-categoria textarea:focus {
+  border-color: #5a2472;
+  outline: none;
+}
+
+.botoes-modal {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-cancelar,
+.btn-salvar {
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-cancelar {
+  background: #e5e5e5;
+  color: #333;
+}
+
+.btn-salvar {
+  background: #f97316;
+  color: #fff;
+}
+
+.btn-salvar:hover {
+  background: #ea580c;
+}
+
+.btn-cancelar:hover {
+  background: #d4d4d4;
+}
+
+/* ---------- Popup de Sucesso ---------- */
+.popup-sucesso {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #ffffff; /* verde */
+  color: #5a2472;
+  padding: 12px 18px;
+  border-radius: 8px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s, transform 0.4s;
+  z-index: 9999;
+  display: none;
+}
+
+.popup-sucesso.mostrar {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+

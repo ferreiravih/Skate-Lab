@@ -62,7 +62,7 @@
                 <div class="texto">
                     <h2>CUSTOMIZAÇÃO EM TEMPO REAL</h2>
                     <p>VISUALIZE SEU SKATE ENQUANTO ESCOLHE<br>AS MELHORES PEÇAS EM 3 PASSOS SIMPLES</p>
-                    <a href="#" class="btn-customizacao">TESTAR CUSTOMIZAÇÃO</a>
+                    <a href="../select/select.php" class="btn-customizacao">TESTAR CUSTOMIZAÇÃO</a>
                 </div>
 
                 <div class="img-skate">
