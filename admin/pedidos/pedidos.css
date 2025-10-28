@@ -1,0 +1,353 @@
+body {
+  background: #ffffff;
+  color: #1f2937;
+  font-family: "Poppins", sans-serif;
+}
+
+.pedidos-page {
+  padding: 30px 50px;
+  padding-bottom: 0;
+}
+
+.pedidos-header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #222
+}
+
+.pedidos-header p {
+  color: #6b7280;
+  margin-bottom: 18px;
+}
+
+.pedidos-filtros {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  margin-bottom: 1.5rem;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+
+.filtro-busca {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  
+}
+
+.filtro-busca input {
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  font-size: 0.95rem;
+}
+
+.filtro-status, .filtro-periodo {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  background: #fff;
+  cursor: pointer;
+}
+
+.tabela-pedidos {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.15);
+}
+
+
+.tabela-pedidos th, .tabela-pedidos td {
+  text-align: left;
+  padding: 1rem 1.2rem;
+}
+
+.tabela-pedidos thead {
+  background: #ffffff;
+  font-size: 14px;
+  color: #666;
+  border-bottom: 2px solid #f3f3f3;
+}
+
+.tabela-pedidos tbody tr {
+  border-top: 1px solid #f3f4f6;
+}
+
+.tabela-pedidos tbody tr:hover {
+  background: #f9fafb;
+}
+
+.status {
+  display: inline-block;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #fff;
+  cursor: pointer;
+}
+
+.status.pendente { background: #9ca3af; }
+.status.empreparo { background: #753d8d; }
+.status.enviado { background: #f97316; }
+.status.entregue { background:#10b981 ; }
+.status.cancelado { background: #ef4444; }
+
+.status.entregue:focus,
+.status.enviado:focus,
+.status.pendente:focus,
+.status.cancelado:focus,
+.status.empreparo:focus {
+  outline: none; /* remove a borda azul */
+  box-shadow: none;
+}
+.status:focus,
+.status:active {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+
+.acoes i:hover {
+  color: #111827;
+}
+.acoes {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-acao {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-acao:hover {
+  background: #e7e7e7;
+}
+
+.btn-acao i {
+  font-size: 18px;
+  color: #555;
+}
+
+/* Dropdown de status */
+.status-menu {
+  position: absolute;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 0.5rem 0;
+  z-index: 10;
+}
+
+.status-menu span {
+  display: block;
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.status-menu span:hover {
+  background: #f3f4f6;
+}
+
+/* ===== MODAL BASE ===== */
+.modal-pedido {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  font-family: "Poppins", sans-serif;
+}
+
+.modal-conteudo {
+  background: #fff;
+  border-radius: 16px;
+  width: 550px;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 30px 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  position: relative;
+  animation: aparecer 0.3s ease;
+}
+
+@keyframes aparecer {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* ===== CABEÇALHO DO MODAL ===== */
+.modal-conteudo h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.modal-conteudo::-webkit-scrollbar {
+  width: 8px;
+}
+.modal-conteudo::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 10px;
+}
+
+.modal-header-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.modal-header-info p {
+  font-size: 1rem;
+  color: #333;
+  margin: 0;
+}
+
+.modal-data {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* ===== STATUS ===== */
+.status {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: capitalize;
+}
+
+.status.enviado { background: #fff2e5; color: #f97316; }
+.status.empreparo { background: #fff2cc; color: #c59a00; }
+.status.entregue { background: #e5ffea; color: #2d8a4e; }
+.status.cancelado { background: #ef4444; }
+
+/* ===== SEÇÕES ===== */
+.modal-secao {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #ddd;
+}
+
+.modal-secao h3 {
+  font-size: 1.1rem;
+  color: #6a1b9a;
+  margin-bottom: 6px;
+}
+
+.modal-secao p {
+  font-size: 1rem;
+  color: #444;
+}
+
+/* ===== PRODUTOS ===== */
+.produto-item {
+  background: #f7f7f7;
+  padding: 10px 14px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+}
+
+/* ===== TOTAL ===== */
+.modal-total {
+  border-top: 1px solid #ddd;
+  margin-top: 20px;
+  padding-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-total h3 {
+  color: #6a1b9a;
+  font-size: 1.2rem;
+}
+
+.modal-total p {
+  color: #6a1b9a;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* ===== BOTÕES ===== */
+.modal-botoes {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+
+.btn-preparo, .btn-finalizar {
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-preparo {
+  background-color: #ff7b00;
+  color: white;
+}
+
+.btn-preparo:hover { background-color: #e56e00; }
+
+.btn-finalizar {
+  background-color: #6a1b9a;
+  color: white;
+}
+
+.btn-finalizar:hover { background-color: #53157a; }
+
+/* ===== FECHAR MODAL ===== */
+.fechar-modal {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: #555;
+  cursor: pointer;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+
+.fechar-modal:hover {
+  color: #000;
+}

@@ -29,7 +29,9 @@ body {
 .area-produtos {
     background: #fff;
     border-radius: 10px;
-    padding: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 0.03px;
     box-shadow: 0 6px 24px rgba(0,0,0,0.15);
 }
 
@@ -104,7 +106,7 @@ body {
 .tabela td { 
     padding: 12px 16px;
     font-size: 14px;
-    vertical-align: top; /* força o conteúdo a começar no topo */
+    vertical-align: top; 
 }
 
 .tabela tbody tr {
@@ -148,13 +150,12 @@ th:last-child {
     color: #6b7280;
 }
 
-/* ======== BOTÕES DE AÇÕES (lado a lado e alinhados ao topo) ======== */
 .acoes {
     display: flex;
-    flex-direction: row; /* lado a lado */
+    flex-direction: row; 
     gap: 8px;
-    justify-content: center; /* centraliza horizontalmente */
-    align-items: flex-start; /* alinha ao topo */
+    justify-content: center; 
+    align-items: flex-start; 
     padding-top: 6px;
     height: 100%;
 }
@@ -181,7 +182,6 @@ th:last-child {
     color: #000000;
 }
 
-/* garante alinhamento correto da coluna de ações */
 .tabela td:last-child {
     vertical-align: top;
     text-align: center;
