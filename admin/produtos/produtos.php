@@ -19,7 +19,7 @@
                 <h1>Produtos</h1>
                 <p>Gerencie os produtos do seu e-commerce</p>
             </div>
-            <button class="btn-novo"><i class="ri-add-line"></i> Novo Produto</button>
+            <a href="../add_produto/add_prod.php"><button class="btn-novo"><i class="ri-add-line"></i> Novo Produto</button></a>
         </div>
 
 
@@ -51,9 +51,9 @@
                             <td><span class="ativo">Ativo</span></td>
                             <td>
                                 <div class="acoes">
-                                    <button class="btn-acao"><i class="ri-eye-line"></i></button>
-                                    <button class="btn-acao"><i class="ri-pencil-line"></i></button>
-                                    <button class="btn-acao"><i class="ri-delete-bin-6-line"></i></button>
+                                    <button type="button" class="btn-acao"><i class="ri-eye-line"></i></button>
+                                    <button type="button" class="btn-acao"><i class="ri-pencil-line"></i></button>
+                                    <button type="button" class="btn-acao"><i class="ri-delete-bin-6-line"></i></button>
                                 </div>
                             </td>
                         </tr>
@@ -66,9 +66,9 @@
                             <td><span class="ativo">Ativo</span></td>
                             <td>
                                 <div class="acoes">
-                                    <button class="btn-acao"><i class="ri-eye-line"></i></button>
-                                    <button class="btn-acao"><i class="ri-pencil-line"></i></button>
-                                    <button class="btn-acao"><i class="ri-delete-bin-6-line"></i></button>
+                                    <button type="button" class="btn-acao"><i class="ri-eye-line"></i></button>
+                                    <button type="button" class="btn-acao"><i class="ri-pencil-line"></i></button>
+                                    <button type="button" class="btn-acao"><i class="ri-delete-bin-6-line"></i></button>
                                 </div>
                             </td>
                         </tr>
@@ -81,9 +81,9 @@
                             <td><span class="ativo">Ativo</span></td>
                             <td>
                                 <div class="acoes">
-                                    <button class="btn-acao"><i class="ri-eye-line"></i></button>
-                                    <button class="btn-acao"><i class="ri-pencil-line"></i></button>
-                                    <button class="btn-acao"><i class="ri-delete-bin-6-line"></i></button>
+                                    <button type="button" class="btn-acao"><i class="ri-eye-line"></i></button>
+                                    <button type="button" class="btn-acao"><i class="ri-pencil-line"></i></button>
+                                    <button type="button" class="btn-acao"><i class="ri-delete-bin-6-line"></i></button>
                                 </div>
                             </td>
                         </tr>
@@ -96,9 +96,9 @@
                             <td><span class="inativo">Inativo</span></td>
                             <td>
                                 <div class="acoes">
-                                    <button class="btn-acao"><i class="ri-eye-line"></i></button>
-                                    <button class="btn-acao"><i class="ri-pencil-line"></i></button>
-                                    <button class="btn-acao"><i class="ri-delete-bin-6-line"></i></button>
+                                    <button type="button" class="btn-acao"><i class="ri-eye-line"></i></button>
+                                    <button type="button" class="btn-acao"><i class="ri-pencil-line"></i></button>
+                                    <button type="button" class="btn-acao"><i class="ri-delete-bin-6-line"></i></button>
                                 </div>
                             </td>
                         </tr>
@@ -107,6 +107,7 @@
             </div>
         </section>
     </div>
+    <script src="../produtos/produtos.js"></script>
 </body>
 
 </html>

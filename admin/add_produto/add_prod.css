@@ -137,28 +137,20 @@ input:hover, select:hover, textarea:hover {
   box-shadow: 0 0 6px 2px rgba(0, 0, 5, 0.10);
 }
 input[type="number"] {
-  width: 176%;
+  width: 180%;
 }
 .linha {
   display: flex;
-  gap: 180px;  
+  gap: 214px;  
 }
 
 
 /* SWITCH */
-
- .status {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 20px 0;
-}
-
 .switch {
   position: relative;
   display: inline-block;
   width: 46px;
-  height: 24px;
+  height: 26px;
 }
 
 .switch input {
@@ -170,27 +162,45 @@ input[type="number"] {
 .slider {
   position: absolute;
   cursor: pointer;
-  background-color: #ccc;
-  border-radius: 24px;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  transition: 0.3s;
+  background-color: #555;
+  border-radius: 24px;
+  transition: background-color 0.4s ease;
 }
 
+/* bolinha */
 .slider::before {
-  content: "";
+  content:"✖";
   position: absolute;
-  height: 18px;
-  width: 18px;
-  left: 3px;
-  bottom: 3px;
-  background-color: white;
+  height: 22px;
+  width: 22px;
+  left: 2px;
+  bottom: 2px;
+  background-color: #fff;
+  color: #555;
+  font-size: 14px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
-  transition: 0.3s;
+  transition: transform 0.4s ease, background-color 0.4s ease, color 0.4s ease;
 }
 
+/* quando marcado */
+input:checked + .slider {
+  background-color: #5a189a;
+}
+
+/* bolinha com ícone animado */
+input:checked + .slider::before {
+  transform: translateX(20px);
+  content: "✔";
+  color: #5a189a;
+}
 input:checked + .slider {
   background-color: #5a2472;
 }
