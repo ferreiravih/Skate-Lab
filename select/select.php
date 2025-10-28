@@ -35,7 +35,7 @@
             </button>
 
             <!-- STREET -->
-            <button class="card" onclick="irPara('street.php')">
+            <button class="card" onclick="irPara('../customizacao/custom.php')">
                 <div class="imagem">
                     <img src="../img/imgs-select/street.png" alt="Street">
                 </div>
@@ -60,3 +60,5 @@
         <?php include '../componentes/footer.php'; ?>
     </footer>
 </body>
+
+</html>

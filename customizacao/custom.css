@@ -1,0 +1,166 @@
+ /* Container 3D no fundo */
+  #container {
+    position: relative;
+    inset: 0;
+    z-index: 0;
+  }
+  #container canvas {
+    position: relative;
+    inset: 0;
+    z-index: 0;
+  }
+
+  /* Painéis de interface acima do canvas */
+  #ui,
+  .vista-previa {
+    position: fixed;
+    z-index: 9999;
+    pointer-events: auto;
+  }
+
+  .vista-previa {
+    top: 150px;
+    right: 20px;
+    width: 300px;
+    background: rgba(250, 156, 33, 0.5);
+    border: 2px solid rgb(215, 142, 248);
+    border-radius: 10px;
+    padding: 15px;
+  }
+
+  #ui {
+    top: 90px;
+    left: 20px;
+    width: 420px;
+    max-height: 75vh;
+    overflow: auto;
+    background: silver;
+    border: 2px solid #000000;
+    border-radius: 10px;
+    padding: 20px;
+  }
+
+  /* ===== BOTÕES ===== */
+  #ui .grupo-botoes > button,
+  .vista-previa > button {  
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #9c6bff;
+    color: #fff;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08) inset,
+      0 8px 20px rgba(0, 0, 0, 0.25);
+  }
+
+
+  #ui .grupo-botoes > button:hover,
+  .vista-previa .mini-botoes > button:hover {
+    background: #7c52d9;
+    transform: translateY(-2px);
+  }
+
+  #ui .grupo-botoes > button.ativo {
+    background: #68376dee;
+    color: #e05403;
+    box-shadow: 0 0 15px rgb(0, 0, 0);
+  }
+
+  /* Mini-botões */
+  .vista-previa .mini-botoes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .vista-previa .mini-botoes > button {
+    font-size: 12px;
+    padding: 8px 10px;
+    justify-content: center;
+  }
+
+  /* Caixas “status” e grupos */
+  .grupo-botoes {
+    margin-bottom: 25px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 8px;
+  }
+
+  /* Bolinha colorida */
+  #ui .grupo-botoes > button .btn-imagem,
+  .vista-previa .mini-botoes > button .btn-imagem {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: inline-grid;
+    place-items: center;
+    font-weight: 700;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12) inset;
+  }
+
+  html,
+  body {
+    height: 100%;
+  }
+  body {
+    overflow: hidden;
+  }
+  .btn-titulo {
+  width: 100%;
+  background: linear-gradient(135deg, #9c6bff, #7c52d9);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 8px 0;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s, transform 0.2s;
+}
+.btn-titulo:hover { background: #7c52d9; transform: scale(1.01); }
+.btn-titulo::after {
+  content: "▸";
+  transition: transform 0.2s ease;
+}
+.btn-titulo.ativo::after { transform: rotate(90deg); }
+
+.grupo-colapsado {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+}
+
+.grupo-colapsado.aberto {
+  max-height: 600px; /* ajusta se precisar */
+  opacity: 1;
+  transform: translateY(0);
+}
+.btn-imagem{
+  width: 50px;
+  right: 50px;
+}
+.pena{
+  background-color: black;
+  border-radius: 10%;
+  color: white;
+}
+.centro{
+  color: orangered;
+  justify-content: center;
+}
+
