@@ -39,7 +39,7 @@
             <a><i class="fa-regular fa-heart"></i></a>
             <div class="carrinho1">
                 <a href="../carrinho/carrinho.php"><i class="fa-solid fa-cart-shopping"></i></a>
-                <span class="itenscarrinho1">3</span>
+                <span class="itenscarrinho1"><?= isset($_SESSION['carrinho']) ? count($_SESSION['carrinho']) : 0 ?></span>
             </div>
         </div>
         
