@@ -56,9 +56,15 @@
 
     <script src="select.js"></script>
 
+<<<<<<< HEAD
     <footer>
         <?php include '../componentes/footer.php'; ?>
     </footer>
 </body>
 
 </html>
+=======
+    <?php include '../componentes/footer.php'; ?>
+</body>
+</html>
+>>>>>>> 5d0a5526f4cc28161a9b9253f8d57f9eff44f66c

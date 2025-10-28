@@ -13,9 +13,11 @@
 
 <body>
 <footer class="footer">
-  <div class="footer-container">
-    <!-- Coluna 1 -->
-    <div class="footer-column">
+  <div class="footercontainer">
+    <div class="footercoluna">
+
+
+      <!-- coluna 1 (contatos) -->
       <h3>Contato</h3>
       <ul>
         <li><a href="#"><i class="fa-solid fa-phone" style="color: #4B0082;"></i>+55 (11) 98888-8888</a></li>
@@ -23,8 +25,8 @@
       </ul>
     </div>
 
-    <!-- Coluna 2 -->
-    <div class="footer-column">
+    <!-- coluna 2 (pagamento e seguranca) -->
+    <div class="footercoluna">
       <h3>Pagamento & Segurança</h3>
       <ul>
         <li><i class="fa-solid fa-credit-card" style="color: #4B0082;"></i>Cartão de Crédito</li>
@@ -33,8 +35,8 @@
       </ul>
     </div>
 
-    <!-- Coluna 3 -->
-    <div class="footer-column">
+    <!-- coluna 3 (sobre nos) -->
+    <div class="footercoluna">
       <h3>Sobre Nós</h3>
         <ul>
             <li><a href="#">Termos e Condições</a></li>
@@ -44,9 +46,9 @@
     </div>
   </div>
 
-  <hr class="footer-divider" />
+  <hr class="footerlinha" />
 
-  <div class="footer-bottom">
+  <div class="footerlicenca">
     <p>© 2025 Skatelab. Todos os direitos reservados.</p>
   </div>
 </footer>

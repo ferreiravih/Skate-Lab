@@ -104,12 +104,13 @@ body {
 /* ========================== */
 .produtos {
   margin-top: 50px;
-  margin-bottom: 80px;
+  margin-bottom: 60px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .produtos .containershop {
   display: flex;
-  flex-wrap: wrap; /* agora os cards quebram de forma responsiva */
   justify-content: center;
   gap: 17px;
 }
@@ -251,6 +252,13 @@ body {
   .produtos .card {
     flex: 1 1 220px; /* cards menores em telas médias */
     max-width: 280px;
+    flex-wrap: wrap; /* só ativa quando a tela for pequena */
+    justify-content: center; /* opcional, pra centralizar bonitinho */
+  }
+
+  .produtos .containershop {
+    flex-wrap: wrap; /* ativa wrap no responsivo */
+    justify-content: center; /* centraliza os cards */
   }
 }
 
@@ -287,6 +295,11 @@ body {
   .produtos .card {
     flex: 1 1 200px; /* cards ainda menores em telas pequenas */
     max-width: 250px;
+  }
+
+  .produtos .containershop {
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .produtos .card img {

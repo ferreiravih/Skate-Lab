@@ -57,7 +57,7 @@
     </section>
   </main>
 
-  <!-- Descrição e avaliações -->
+  <!-- descrição e avaliações -->
   <section class="descricaogeral">
     <h2>DESCRIÇÃO GERAL</h2>
     <p>
