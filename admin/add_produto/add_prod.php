@@ -1,3 +1,18 @@
+<?php
+require_once __DIR__ . '/../admin_auth.php';
+require_once __DIR__ . '/../../config/db.php';
+
+// 3. BUSCAR AS CATEGORIAS NO BANCO (Precisa ter categorias cadastradas)
+try {
+    $stmt_cat = $pdo->query("SELECT id_cat, nome FROM categorias ORDER BY nome");
+    $categorias = $stmt_cat->fetchAll();
+} catch (PDOException $e) {
+    // Se falhar, registra o erro e continua com um array vazio
+    error_log("Erro ao buscar categorias: " . $e->getMessage());
+    $categorias = []; // Isso evita que a página quebre
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -19,15 +34,15 @@
     <div class="form-container">
       <form action="criar_produto.php" method="POST" class="form-produto">
         
-        <!-- LADO ESQUERDO -->
+      <!-- LADO ESQUERDO -->
         <div class="info-basica">
           <h2>Informações Básicas</h2>
 
           <label for="nome">Nome do Produto</label>
-          <input type="text" id="nome" name="nome" placeholder="Ex: Skate Completo Pro" required>
+          <input type="text" id="nome" name="nome" placeholder="Ex: Shape Pro Model" required>
 
           <label for="imagem">URL da Imagem</label>
-          <input type="text" id="imagem" name="imagem" placeholder="https://exemplo.com/imagem.jpg" required>
+          <input type="text" id="imagem" name="url_img" placeholder="https://exemplo.com/imagem.jpg" required>
 
           <div class="linha">
             <div>
@@ -41,10 +56,10 @@
           </div>
 
           <label for="descricao_curta">Descrição Curta</label>
-          <input type="text" id="descricao_curta" name="descricao_curta" placeholder="Descrição resumida do produto">
+          <input type="text" id="descricao_curta" name="desc_curta" placeholder="Descrição resumida do produto" required>
 
           <label for="descricao_completa">Descrição Completa</label>
-          <textarea id="descricao_completa" name="descricao_completa" placeholder="Descrição detalhada do produto..." rows="5"></textarea>
+          <textarea id="descricao_completa" name="dsc_longa" placeholder="Descrição detalhada do produto..." rows="5"></textarea>
         </div>
 
         <!-- LADO DIREITO -->
@@ -54,19 +69,21 @@
             <h2>Categoria e Status</h2>
 
             <label for="categoria">Categoria</label>
-            <select id="categoria" name="categoria" required>
+            <select id="categoria" name="id_cat" required>
               <option value="">Selecione uma categoria</option>
-              <option value="completo">Completo</option>
-              <option value="shape">Shape</option>
-              <option value="truck">Truck</option>
-              <option value="roda">Roda</option>
-              <option value="acessorios">Acessórios</option>
+              
+              <?php foreach ($categorias as $cat): ?>
+                <option value="<?= htmlspecialchars($cat['id_cat']) ?>">
+                  <?= htmlspecialchars($cat['nome']) ?>
+                </option>
+              <?php endforeach; ?>
+
             </select>
 
             <div class="status">
-              <span id="statusTexto">Produto Ativo</span>
+              <span>Produto Ativo</span>
               <label class="switch">
-                <input type="checkbox" name="ativo" id="switchAtivo" checked>
+                <input type="checkbox" name="status" value="ATIVO" checked>
                 <span class="slider"></span>
               </label>
             </div>
