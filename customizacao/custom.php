@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <title>customização</title>
   <link rel="stylesheet" href="custom.css">
-  <link rel="stylesheet" href="nav.css">
+  <link rel="stylesheet" href="../componentes/nav.css">
+
   
     
 </head>
@@ -51,10 +52,6 @@
         <img class="btn-imagem" src="image/killjoy.jpg" alt="killjoy"><br>
         Killjoy
     </button>
-    <!-- <button class="pena" onclick="mostrarShape('shanks')">
-        <img class="btn-imagem" src="image/" alt="shanks"><br>
-        Shanks
-      </button> -->
       <button class="pena" id="btnYoru" onclick="mostrarShape('yoru')">
         <img class="btn-imagem" src="image/yoru.jpg" alt="Yoru"><br>
         Yoru
@@ -730,65 +727,53 @@ const parafusosModelos = {
     carregarSkate();
     animate();
   }
+// Função que organiza todas as peças do modelo 3D
+function organizarTodasAsPecas(modelo) {
+  todasAsPecas = {}; // limpa o dicionário
+  modelo.traverse((child) => {
+    if (child.isMesh && child.name) {
+      todasAsPecas[child.name] = child;
+    }
+  });
+  console.log("Peças detectadas:", Object.keys(todasAsPecas)); // debug
+}
 
-  function carregarSkate() {
+// Função que esconde todas as peças do modelo
+function esconderTudo() {
+  if (!todasAsPecas) return;
+  Object.values(todasAsPecas).forEach(peca => {
+    if (peca.isMesh) peca.visible = false;
+  });
+}
+
+function carregarSkate() {
   const loader = new THREE.GLTFLoader();
   atualizarStatus('📦 Carregando modelo...');
+  const proxy = 'https://corsproxy.io/?';
+  const modelUrl = 'https://github.com/ferreiravih/Skate-Lab/releases/download/v1.0/montagem1.glb';
 
-  loader.load('./montagem1.glb', function (gltf) {
+  loader.load(proxy + modelUrl, (gltf) => {
     skateBase = gltf.scene;
-
     const box = new THREE.Box3().setFromObject(skateBase);
     const center = box.getCenter(new THREE.Vector3());
     skateBase.position.sub(center);
 
     scene.add(skateBase);
     organizarTodasAsPecas(skateBase);
-
-    // 🔒 começa tudo escondido
     esconderTudo();
-
-    // ❌ NÃO ligar rolamentos/parafusos aqui
-    // selecionarRolamentos('padrao');
-    // selecionarParafusos('padrao');
     removerRolamentos();
     removerParafusos();
-
-    // primeiro shape
     mostrarShape('white');
+
     document.getElementById('configAtual').textContent =
       'Shape: White | Rodinhas: — | Cor: Branco';
-  }, undefined, function (error) {
+
+    atualizarStatus('✅ Modelo carregado com sucesso!', 'sucesso');
+  }, undefined, (error) => {
     console.error('❌ Erro ao carregar modelo:', error);
     atualizarStatus('❌ Erro ao carregar modelo', 'erro');
   });
 }
-
-function organizarTodasAsPecas(modelo) {
-  todasAsPecas = {};
-  modelo.traverse((child) => {
-    if (child.isMesh && child.name) {
-      todasAsPecas[child.name] = child;
-    }
-  });
-
-  // 🔒 deixa tudo invisível ao iniciar
-  Object.values(todasAsPecas).forEach(m => m.visible = false);
-
-  console.log('📦 Total de peças carregadas:', Object.keys(todasAsPecas).length);
-}
-
-
-  function esconderTudo() {
-    Object.values(todasAsPecas).forEach(peca => { peca.visible = false; });
-  }
-
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
-
   function animate() {
     requestAnimationFrame(animate);
     controls.update();
