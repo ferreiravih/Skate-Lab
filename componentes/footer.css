@@ -1,77 +1,87 @@
-/* --- ESTILO GERAL --- */
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+
+/* --- footer config geral --- */
 .footer {
   background-color: #ffffff;
   padding: 30px 100px 30px;
   font-family: "Poppins", sans-serif;
-  border-top: 1px solid #ddd; /* Laranja do tema */
+  border-top: 1px solid #ddd; 
+  margin-top: auto;
 }
 
-/* --- CONTAINER PRINCIPAL --- */
-.footer-container {
+
+/* --- footer container --- */
+.footercontainer {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 40px;
-  align-items: flex-start; /* alterado de center para flex-start */
+  align-items: flex-start; 
 }
 
-/* --- COLUNAS --- */
-.footer-column {
+/* --- colunas --- */
+.footercoluna {
   min-width: 250px;
 }
 
-.footer-column h3 {
-  color: #ec6b2d; /* Laranja */
+.footercoluna h3 {
+  color: #ec6b2d; 
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 15px;
 }
 
-.footer-column ul {
+.footercoluna ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.footer-column ul li {
+.footercoluna ul li {
   margin-bottom: 8px;
   color: #666565;
   font-size: 14px;
 }
 
-.footer-column a {
+.footercoluna a {
   text-decoration: none;
   color: #666565;
   transition: color 0.2s;
 }
 
-.footer-column i {
+.footercoluna i {
   margin-right: 5px;
 }
 
-.footer-column a:hover {
+.footercoluna a:hover {
   color: #ec6b2d;
 }
 
-.footer-column p {
+.footercoluna p {
   font-size: 14px;
   line-height: 1.6;
   color: #666565;
 }
 
-/* --- DIVISÓRIA --- */
-.footer-divider {
+/* --- linha divisoria (hr) --- */
+.footerlinha {
   border: none;
   border-top: 1px solid rgb(207, 207, 207);
   margin: 30px 0 15px;
 }
 
-/* --- PARTE INFERIOR --- */
-.footer-bottom {
+/* --- direitos resrvados skatelab --- */
+.footerlicenca {
   text-align: center;
 }
 
-.footer-bottom p {
+.footerlicenca p {
   font-size: 13px;
   color: #666565;
   margin: 0;

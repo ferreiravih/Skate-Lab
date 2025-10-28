@@ -121,7 +121,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="botaolaranja">Pagar Agora</button>
+                        <button type="submit" class="botaolaranja">adicionar cartao</button>
                     </form>
                 </div>
 
