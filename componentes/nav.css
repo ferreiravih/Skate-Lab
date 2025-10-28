@@ -1,4 +1,3 @@
-/* ======== RESET E BASE ======== */
 * {
   margin: 0;
   padding: 0;
@@ -9,7 +8,7 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
-/* ======== HEADER ======== */
+/* container header */
 .header {
   display: flex;
   justify-content: space-between;
@@ -23,7 +22,7 @@ body {
   z-index: 9999;
 }
 
-/* ======== LOGO ======== */
+/* logo skatelab */
 .logo {
   font-weight: bold;
   font-family: "Nosifer", cursive;
@@ -32,7 +31,7 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-/* ======== MENU ======== */
+/* textos centrais */
 .menu {
   display: flex;
   gap: 20px;
@@ -49,7 +48,7 @@ body {
   color: #e96b3f;
 }
 
-/* ======== ICONES ======== */
+/* icones */
 .icones1 {
   display: flex !important;
   align-items: center;
@@ -68,7 +67,7 @@ body {
   color: #e96b3f;
 }
 
-/* Carrinho com o contador */
+/* carrinho icone com o contador */
 .carrinho1 {
   position: relative;
 }
@@ -85,66 +84,53 @@ body {
   font-weight: bold;
 }
 
-/* ======== RESPONSIVIDADE ======== */
+/* responsivo */
 
-/* Telas médias (até 1024px) */
+/* tablets */
 @media (max-width: 1024px) {
   .header {
-    padding: 5px 20px;
-  }
-
-  .menu a {
-    font-size: 0.95rem;
-  }
-
-  .icones1 {
-    gap: 18px;
-  }
-}
-
-/* Telas pequenas (até 768px) */
-@media (max-width: 768px) {
-  .header {
-    flex-wrap: wrap;
-    height: auto;
     padding: 10px 20px;
   }
 
-  .logo {
-    font-size: 1.4rem;
-    margin-bottom: 10px;
-  }
-
-  /* Transforma o menu em coluna e centraliza */
   .menu {
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 15px;
   }
 
-  .menu a {
-    font-size: 1rem;
-  }
-
-  /* Ícones centralizados abaixo */
   .icones1 {
-    justify-content: center;
-    width: 100%;
-    gap: 20px;
-    margin-top: 5px;
+    gap: 15px;
   }
 }
 
-/* Telas muito pequenas (até 480px) */
-@media (max-width: 480px) {
-  .logo {
-    font-size: 1.2rem;
+/* celulares */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    padding: 15px;
+    gap: 10px;
   }
 
+  .logo h1 {
+    font-size: 24px;
+  }
+
+  .menu {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .icones1 {
+    justify-content: center;
+  }
+}
+
+/* telas muito pequenas */
+@media (max-width: 480px) {
   .menu a {
-    font-size: 0.9rem;
+    font-size: 14px;
   }
 
   .icones1 i {
@@ -152,11 +138,20 @@ body {
   }
 
   .itenscarrinho1 {
-    top: -6px;
-    right: -8px;
     font-size: 10px;
+    padding: 2px 5px;
   }
 }
+
+
+
+
+
+
+
+
+
+
 
 /* Estilo do menu lateral */
 
