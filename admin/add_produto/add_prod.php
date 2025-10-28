@@ -64,9 +64,9 @@
             </select>
 
             <div class="status">
-              <span>Produto Ativo</span>
+              <span id="statusTexto">Produto Ativo</span>
               <label class="switch">
-                <input type="checkbox" name="ativo" checked>
+                <input type="checkbox" name="ativo" id="switchAtivo" checked>
                 <span class="slider"></span>
               </label>
             </div>
