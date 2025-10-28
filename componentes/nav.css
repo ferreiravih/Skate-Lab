@@ -4,34 +4,27 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: "Poppins", sans-serif;
-}
-
-/* container header */
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; 
   align-items: center;
   padding: 5px 30px;
   border-bottom: 1px solid #ddd;
   background-color: #fff;
+  font-family: 'poppins', sans-serif;
   height: 70px;
-  position: sticky;
-  top: 0;
-  z-index: 9999;
 }
 
-/* logo skatelab */
 .logo {
-  font-weight: bold;
-  font-family: "Nosifer", cursive;
-  background: linear-gradient(90deg, #5a2472, #f08644);
+  font-weight: bold;   
+  font-family: 'nosifer', cursive;
+  background: linear-gradient(90deg, #5a2472,  #f08644); 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* textos centrais */
+
+/* MENU */
 .menu {
   display: flex;
   gap: 20px;
@@ -48,7 +41,8 @@ body {
   color: #e96b3f;
 }
 
-/* icones */
+
+/* ICONES */
 .icones1 {
   display: flex !important;
   align-items: center;
@@ -67,7 +61,7 @@ body {
   color: #e96b3f;
 }
 
-/* carrinho icone com o contador */
+/* Carrinho com o contador */
 .carrinho1 {
   position: relative;
 }
@@ -84,78 +78,10 @@ body {
   font-weight: bold;
 }
 
-/* responsivo */
-
-/* tablets */
-@media (max-width: 1024px) {
-  .header {
-    padding: 10px 20px;
-  }
-
-  .menu {
-    gap: 15px;
-  }
-
-  .icones1 {
-    gap: 15px;
-  }
-}
-
-/* celulares */
-@media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: auto;
-    padding: 15px;
-    gap: 10px;
-  }
-
-  .logo h1 {
-    font-size: 24px;
-  }
-
-  .menu {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-  }
-
-  .icones1 {
-    justify-content: center;
-  }
-}
-
-/* telas muito pequenas */
-@media (max-width: 480px) {
-  .menu a {
-    font-size: 14px;
-  }
-
-  .icones1 i {
-    font-size: 18px;
-  }
-
-  .itenscarrinho1 {
-    font-size: 10px;
-    padding: 2px 5px;
-  }
-}
 
 
 
-
-
-
-
-
-
-
-
-/* Estilo do menu lateral */
-
-
+/* Estilo da barra lateral */
 .sidebar {
   position: fixed;
   top: 0;
@@ -187,7 +113,7 @@ body {
 
 /* Fundo da sidebar */
 .sidebar {
-  background: linear-gradient(135deg, #4b0082, #6a0dad); /* tons de roxo */
+  background: linear-gradient(135deg, white,white); /* tons de roxo */
   color: #fff;
   padding: 30px 25px;
   border-top-left-radius: 20px;
@@ -221,7 +147,7 @@ body {
   display: block;
   margin-top: 15px;
   font-weight: 500;
-  color: white; /* laranja claro */
+  color: black; /* laranja claro */
 }
 
 /* Inputs */
@@ -255,8 +181,9 @@ body {
 }
 
 /* Botões adicionais */
-#editarPerfil,
-#sair {
+#continuarcomemail,
+#abrirCadastro,
+#voltarLogin {
   width: 100%;
   padding: 12px;
   border: none;
@@ -292,3 +219,4 @@ body {
   color: #fff;
   transform: scale(1.03);
 }
+
