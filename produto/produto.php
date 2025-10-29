@@ -1,153 +1,185 @@
-<?php
-session_start();
-require_once __DIR__ . '/../config/db.php';
-
-// 1. PEGAR O ID DA URL E VALIDAR
-$id_peca = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-$produto = null;
-
-if ($id_peca > 0) {
-    // 2. BUSCAR O PRODUTO ESPECÍFICO NO BANCO
-    try {
-        $sql = "SELECT p.*, c.nome AS categoria_nome 
-                FROM pecas p
-                JOIN categorias c ON p.id_cat = c.id_cat
-                WHERE p.id_pecas = :id_peca AND p.status = 'ATIVO'";
-        
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':id_peca', $id_peca, PDO::PARAM_INT);
-        $stmt->execute();
-        $produto = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    } catch (PDOException $e) {
-        echo "Erro ao buscar produto: " . $e->getMessage();
-    }
-}
-
-// O título da página agora é dinâmico
-$titulo_pagina = $produto ? htmlspecialchars($produto['nome']) : 'Produto não encontrado';
-?>
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $titulo_pagina; ?> - Skate Lab</title>
-    <!-- Link para o SEU CSS -->
-    <link rel="stylesheet" href="produto.css"> 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>produto</title>
+  <link rel="stylesheet" href="produto.css">
+  <script src="../produto/produto.js"></script>
 </head>
-
 <body>
+
     <?php include '../componentes/navbar.php'; ?>
+  <main class="container">
+    
+    <!-- imagens -->
+    <section class="galeria">
+      <div class="miniimg">
+        <img src="../img/imgs-skateshop/image.png" alt="Skate ângulo 1" onclick="mudarImagem('img1.jpg')">
+        <img src="../img/imgs-skateshop/skt.webp" alt="Skate ângulo 2" onclick="mudarImagem('img2.jpg')">
+        <img src="../img/imgs-skateshop/image.png" alt="Skate ângulo 3" onclick="mudarImagem('img3.jpg')">
+        <img src="../img/imgs-skateshop/image.png" alt="Skate ângulo 4" onclick="mudarImagem('img4.jpg')">
+      </div>
 
-    <?php if ($produto): ?>
-        <!-- ============================================= -->
-        <!-- SE O PRODUTO FOI ENCONTRADO, MOSTRAR ISSO:    -->
-        <!-- (Agora usando as classes do SEU CSS)         -->
-        <!-- ============================================= -->
-        
-        <!-- Seu CSS usa ".container" como o main wrapper -->
-        <main class="container">
-            
-            <!-- Seu CSS usa ".galeria" e ".imgprincipal" -->
-            <section class="galeria">
-                <!-- <div class="miniimg"> ... </div> --> 
-                <!-- (Pulando as mini-imagens por enquanto, focando na principal) -->
-                <div class="imgprincipal">
-                    <img src="<?php echo htmlspecialchars($produto['url_img']); ?>" 
-                         alt="<?php echo htmlspecialchars($produto['nome']); ?>">
-                </div>
-            </section>
+      <div class="imgprincipal">
+        <img id="imagemPrincipal" src="../img/imgs-skateshop/image.png" alt="Skate completo colorido">
+      </div>
+    </section>
 
-            <!-- Seu CSS usa ".info" para os detalhes -->
-            <section class="info">
-                
-                <!-- Título -->
-                <h1><?php echo htmlspecialchars($produto['nome']); ?></h1>
-                
-                <!-- Estrelas (fixo por enquanto, pois não tem no banco) -->
-                <div class="estrelas">
-                    <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i>
-                    <i class="fa-regular fa-star"></i> <span>(Avaliações)</span>
-                </div>
+    <!-- informações do produto -->
+    <section class="info">
+      <div class="estrelas">
+        ⭐⭐⭐⭐⭐ <span>(2 avaliações)</span>
+      </div>
+      <h1>Shape Street Art Pro</h1>
+      <div class="precoproduto">
+        <h2>R$ 900,00</h2>
+        <p>ou 12x de R$ 75,00 sem juros</p>
+      </div>
 
-                <!-- Descrição Curta (do banco) -->
-                <!-- (Adicionei um estilo inline simples, já que não tinha classe pra isso) -->
-                <p style="font-size: 1.1rem; color: #555; margin-top: 15px;">
-                    <?php echo htmlspecialchars($produto['desc_curta']); ?>
-                </p>
-
-                <!-- Seu CSS usa ".precoproduto" > ".preco" > "h2" -->
-                <div class="precoproduto">
-                    <div class="preco">
-                        <h2>R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></h2>
-                    </div>
-                </div>
-                
-                <!-- Informação de Estoque (do banco) -->
-                <!-- (Adicionei estilo inline simples) -->
-                <div class="estoque-info" style="margin: 15px 0;">
-                    <?php if ($produto['estoque'] > 0): ?>
-                        <span style="color: green; font-weight: 600;">
-                            <i class="fa-solid fa-check-circle"></i> Em estoque (<?php echo $produto['estoque']; ?> unidades) <!-- <--- MUDANÇA AQUI -->
-                        </span>
-                    <?php else: ?>
-                        <span style="color: red; font-weight: 600;">
-                            <i class="fa-solid fa-times-circle"></i> Produto indisponível
-                        </span>
-                    <?php endif; ?>
-                </div>
-
-                <!-- Seu CSS usa ".quantidadecard" e ".quantidade" -->
-                <div class="quantidadecard">
-                    <span>Quantidade:</span>
-                    <div class="quantidade">
-                        <button class="qtd-btn" data-action="decrease">-</button>
-                        <span class="num">1</span>
-                        <button class="qtd-btn" data-action="increase">+</button>
-                    </div>
-                </div>
-
-                <!-- Botões (usando <a> como no seu CSS) -->
-                <a href="../pagamento/pagamento.php" class="botaocomprar1">Comprar Agora</a>
-                
-                <!-- O botão do carrinho agora tem o ID do produto -->
-                <a href="#" class="botaoadcarrinho" data-id="<?php echo $produto['id_pecas']; ?>">
-                    <i class="fa-solid fa-cart-shopping"></i> Adicionar ao Carrinho
-                </a>
-                <!-- Área para mensagem de feedback do JS -->
-                <div id="feedback-carrinho" style="margin-top: 10px; font-weight: 600;"></div>
-
-            </section>
-        </main>
-
-        <!-- Descrição Longa (do banco) -->
-        <!-- Seu CSS usa ".descricaogeral" -->
-        <?php if (!empty($produto['dsc_longa'])): ?>
-            <section class="descricaogeral">
-                <h2>Descrição do Produto</h2>
-                <p><?php echo nl2br(htmlspecialchars($produto['dsc_longa'])); ?></p>
-            </section>
-        <?php endif; ?>
-
-    <?php else: ?>
-        <!-- =================================================== -->
-        <!-- SE O PRODUTO NÃO FOI ENCONTRADO, MOSTRAR ISSO:    -->
-        <!-- =================================================== -->
-        <div class="produto-nao-encontrado" style="text-align: center; padding: 50px;">
-            <h1>Oops!</h1>
-            <p>Não conseguimos encontrar o produto (ID: <?php echo $id_peca; ?>).</p>
-            <a href="../skateshop/skateee.php" style="color: blue; font-weight: 600;">Voltar para a loja</a>
+      <div class="quantidadecard">
+        <p>Quantidade:</p>
+        <div class="quantidade">
+          <button class="botaomenos">−</button>
+          <span class="num">1</span>
+          <button class="botaomais">+</button>
         </div>
-    <?php endif; ?>
+      </div>
+      <a href="../pagamento/pagamento.php" class="botaocomprar1">comprar</a> <br>
+      <a href="pagamento.html" class="botaoadcarrinho">adicionar ao carrinho</a>
+
+      <div class="frete">
+        <p>Calcular Frete</p>
+        <input type="text" placeholder="00000-000">
+        <button class="ok">OK</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- descrição e avaliações -->
+  <section class="descricaogeral">
+    <h2>DESCRIÇÃO GERAL</h2>
+    <p>
+      O Skate Completo Street Pro é perfeito para skatistas que buscam performance e estilo nas ruas.
+      Desenvolvido com materiais de alta qualidade, oferece máxima durabilidade e controle em manobras
+      técnicas. Ideal tanto para iniciantes quanto para praticantes avançados.
+    </p>
+    <p>
+      Com design moderno e gráficos vibrantes, este skate não é apenas um equipamento esportivo,
+      mas uma verdadeira obra de arte urbana que reflete a cultura do skate contemporâneo.
+    </p>
+
+    <div class="skateespecificacoes">
+      <h3>Especificações Técnicas</h3>
+      <table>
+        <tr>
+          <td>Shape</td>
+          <td>Maple 7 Lâminas</td>
+        </tr>
+        <tr>
+          <td>Tamanho</td>
+          <td>8.0" x 31.5"</td>
+        </tr>
+        <tr>
+          <td>Trucks</td>
+          <td>Liga de Alumínio 5.25"</td>
+        </tr>
+        <tr>
+          <td>Rodas</td>
+          <td>52mm 99A Dureza</td>
+        </tr>
+        <tr>
+          <td>Rolamentos</td>
+          <td>ABEC-9 Alta Velocidade</td>
+        </tr>
+        <tr>
+          <td>Peso</td>
+          <td>2.8kg</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="avaliacoes">
+    <h2>AVALIAÇÕES</h2>
+    <div class="avaliacoescard">
+      <i class="fa-regular fa-comment"></i>
+      <p><strong>Nenhuma avaliação disponível</strong></p>
+      <span>Seja o primeiro a avaliar este produto!</span>
+    </div>
+  </section>
+
+
+
+
+  <h2 class="desta"> outros produtos em destaque </h2>
+    <section class="produtos">
+      <div class="containershop">
+        <a href="../../Skate-Lab/produto/produto.php" class="produto-card-link">  
+        <div class="card" data-categoria="completos">
+          <div class="selos">
+            <span class="novo">Novo</span>
+            <span class="oferta">Oferta</span>
+          </div>
+          <img src="../img/imgs-skateshop/image.png" alt="">
+          <div class="info">
+            <span class="categoria">SHAPES</span>
+            <h3>Shape Street Art Pro</h3>
+            <div class="rating">⭐⭐⭐⭐⭐<span>(5.0)</span></div>
+            <p class="preco">R$ 900.00 <span class="antigo">R$ 780.00</span></p>
+          </a>
+            <button class="botaocomprar" onclick="window.location.href='../pagamento/pagamento.php'"> comprar </button>
+            <button class="botaocarrinho"><i class="fa-solid fa-cart-shopping"></i></button>
+          </div>
+        </div>
+
+        <!-- Produto 2 -->
+        <div class="card" data-categoria="completos">
+          <div class="selos">
+            <span class="novo">Novo</span>
+          </div>
+          <img src="../img/imgs-skateshop/image.png" alt="Street Art Complete">
+          <div class="info">
+            <span class="categoria">COMPLETOS</span>
+            <h3>Street Art Complete</h3>
+            <div class="rating">⭐⭐⭐⭐ <span>(4.0)</span></div>
+            <p class="preco">R$ 279.90</p>
+            <button class="botaocomprar">comprar</button> <button class="botaocarrinho"><i class="fa-solid fa-cart-shopping"></i></button>
+          </div>
+        </div>
+
+        <!-- Produto 3 -->
+        <div class="card" data-categoria="shapes">
+          <img src="../img/imgs-skateshop/image.png" alt="Graffiti Deck Pro">
+          <div class="info">
+            <span class="categoria">SHAPES</span>
+            <h3>Graffiti Deck Pro</h3>
+            <div class="rating">⭐⭐⭐⭐⭐ <span>(5.0)</span></div>
+            <p class="preco">R$ 159.90</p>
+            <button class="botaocomprar">comprar</button> <button class="botaocarrinho"><i class="fa-solid fa-cart-shopping"></i></button>
+          </div>
+        </div>
+
+        <!-- Produto 4 -->
+        <div class="card" data-categoria="rodas">
+          <div class="selos">
+            <span class="oferta">Oferta</span>
+          </div>
+          <img src="../img/imgs-skateshop/image.png" alt="Pro Wheels Orange">
+          <div class="info">
+            <span class="categoria">RODAS</span>
+            <h3>Pro Wheels Orange</h3>
+            <div class="rating">⭐⭐⭐⭐ <span>(4.0)</span></div>
+            <p class="preco">
+              R$ 89.90 <span class="antigo">R$ 109.90</span>
+            </p>
+            <button class="botaocomprar">comprar</button> <button class="botaocarrinho"><i class="fa-solid fa-cart-shopping"></i></button>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <?php include '../componentes/footer.php'; ?>
-    
-    <!-- Link para o NOVO produto.js -->
-    <script src="produto.js"></script>
 </body>
 </html>
-
