@@ -110,20 +110,15 @@ try {
     <!-- 4. GRADE DE PRODUTOS (Onde o AJAX/JS vai funcionar) -->
     <main class="content">
         <section class="produtos">
-            
-            <!-- Este container é o ALVO do nosso skateshop.js -->
             <div class="containershop">
 
                 <?php if (empty($produtos)) : ?>
-                    <p style="text-align: center; width: 100%; color: #333; font-size: 1.2rem;">
-                        Nenhum produto encontrado nesta categoria.
-                    </p>
-
+                    <p>Nenhum produto encontrado...</p>
                 <?php else : ?>
                     <?php foreach ($produtos as $produto) : ?>
 
                         <div class="card" data-categoria="<?php echo htmlspecialchars($produto['categoria_nome']); ?>">
-
+                            
                             <a href="../produto/produto.php?id=<?php echo $produto['id_pecas']; ?>" class="produto-card-link">
                                 <img src="<?php echo htmlspecialchars($produto['url_img']); ?>" alt="<?php echo htmlspecialchars($produto['nome']); ?>">
                             </a>
@@ -139,9 +134,31 @@ try {
                                     R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?>
                                 </p>
 
-                                <button class="botaocomprar" onclick="window.location.href='../pagamento/pagamento.php'"> comprar </button>
-                                <button class="botaocarrinho"><i class="fa-solid fa-cart-shopping"></i></button>
-                            </div>
+                                <form action="../carrinho/contr/adicionar_carrinho.php" method="POST" style="display: inline;">
+                                    <input type="hidden" name="id" value="<?php echo $produto['id_pecas']; ?>">
+                                    <input type="hidden" name="nome" value="<?php echo htmlspecialchars($produto['nome']); ?>">
+                                    <input type="hidden" name="preco" value="<?php echo $produto['preco']; ?>">
+                                    <input type="hidden" name="imagem" value="<?php echo htmlspecialchars($produto['url_img']); ?>">
+                                    <input type="hidden" name="descricao" value="<?php echo htmlspecialchars($produto['desc_curta']); ?>">
+                                    <input type="hidden" name="quantidade" value="1">
+                                    <input type="hidden" name="redirect_to" value="checkout">
+                                    
+                                    <button type="submit" class="botaocomprar">comprar</button>
+                                </form>
+
+                                <form action="../carrinho/contr/adicionar_carrinho.php" method="POST" style="display: inline;">
+                                    <input type="hidden" name="id" value="<?php echo $produto['id_pecas']; ?>">
+                                    <input type="hidden" name="nome" value="<?php echo htmlspecialchars($produto['nome']); ?>">
+                                    <input type="hidden" name="preco" value="<?php echo $produto['preco']; ?>">
+                                    <input type="hidden" name="imagem" value="<?php echo htmlspecialchars($produto['url_img']); ?>">
+                                    <input type="hidden" name="descricao" value="<?php echo htmlspecialchars($produto['desc_curta']); ?>">
+                                    <input type="hidden" name="quantidade" value="1">
+                                    <input type="hidden" name="redirect_to" value="carrinho">
+                                    
+                                    <button type="submit" class="botaocarrinho"><i class="fa-solid fa-cart-shopping"></i></button>
+                                </form>
+                                
+                                </div>
                         </div>
 
                     <?php endforeach; ?>
@@ -150,7 +167,6 @@ try {
             </div>
         </section>
     </main>
-
     <?php include '../componentes/footer.php'; ?>
     
     <!-- 

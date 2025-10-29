@@ -31,7 +31,6 @@ if (!isset($_SESSION['carrinho'])) {
     </div>
 
     <div class="carrinhocontainer">
-        <!-- Lista de produtos -->
         <div class="carrinhoitens">
 
             <?php if (empty($_SESSION['carrinho'])): ?>
@@ -47,7 +46,7 @@ if (!isset($_SESSION['carrinho'])) {
                             <p><?= htmlspecialchars($item['descricao']) ?></p>
 
                             <div class="quantidade">
-                                <form action="atualizar_quantidade.php" method="post" style="display: inline;">
+                                <form action="contr/atualizar_quantidade.php" method="post" style="display: inline;">
                                     <input type="hidden" name="id" value="<?= $item['id'] ?>">
                                     <input type="hidden" name="acao" value="menos">
                                     <button type="submit">-</button>
@@ -55,7 +54,7 @@ if (!isset($_SESSION['carrinho'])) {
 
                                 <span><?= $item['quantidade'] ?></span>
 
-                                <form action="atualizar_quantidade.php" method="post" style="display: inline;">
+                                <form action="contr/atualizar_quantidade.php" method="post" style="display: inline;">
                                     <input type="hidden" name="id" value="<?= $item['id'] ?>">
                                     <input type="hidden" name="acao" value="mais">
                                     <button type="submit">+</button>
@@ -71,7 +70,7 @@ if (!isset($_SESSION['carrinho'])) {
                                 R$ <?= number_format($item['preco'], 2, ',', '.') ?> cada
                             </span>
                             <br>
-                            <form method="post" action="remover_item.php" style="margin-top: 8px;">
+                            <form method="post" action="contr/remover_item.php" style="margin-top: 8px;">
                                 <input type="hidden" name="id" value="<?= $item['id'] ?>">
                                 <button class="removeritem">Remover</button>
                             </form>
@@ -82,7 +81,6 @@ if (!isset($_SESSION['carrinho'])) {
 
         </div>
 
-        <!-- Resumo do Pedido -->
         <?php
         $total = 0;
         foreach ($_SESSION['carrinho'] as $item) {
@@ -95,7 +93,15 @@ if (!isset($_SESSION['carrinho'])) {
             <p>Frete <span class="frete">Grátis</span></p>
             <p class="total">Total <span>R$ <?= number_format($total, 2, ',', '.') ?></span></p>
 
-            <button class="botaofinalizar">Finalizar Compra</button>
+            <?php if (!empty($_SESSION['carrinho'])): ?>
+                <a href="../pagamento/checkout.php" class="botaofinalizar" 
+                   style="text-decoration: none; display: inline-block; text-align: center; box-sizing: border-box;">
+                   Finalizar Compra
+                </a>
+            <?php else: ?>
+                <button class="botaofinalizar" disabled style="background-color: #999;">Carrinho Vazio</button>
+            <?php endif; ?>
+
             <button class="additens" onclick="window.location.href='../skateshop/skateee.php'">Adicionar Mais Itens</button>
         </div>
     </div>
@@ -103,4 +109,3 @@ if (!isset($_SESSION['carrinho'])) {
     <?php include '../componentes/footer.php'; ?>
 </body>
 </html>
-
