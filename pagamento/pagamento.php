@@ -144,7 +144,7 @@
                 <div class="produtoinfo">
                     <p class="produtoname">Shape Street Art Pro</p>
                     <p class="produtoexpecificacoes">8.0" x 31.5"</p>
-                    <p class="produtopreco">R$ 899,90</p>
+                    <p class="produtopreco">R$ 900,00</p>
                 </div>
             </div>
 
