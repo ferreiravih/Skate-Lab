@@ -192,6 +192,10 @@ body {
   align-items: center;
 }
 
+.produtos .card.hidden {
+  display: none;
+}
+
 .produtos .card:hover {
   transform: scale(1.05);
 }

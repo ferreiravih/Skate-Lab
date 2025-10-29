@@ -30,12 +30,12 @@
   </div>
 
   <nav class="categories">
-    <button class="active">Todos</button>
-    <button>Completos</button>
-    <button>Shapes</button>
-    <button>Rodas</button>
-    <button>Trucks</button>
-    <button>Acessórios</button>
+    <button class="active" data-filter="todos">Todos</button>
+    <button data-filter="completos">Completos</button>
+    <button data-filter="shapes">Shapes</button>
+    <button data-filter="rodas">Rodas</button>
+    <button data-filter="trucks">Trucks</button>
+    <button data-filter="acessorios">Acessórios</button>
   </nav>
 
   <h2 class="desta"> produtos em destaque </h2>
@@ -44,7 +44,7 @@
   <main class="content">
     <section class="produtos">
       <div class="containershop">
-        <div class="card">
+        <div class="card" data-category="completos">
           <div class="selos">
             <span class="novo">Novo</span>
             <span class="oferta">Oferta</span>
@@ -61,7 +61,7 @@
         </div>
 
         <!-- Produto 2 -->
-        <div class="card">
+        <div class="card" data-category="completos">
           <div class="selos">
             <span class="novo">Novo</span>
           </div>
@@ -76,7 +76,7 @@
         </div>
 
         <!-- Produto 3 -->
-        <div class="card">
+        <div class="card" data-category="shapes">
           <img src="../img/imgs-skateshop/image.png" alt="Graffiti Deck Pro">
           <div class="info">
             <span class="categoria">SHAPES</span>
@@ -88,7 +88,7 @@
         </div>
 
         <!-- Produto 4 -->
-        <div class="card">
+        <div class="card" data-category="rodas">
           <div class="selos">
             <span class="oferta">Oferta</span>
           </div>
@@ -109,7 +109,7 @@
     <section class="produtos">
       <div class="containershop">
         <!-- Produto 1 -->
-        <div class="card">
+        <div class="card" data-category="completos">
           <div class="selos">
             <span class="novo">Novo</span>
             <span class="oferta">Oferta</span>
@@ -127,7 +127,7 @@
         </div>
 
         <!-- Produto 2 -->
-        <div class="card">
+        <div class="card" data-category="completos">
           <div class="selos">
             <span class="novo">Novo</span>
           </div>
@@ -142,7 +142,7 @@
         </div>
 
         <!-- Produto 3 -->
-        <div class="card">
+        <div class="card" data-category="shapes">
           <img src="../img/imgs-skateshop/image.png" alt="Graffiti Deck Pro">
           <div class="info">
             <span class="categoria">SHAPES</span>
@@ -154,7 +154,7 @@
         </div>
 
         <!-- Produto 4 -->
-        <div class="card">
+        <div class="card" data-category="rodas">
           <div class="selos">
             <span class="oferta">Oferta</span>
           </div>
@@ -172,6 +172,36 @@
       </div>
     </section> 
   </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const categoryButtons = document.querySelectorAll('.categories button');
+      const productCards = document.querySelectorAll('.produtos .card');
+
+      const applyFilter = (filter) => {
+        productCards.forEach((card) => {
+          const matches = filter === 'todos' || card.dataset.category === filter;
+          card.classList.toggle('hidden', !matches);
+        });
+      };
+
+      categoryButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const filter = button.dataset.filter;
+
+          categoryButtons.forEach((btn) => btn.classList.remove('active'));
+          button.classList.add('active');
+
+          applyFilter(filter);
+        });
+      });
+
+      const activeButton = document.querySelector('.categories button.active');
+      if (activeButton && activeButton.dataset.filter) {
+        applyFilter(activeButton.dataset.filter);
+      }
+    });
+  </script>
   
   <?php include '../componentes/footer.php'; ?>
 </body>
