@@ -1,6 +1,24 @@
+<?php
+require_once __DIR__ . '/../admin_auth.php';
+require_once __DIR__ . '/../../config/db.php';
+
+// BUSCAR PEDIDOS (READ)
+// Usamos JOIN para pegar o nome do usuário da tabela 'usuario'
+try {
+    $sql = "SELECT p.*, u.nome AS cliente_nome 
+            FROM public.pedidos p
+            JOIN public.usuario u ON p.id_usu = u.id_usu
+            ORDER BY p.pedido_em DESC"; // Mostrar mais recentes primeiro
+    
+    $stmt = $pdo->query($sql);
+    $pedidos = $stmt->fetchAll();
+} catch (PDOException $e) {
+    error_log("Erro ao buscar pedidos: " . $e->getMessage());
+    $pedidos = [];
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +27,6 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="pedidos.css">
 </head>
-
 <body>
     <?php include __DIR__ . '/../partials/headeradmin.php'; ?>
     <main class="pedidos-page">
@@ -23,21 +40,13 @@
                 <i class="ri-search-line"></i>
                 <input type="text" placeholder="Buscar por número do pedido ou cliente...">
             </div>
-
             <select class="filtro-status">
                 <option value="todos">Todos</option>
-                <option value="pendente">Pendente</option>
-                <option value="preparo">Em preparo</option>
-                <option value="enviado">Enviado</option>
-                <option value="entregue">Entregue</option>
-                <option value="cancelado">Cancelado</option>
-            </select>
-
-            <select class="filtro-periodo">
-                <option>Período</option>
-                <option>Hoje</option>
-                <option>Últimos 7 dias</option>
-                <option>Últimos 30 dias</option>
+                <option value="PENDENTE">Pendente</option>
+                <option value="EM PREPARO">Em preparo</option>
+                <option value="ENVIADO">Enviado</option>
+                <option value="ENTREGUE">Entregue</option>
+                <option value="CANCELADO">Cancelado</option>
             </select>
         </div>
 
@@ -53,85 +62,36 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>#1234</td>
-                    <td>João Silva</td>
-                    <td>21/10/2025</td>
-                    <td><span class="status enviado">Enviado</span></td>
-                    <td>R$ 389,00</td>
-                    <td class="acoes">
-                        <button type="button" class="btn-acao
-                        "><i class="ri-eye-line"></i></button>
-                        <button type="button" class="btn-acao
-                        "><i class="ri-pencil-line"></i></button>
-                        <button type="button" class="btn-acao
-                        "><i class="ri-close-line"></i></button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>#1233</td>
-                    <td>Maria Santos</td>
-                    <td>21/10/2025</td>
-                    <td><span class="status pendente">Pendente</span></td>
-                    <td>R$ 542,00</td>
-                    <td class="acoes">
-                        <button type="button" class="btn-acao
-                        "><i class="ri-eye-line"></i></button>
-                        <button type="button" class="btn-acao
-                        "><i class="ri-pencil-line"></i></button>
-                        <button type="button" class="btn-acao
-                        "><i class="ri-close-line"></i></button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>#1232</td>
-                    <td>Pedro Costa</td>
-                    <td>20/10/2025</td>
-                    <td><span class="status entregue">Entregue</span></td>
-                    <td>R$ 219,00</td>
-                    <td class="acoes">
-                        <button type="button" class="btn-acao
-                        "><i class="ri-eye-line"></i></button>
-                        <button type="button" class="btn-acao
-                        "><i class="ri-pencil-line"></i></button>
-                        <button type="button" class="btn-acao
-                        "><i class="ri-close-line"></i></button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>#1231</td>
-                    <td>Ana Oliveira</td>
-                    <td>20/10/2025</td>
-                    <td><span class="status cancelado">Cancelado</span></td>
-                    <td>R$ 178,00</td>
-                    <td class="acoes">
-                        <button type="button" class="btn-acao
-                        "><i class="ri-eye-line"></i></button>
-                        <button type="button" class="btn-acao
-                        "><i class="ri-pencil-line"></i></button>
-                        <button type="button" class="btn-acao
-                        "><i class="ri-close-line"></i></button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>#1230</td>
-                    <td>Carlos Souza</td>
-                    <td>19/10/2025</td>
-                    <td><span class="status enviado">Enviado</span></td>
-                    <td>R$ 645,00</td>
-                    <td class="acoes">
-                        <button type="button" class="btn-acao
-                        "><i class="ri-eye-line"></i></button>
-                        <button type="button" class="btn-acao
-                        "><i class="ri-pencil-line"></i></button>
-                        <button type="button" class="btn-acao
-                        "><i class="ri-close-line"></i></button>
-                    </td>
-                </tr>
+                <?php if (empty($pedidos)): ?>
+                    <tr>
+                        <td colspan="6" style="text-align:center;">Nenhum pedido encontrado.</td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach ($pedidos as $pedido): ?>
+                        <tr data-id-pedido="<?= $pedido['id_pedido'] ?>"> <td>#<?= htmlspecialchars($pedido['id_pedido']) ?></td>
+                            <td><?= htmlspecialchars($pedido['cliente_nome']) ?></td>
+                            <td><?= date('d/m/Y', strtotime($pedido['pedido_em'])) ?></td>
+                            <td>
+                                <span class="status <?= strtolower(str_replace(' ', '', $pedido['status'])) ?>">
+                                    <?= htmlspecialchars($pedido['status']) ?>
+                                </span>
+                            </td>
+                            <td>R$ <?= number_format($pedido['valor_total'], 2, ',', '.') ?></td>
+                            <td class="acoes">
+                                <button type="button" class="btn-acao btn-ver-detalhes">
+                                    <i class="ri-eye-line"></i>
+                                </button>
+                                <a href="cancelar_pedido.php?id=<?= $pedido['id_pedido'] ?>" class="btn-acao" onclick="return confirm('Tem certeza que deseja cancelar este pedido?');">
+                                    <i class="ri-close-line"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
     </main>
-    <!-- ===== MODAL DE DETALHES DO PEDIDO ===== -->
+    
     <div class="modal-pedido" id="modalPedido">
         <div class="modal-conteudo">
             <button class="fechar-modal" id="fecharModal"><i class="ri-close-line"></i></button>
@@ -147,41 +107,30 @@
 
             <section class="modal-secao">
                 <h3><i class="ri-map-pin-line"></i> Endereço de Entrega</h3>
-                <p id="modalEndereco">Rua das Flores, 123 - São Paulo, SP<br>(11) 98765-4321</p>
+                <p id="modalEndereco"></p>
             </section>
 
             <section class="modal-secao">
                 <h3><i class="ri-bank-card-line"></i> Forma de Pagamento</h3>
-                <p id="modalPagamento">Cartão de Crédito</p>
+                 <p id="modalPagamento">Forma de Pagamento Indisponível</p>
             </section>
 
             <section class="modal-secao">
                 <h3><i class="ri-box-3-line"></i> Produtos</h3>
-                <div id="modalProdutos">
-                    <div class="produto-item">
-                        <span>Shape Pro Model</span>
-                        <span>R$ 289,00</span>
-                    </div>
-                    <div class="produto-item">
-                        <span>Rodas 52mm</span>
-                        <span>R$ 100,00</span>
-                    </div>
-                </div>
+                 <div id="modalProdutos"></div>
             </section>
 
             <section class="modal-total">
                 <h3>Valor Total</h3>
-                <p id="modalTotal">R$ 389,00</p>
+                <p id="modalTotal">R$ 0,00</p>
             </section>
 
             <div class="modal-botoes">
                 <button class="btn-preparo" id="btnPreparo">Iniciar Preparo</button>
-                <button class="btn-finalizar" id="btnFinalizar">Finalizar Pedido</button>
-            </div>
+                <button class="btn-finalizar" id="btnFinalizar">Marcar como Enviado</button> </div>
         </div>
     </div>
-
+    
     <script src="pedidos.js"></script>
-</body>
-
+    </body>
 </html>

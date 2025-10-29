@@ -1,100 +1,100 @@
-// categoria.js
-
 document.addEventListener("DOMContentLoaded", () => {
-  const btnNova = document.querySelector(".btn-nova-categoria");
-  const overlay = document.getElementById("overlayCategoria");
-  const btnCancelar = document.getElementById("cancelarModal");
+    const btnAbrirModal = document.getElementById("btn-abrir-modal");
+    const overlay = document.getElementById("overlayCategoria");
+    const btnCancelar = document.getElementById("cancelarModal");
+    const btnSalvar = document.getElementById("btn-salvar-categoria");
+    const form = document.getElementById("form-nova-categoria");
 
-  // Abre o pop-up
-  btnNova.addEventListener("click", () => {
-    overlay.style.display = "flex";
-  });
-
-  // Fecha ao clicar em Cancelar
-  btnCancelar.addEventListener("click", () => {
-    overlay.style.display = "none";
-  });
-
-  // Fecha ao clicar fora do modal
-  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) overlay.style.display = "none";
-  });
-});
-document.addEventListener("DOMContentLoaded", () => {
-  const btnNova = document.querySelector(".btn-nova-categoria");
-  const overlay = document.getElementById("overlayCategoria");
-  const btnCancelar = document.getElementById("cancelarModal");
-  const btnSalvar = document.querySelector(".btn-salvar");
-  const popup = document.getElementById("popupSucesso");
-
-  // Abre o pop-up de nova categoria
-  btnNova.addEventListener("click", () => {
-    overlay.style.display = "flex";
-  });
-
-  // Fecha ao clicar em Cancelar
-  btnCancelar.addEventListener("click", () => {
-    overlay.style.display = "none";
-  });
-
-  // Fecha ao clicar fora do modal
-  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) overlay.style.display = "none";
-  });
-
-  // Salvar categoria
-  btnSalvar.addEventListener("click", () => {
-    // Aqui no futuro você pode adicionar a lógica de salvar no banco.
-    
-    // Fecha o modal
-    overlay.style.display = "none";
-
-    // Mostra o popup de sucesso
-    popup.classList.add("mostrar");
-
-    // Some depois de 3 segundos
-    setTimeout(() => {
-      popup.classList.remove("mostrar");
-    }, 3000);
-  });
-});
-// categoria-status.js
-document.addEventListener("DOMContentLoaded", () => {
-  // Seleciona todos os botões de ação dentro da coluna de ações
-  const botoes = document.querySelectorAll(".coluna-acoes .botao-acao");
-
-  botoes.forEach(btn => {
-    // Verifica se o botão tem o ícone de olho (ver/ocultar)
-    const icone = btn.querySelector("i.ri-eye-line, i.ri-eye-off-line");
-    if (!icone) return; // ignora se não for o botão de "ver"
-
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();
-
-      // Pega a linha da tabela referente a esse botão
-      const linha = btn.closest("tr");
-      if (!linha) return;
-
-      // Pega o span de status (Ativo/Inativo)
-      const statusSpan = linha.querySelector("span.status");
-      if (!statusSpan) return;
-
-      // Alterna o status e o ícone
-      if (statusSpan.classList.contains("ativo")) {
-        statusSpan.classList.remove("ativo");
-        statusSpan.classList.add("inativo");
-        statusSpan.textContent = "Inativo";
-
-        icone.classList.remove("ri-eye-line");
-        icone.classList.add("ri-eye-off-line");
-      } else {
-        statusSpan.classList.remove("inativo");
-        statusSpan.classList.add("ativo");
-        statusSpan.textContent = "Ativo";
-
-        icone.classList.remove("ri-eye-off-line");
-        icone.classList.add("ri-eye-line");
-      }
+    // Abre o modal
+    btnAbrirModal.addEventListener("click", () => {
+        overlay.style.display = "flex";
     });
-  });
+
+    // Fecha o modal
+    const fecharModal = () => {
+        overlay.style.display = "none";
+        form.reset(); // Limpa o formulário ao fechar
+    };
+    
+    btnCancelar.addEventListener("click", fecharModal);
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) fecharModal();
+    });
+
+    // Lógica de Salvar com AJAX (Fetch)
+    btnSalvar.addEventListener("click", async () => {
+        const formData = new FormData(form);
+        
+        btnSalvar.disabled = true;
+        btnSalvar.textContent = "Salvando...";
+
+        try {
+            const response = await fetch('criar_categoria.php', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+
+            if (result.sucesso) {
+                mostrarPopup(result.mensagem, 'sucesso');
+                fecharModal();
+                // Recarrega a página para mostrar a nova categoria na tabela
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            } else {
+                mostrarPopup(result.mensagem, 'erro');
+            }
+
+        } catch (error) {
+            console.error('Erro na requisição:', error);
+            mostrarPopup('Erro de comunicação. Tente novamente.', 'erro');
+        }
+
+        btnSalvar.disabled = false;
+        btnSalvar.textContent = "Salvar";
+    });
+
+    // --- Função do Popup ---
+    function mostrarPopup(mensagem, tipo = 'sucesso') {
+        const popupExistente = document.getElementById('popup-sucesso-cat');
+        if (popupExistente) popupExistente.remove();
+
+        const popup = document.createElement('div');
+        popup.id = 'popup-sucesso-cat';
+        popup.textContent = mensagem;
+        
+        // Usa o estilo do popup de sucesso do produto (adicionado abaixo)
+        popup.className = 'popup-sucesso'; 
+        
+        if (tipo === 'erro') {
+            popup.style.backgroundColor = '#f8d7da';
+            popup.style.color = '#721c24';
+        }
+
+        document.body.appendChild(popup);
+        popup.classList.add("mostrar"); // Ativa a animação
+
+        setTimeout(() => {
+            popup.classList.remove("mostrar");
+            setTimeout(() => popup.remove(), 500);
+        }, 5000);
+    }
+    
+    // --- Lógica para popups da URL (Update/Delete) ---
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get('status');
+
+    if (status === 'updated') {
+        mostrarPopup('Categoria atualizada com sucesso!', 'sucesso');
+    } else if (status === 'deleted') {
+        mostrarPopup('Categoria excluída com sucesso.', 'sucesso');
+    } else if (status === 'delete_failed') {
+        mostrarPopup('Falha ao excluir. A categoria está em uso por produtos.', 'erro');
+    }
+    
+    // Limpa o status da URL
+    if (status) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
 });

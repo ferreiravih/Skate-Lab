@@ -234,7 +234,7 @@ body {
   background: #d4d4d4;
 }
 
-/* ---------- Popup de Sucesso ---------- */
+
 .popup-sucesso {
   position: fixed;
   bottom: 30px;
@@ -251,12 +251,12 @@ body {
   transform: translateY(20px);
   transition: opacity 0.4s, transform 0.4s;
   z-index: 9999;
-  display: none;
+
 }
 
 .popup-sucesso.mostrar {
-  display: block;
-  opacity: 1;
+   opacity: 1;
   transform: translateY(0);
 }
+
 

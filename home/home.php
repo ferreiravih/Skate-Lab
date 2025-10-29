@@ -160,7 +160,7 @@
             </div>
         </section>
 
-        <script src="scripts.js"></script>
+        <script src="home.js"></script>
     </main>
 
     <footer>

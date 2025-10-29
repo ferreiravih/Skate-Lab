@@ -1,172 +1,107 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<?php
+// Inicia a sessão para pegar o carrinho e o usuário
+session_start();
+require_once __DIR__ . '/../config/db.php';
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - SkateLab</title>
-    <link rel="stylesheet" href="../pagamento/pagamento.css">
-    <script src="../pagamento/pagamento.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-</head>
+// Proteção: Verifica se o usuário está logado
+if (!isset($_SESSION['id_usu'])) {
+    header("Location: ../home/home.php?error=not_logged_in");
+    exit;
+}
 
-<body>
-    <?php include '../componentes/navbar.php'; ?>
-    <main class="container">
-        <!-- Coluna Esquerda -->
-        <section class="containerdados">
-            <h2>Entrega</h2>
+// Proteção: Verifica se o carrinho não está vazio
+if (empty($_SESSION['carrinho'])) {
+    header("Location: ../carrinho/carrinho.php?error=empty_cart");
+    exit;
+}
 
-            <div class="separarcheckbox">
-                <div class="cardcheckbox">
-                    <label for="country">País/Região</label>
-                    <input type="text" id="country" placeholder="Brasil">
-                </div>
+// Proteção: Verifica se é um POST
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    header("Location: pagamento.php");
+    exit;
+}
 
-                <div class="cardcheckbox">
-                    <label for="cep">CEP</label>
-                    <input type="text" id="cep" placeholder="00000-000">
-                </div>
+// 1. Coletar dados
+$id_usu = $_SESSION['id_usu'];
+$carrinho = $_SESSION['carrinho'];
 
-                <div class="cardcheckbox">
-                    <label for="name">Nome</label>
-                    <input type="text" id="name" placeholder="João">
-                </div>
+// Coleta o endereço do formulário de pagamento.php
+// (Os 'name' dos inputs devem bater com o que está aqui)
+$cep = trim($_POST['cep'] ?? '');
+$rua = trim($_POST['address'] ?? ''); // O seu form usa 'address'
+$numero = trim($_POST['numero'] ?? ''); // Você precisa adicionar este campo ao seu form
+$bairro = trim($_POST['bairro'] ?? ''); // Você precisa adicionar este campo
+$cidade = trim($_POST['city'] ?? '');
+$estado = trim($_POST['state'] ?? '');
+$complemento = trim($_POST['complement'] ?? '');
 
-                <div class="cardcheckbox">
-                    <label for="lastname">Sobrenome</label>
-                    <input type="text" id="lastname" placeholder="Silva">
-                </div>
+// 2. Calcular o valor total (do carrinho da sessão, por segurança)
+$valor_total = 0;
+foreach ($carrinho as $item) {
+    $valor_total += $item['preco'] * $item['quantidade'];
+}
 
-                <div class="cardcheckbox">
-                    <label for="address">Endereço</label>
-                    <input type="text" id="address" placeholder="Rua, número">
-                </div>
+// 3. Iniciar a TRANSAÇÃO (Boa prática!)
+// Isso garante que ou TUDO é salvo (pedido + itens), ou NADA é salvo.
+try {
+    $pdo->beginTransaction();
 
-                <div class="cardcheckbox">
-                    <label for="complement">Complemento (opcional)</label>
-                    <input type="text" id="complement" placeholder="Apartamento, bloco, etc.">
-                </div>
+    // 4. Inserir o PEDIDO na tabela 'pedidos'
+    $sql_pedido = "INSERT INTO public.pedidos 
+        (id_usu, valor_total, status, 
+         endereco_rua, endereco_numero, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, endereco_complemento)
+        VALUES 
+        (:id_usu, :valor_total, 'PENDENTE', 
+         :rua, :numero, :bairro, :cidade, :estado, :cep, :complemento)";
+    
+    $stmt_pedido = $pdo->prepare($sql_pedido);
+    $stmt_pedido->execute([
+        ':id_usu' => $id_usu,
+        ':valor_total' => $valor_total,
+        ':rua' => $rua,
+        ':numero' => $numero,
+        ':bairro' => $bairro,
+        ':cidade' => $cidade,
+        ':estado' => $estado,
+        ':cep' => $cep,
+        ':complemento' => $complemento
+    ]);
 
-                <div class="cardcheckbox">
-                    <label for="city">Cidade</label>
-                    <input type="text" id="city" placeholder="São Paulo">
-                </div>
+    // 5. Obter o ID do pedido que acabamos de criar
+    $id_pedido_criado = $pdo->lastInsertId('public.pedidos_id_pedido_seq'); // Sintaxe para PostgreSQL
 
-                <div class="cardcheckbox">
-                    <label for="state">Estado</label>
-                    <input type="text" id="state" placeholder="SP">
-                </div>
-            </div>
+    // 6. Inserir cada item do carrinho na tabela 'pedido_itens'
+    $sql_item = "INSERT INTO public.pedido_itens
+        (id_pedido, id_pecas, quantidade, preco_unitario)
+        VALUES
+        (:id_pedido, :id_pecas, :quantidade, :preco_unitario)";
+    
+    $stmt_item = $pdo->prepare($sql_item);
 
+    foreach ($carrinho as $id_peca => $item) {
+        $stmt_item->execute([
+            ':id_pedido' => $id_pedido_criado,
+            ':id_pecas' => $id_peca,
+            ':quantidade' => $item['quantidade'],
+            ':preco_unitario' => $item['preco'] // Salva o preço daquele momento
+        ]);
+    }
 
+    // 7. Efetivar a transação (Tudo correu bem!)
+    $pdo->commit();
 
-            <section class="pagamentocontainer">
-                <h2>Finalizar Compra</h2>
-                <p>Escolha sua forma de pagamento preferida</p>
+    // 8. Limpar o carrinho e redirecionar
+    unset($_SESSION['carrinho']);
+    
+    // (O ideal é ter uma página "pedido_concluido.php")
+    header("Location: ../perfil/perfil.php?status=order_success");
+    exit;
 
-                <div class="opcoesdepagamento">
-                    <div class="opcao" data-pagamento="pix">
-                        <i class="fa-solid fa-mobile-screen-button"></i>
-                        <h3>PIX</h3>
-                        <p>Pagamento instantâneo e seguro</p>
-                    </div>
-
-                    <div class="opcao" data-pagamento="cartao">
-                        <i class="fa-regular fa-credit-card"></i>
-                        <h3>Cartão de Crédito</h3>
-                        <p>Parcelamento em até 12x</p>
-                    </div>
-
-                    <div class="opcao" data-pagamento="boleto">
-                        <i class="fa-solid fa-barcode"></i>
-                        <h3>Boleto Bancário</h3>
-                        <p>Vencimento em 3 dias úteis</p>
-                    </div>
-                </div>
-
-                <div class="conteudopagamento" id="pix">
-                    <h3>Pague com PIX</h3>
-                    <div class="pixcard">
-                        <div class="qrcode">📷</div>
-                        <div class="pixinfo">
-                            <label>Chave PIX Copia e Cola</label>
-                            <div class="pixinput">
-                                <input type="text" value="00020126580014br.gov.bcb.pix..." readonly>
-                                <button class="btn-copy">📋</button>
-                            </div>
-                            <small>Copie o código e cole no app do seu banco</small>
-                        </div>
-                    </div>
-                    <button class="botaolaranja">Pagar Agora</button>
-                </div>
-
-                <div class="conteudopagamento" id="cartao">
-                    <h3>Dados do Cartão</h3>
-                    <form action="" method="POST">
-                        <label>Número do Cartão</label>
-                        <input type="text" placeholder="0000 0000 0000 0000">
-
-                        <label>Nome no Cartão</label>
-                        <input type="text" placeholder="NOME COMPLETO">
-
-                        <div class="linha">
-                            <div>
-                                <label>Validade</label>
-                                <input type="text" placeholder="MM/AA">
-                            </div>
-                            <div>
-                                <label>CVV</label>
-                                <input type="text" placeholder="000">
-                            </div>
-                        </div>
-
-                        <button type="submit" class="botaolaranja">adicionar cartao</button>
-                    </form>
-                </div>
-
-                <div class="conteudopagamento" id="boleto">
-                    <h3>Boleto Bancário</h3>
-                    <div class="boletocard">
-                        <div class="barcode">||| ||| |||</div>
-                        <p>O boleto será gerado e enviado para seu e-mail.<br>Você pode pagar em qualquer banco até a data de vencimento.</p>
-                        <button class="botaolaranja">Gerar Boleto</button>
-                    </div>
-                </div>
-            </section>
-        </section>
-
-        <!-- Coluna Direita -->
-        <section class="containerdadoss" id="containerdadoss">
-            <h2>Resumo do Pedido</h2>
-            <div class="cardproduto">
-                <img src="../img/imgs-skateshop/image.png" alt="Shape de Skate">
-                <div class="produtoinfo">
-                    <p class="produtoname">Shape Street Art Pro</p>
-                    <p class="produtoexpecificacoes">8.0" x 31.5"</p>
-                    <p class="produtopreco">R$ 900,00</p>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="desconto">Código de desconto</label>
-                <div class="cupomdedesconto">
-                    <input type="text" id="desconto" placeholder="Digite o código">
-                    <button>Aplicar</button>
-                </div>
-            </div>
-
-            <div class="totalcard">
-                <p>Subtotal <span>R$ 899,90</span></p>
-                <p>Frete <span>A calcular</span></p>
-                <hr>
-                <p class="total">Total <span>R$ 899,90</span></p>
-            </div>
-
-            <button class="botaopagar">Pagar agora</button>
-            <p class="textodeseguranca">💳 Pagamento seguro e criptografado</p>
-        </section>
-    </main>
-    <?php include '../componentes/footer.php'; ?>
-</body>
-</html>
+} catch (Exception $e) {
+    // 9. Desfazer a transação (Algo deu errado!)
+    $pdo->rollBack();
+    error_log("Erro ao processar pedido: " . $e->getMessage());
+    header("Location: pagamento.php?error=processing_failed");
+    exit;
+}
+?>
