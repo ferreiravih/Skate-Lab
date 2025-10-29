@@ -1,166 +1,323 @@
- /* Container 3D no fundo */
-  #container {
-    position: relative;
-    inset: 0;
-    z-index: 0;
-  }
-  #container canvas {
-    position: relative;
-    inset: 0;
-    z-index: 0;
-  }
+/* ======== BASE GERAL ======== */
+body {
+  background: #ffffff;
+  color: #2a2a2a;
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  min-height: 100vh;
+}
 
-  /* Painéis de interface acima do canvas */
-  #ui,
-  .vista-previa {
-    position: fixed;
-    z-index: 9999;
-    pointer-events: auto;
-  }
+/* ======== LAYOUT ======== */
+.custom-page {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 40px;
+  width: min(1280px, calc(100vw - 80px));
+  margin: 50px auto;
+  align-items: start;
+}
 
-  .vista-previa {
-    top: 150px;
-    right: 20px;
-    width: 300px;
-    background: rgba(250, 156, 33, 0.5);
-    border: 2px solid rgb(215, 142, 248);
-    border-radius: 10px;
-    padding: 15px;
-  }
+.viewer-area {
+  position: relative; 
+}
 
-  #ui {
-    top: 90px;
-    left: 20px;
-    width: 420px;
-    max-height: 75vh;
-    overflow: auto;
-    background: silver;
-    border: 2px solid #000000;
-    border-radius: 10px;
-    padding: 20px;
-  }
-
-  /* ===== BOTÕES ===== */
-  #ui .grupo-botoes > button,
-  .vista-previa > button {  
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    padding: 12px;
-    margin: 5px 0;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    background: #9c6bff;
-    color: #fff;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08) inset,
-      0 8px 20px rgba(0, 0, 0, 0.25);
-  }
-
-
-  #ui .grupo-botoes > button:hover,
-  .vista-previa .mini-botoes > button:hover {
-    background: #7c52d9;
-    transform: translateY(-2px);
-  }
-
-  #ui .grupo-botoes > button.ativo {
-    background: #68376dee;
-    color: #e05403;
-    box-shadow: 0 0 15px rgb(0, 0, 0);
-  }
-
-  /* Mini-botões */
-  .vista-previa .mini-botoes {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
-  }
-
-  .vista-previa .mini-botoes > button {
-    font-size: 12px;
-    padding: 8px 10px;
-    justify-content: center;
-  }
-
-  /* Caixas “status” e grupos */
-  .grupo-botoes {
-    margin-bottom: 25px;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 15px;
-    border-radius: 8px;
-  }
-
-  /* Bolinha colorida */
-  #ui .grupo-botoes > button .btn-imagem,
-  .vista-previa .mini-botoes > button .btn-imagem {
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
-    display: inline-grid;
-    place-items: center;
-    font-weight: 700;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12) inset;
-  }
-
-  html,
-  body {
-    height: 100%;
-  }
-  body {
-    overflow: hidden;
-  }
-  .btn-titulo {
+/* ======== ÁREA 3D ======== */
+#container {
   width: 100%;
-  background: linear-gradient(135deg, #9c6bff, #7c52d9);
-  color: white;
+  height: clamp(380px, 65vh, 720px);
+  border-radius: 20px;
+  background: #f4f4f4;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+#container canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+
+.vista-previa {
+ 
+  width: 100%; 
+  margin-top: 20px; 
+  
+  background: #fa9c21;
+  color: #fff;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+  font-size: 16px; 
+  text-align: center; /
+}
+
+.vista-previa button {
+  background: #fff;
+  color: #fa9c21;
   border: none;
+  align-items: center;
   border-radius: 8px;
-  padding: 12px;
-  margin: 8px 0;
+  padding: 10px 20px; 
+  margin: 12px 5px 0 5px;
   cursor: pointer;
-  font-weight: bold;
-  font-size: 15px;
-  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+  font-weight: 600;
+}
+
+.vista-previa button:hover {
+  box-shadow: 0 5px 10px rgba(209, 96, 4, 0.89);
+  transition: all 0.2s ease ;
+}
+
+/* ======== PAINEL DE CUSTOMIZAÇÃO ======== */
+#ui {
+  background: #f9f9f9;
+  border-radius: 20px;
+  border: 1px solid #eaeaea;
+  padding: 28px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+
+  max-height: 80vh; 
+  overflow-y: auto; 
+}
+
+#ui h2 {
+  text-align: center;
+  color: #7c52d9;
+  font-size: 22px;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+/* ==== Seções do Painel ==== */
+.grupo-botoes h3 {
+  color: #7c52d9;
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 12px 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Ícones substitutos com pseudo-elementos */
+.grupo-botoes h3::before {
+  font-family: "Lucida Sans", sans-serif;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.grupo-botoes h3:nth-of-type(1)::before { content: "👁️"; }    /* Mostrar/Ocultar */
+.grupo-botoes h3:nth-of-type(2)::before { content: "⚙️"; }    /* Rolamentos */
+.grupo-botoes h3:nth-of-type(3)::before { content: "🔩"; }    /* Parafusos */
+.grupo-botoes h3:nth-of-type(4)::before { content: "🧭"; }    /* Controles */
+
+/* Caso queira sem emojis visuais, substitui por letras ou SVG inline depois */
+.grupo-botoes h3::before {
+  color: #fa9c21;
+}
+
+/* ==== Botões internos simples ==== */
+.grupo-botoes button {
+  display: block;
+  width: 100%;
+  padding: 14px 22px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #f7f7f7;
+  color: #333;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Hover e estados */
+.grupo-botoes button:hover {
+  background: #7c52d9;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.grupo-botoes button.ativo {
+  background: #fa9c21;
+  color: #fff;
+}
+
+/* ==== Botões de Remover e Exportar ==== */
+button.remover,
+button.exportar {
+  background: #fff;
+  border: 2px solid #fa9c21;
+  color: #fa9c21;
+}
+
+button.remover:hover,
+button.exportar:hover {
+  background: #fa9c21;
+  color: #fff;
+}
+
+/* ==== Botões de salvar e resetar ==== */
+button.salvar {
+  background: #7c52d9;
+  color: #fff;
+}
+
+button.salvar:hover {
+  background: #6939c0;
+}
+
+button.resetar {
+  background: #ece6fb;
+  color: #4b2f95;
+}
+
+button.resetar:hover {
+  background: #dcd0f8;
+}
+
+/* ==== Organização extra ==== */
+.grupo-botoes {
+  border-top: 1px solid #eee;
+  padding-top: 8px;
+  margin-top: 12px;
+}
+
+
+/* ======== GRUPO DE BOTÕES PRINCIPAIS ======== */
+.grupo-botoes {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.btn-titulo {
+  width: 100%;
+  background: #7c52d9;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-weight: 600;
+  cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: background 0.3s, transform 0.2s;
+  transition: all 0.25s ease;
+  box-shadow: 0 5px 15px rgba(124, 82, 217, 0.25);
 }
-.btn-titulo:hover { background: #7c52d9; transform: scale(1.01); }
-.btn-titulo::after {
-  content: "▸";
-  transition: transform 0.2s ease;
-}
-.btn-titulo.ativo::after { transform: rotate(90deg); }
 
+.btn-titulo:hover {
+  background: #6b47c2;
+  transform: translateY(-2px);
+}
+
+.btn-titulo::after {
+  content: "›";
+  font-size: 16px;
+  transition: transform 0.25s;
+}
+
+.btn-titulo.ativo::after {
+  transform: rotate(90deg);
+}
+
+/* ======== GRUPOS EXPANDIDOS ======== */
 .grupo-colapsado {
   overflow: hidden;
   max-height: 0;
   opacity: 0;
-  transform: translateY(-5px);
-  transition: all 0.3s ease;
+  transform: translateY(-6px);
+  transition: all 0.35s ease;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
 }
 
 .grupo-colapsado.aberto {
-  max-height: 600px; /* ajusta se precisar */
+  max-height: 800px;
   opacity: 1;
   transform: translateY(0);
+  padding-top: 10px;
 }
-.btn-imagem{
-  width: 50px;
-  right: 50px;
+
+/* ======== BOTÕES INTERNOS ======== */
+.pena {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 2px solid #e2e2e2;
+  padding: 12px 10px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
 }
-.pena{
-  background-color: black;
-  border-radius: 10%;
-  color: white;
+
+.pena:hover {
+  border-color: #7d52d900;
+  transform: translateY(-3px);
 }
-.centro{
-  color: orangered;
-  justify-content: center;
+
+.pena.ativo {
+  border-color: #fa9c21;
+  background: #fff7ec;
+  box-shadow: 0 0 0 3px rgba(250, 156, 33, 0.25);
+}
+
+.pena img {
+  width: 70px;
+  height: 70px;
+  
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* ======== STATUS ======== */
+#status {
+  margin-bottom: 14px;
+  background: rgba(124, 82, 217, 0.1);
+  border: 1px solid rgba(124, 82, 217, 0.2);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: #4c2c9a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ======== SCROLL PERSONALIZADO ======== */
+#ui::-webkit-scrollbar {
+  width: 8px;
+}
+
+#ui::-webkit-scrollbar-thumb {
+  background: #d5c7f8;
+  border-radius: 8px;
+}
+
+#ui::-webkit-scrollbar-thumb:hover {
+  background: #bca7f0;
+}
+
+/* ======== RESPONSIVIDADE ======== */
+@media (max-width: 960px) {
+  .custom-page {
+    grid-template-columns: 1fr;
+  }
+
+  #ui {
+    margin-top: 20px;
+  }
 }
 
