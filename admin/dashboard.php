@@ -1,20 +1,111 @@
+<?php
+// 1. Autenticação e Conexão com o BD
+require_once __DIR__ . '/admin_auth.php';
+require_once __DIR__ . '/../config/db.php';
+
+// 2. Buscar Dados para os Cards e Visão Geral
+try {
+    // Cards Superiores (Produtos e Categorias)
+    $stmt_total_prod = $pdo->query("SELECT COUNT(*) FROM public.pecas");
+    $total_produtos = $stmt_total_prod->fetchColumn();
+
+    $stmt_ativos_prod = $pdo->query("SELECT COUNT(*) FROM public.pecas WHERE status = 'ATIVO'");
+    $produtos_ativos = $stmt_ativos_prod->fetchColumn();
+
+    $stmt_baixo_estoque = $pdo->query("SELECT COUNT(*) FROM public.pecas WHERE estoque <= 5 AND status = 'ATIVO'");
+    $baixo_estoque = $stmt_baixo_estoque->fetchColumn();
+
+    $stmt_categorias = $pdo->query("SELECT COUNT(*) FROM public.categorias");
+    $total_categorias = $stmt_categorias->fetchColumn();
+
+    // Cards de Visão Geral (Vendas, Pedidos, Usuários)
+    // Considera pedidos pagos (não pendentes ou cancelados) para o total de vendas
+    $stmt_vendas_totais = $pdo->query("SELECT SUM(valor_total) FROM public.pedidos WHERE status NOT IN ('PENDENTE', 'CANCELADO')");
+    $vendas_totais = $stmt_vendas_totais->fetchColumn() ?? 0; // Usa ?? 0 se não houver vendas
+
+    $stmt_total_pedidos = $pdo->query("SELECT COUNT(*) FROM public.pedidos");
+    $total_pedidos = $stmt_total_pedidos->fetchColumn();
+
+    // Contando apenas usuários 'comum'
+    $stmt_total_usuarios = $pdo->query("SELECT COUNT(*) FROM public.usuario WHERE tipo = 'comum'");
+    $total_usuarios = $stmt_total_usuarios->fetchColumn();
+
+    // Pedidos Recentes (LIMIT 5)
+    $stmt_recentes = $pdo->query("
+        SELECT p.id_pedido, p.valor_total, p.status, u.nome AS cliente_nome
+        FROM public.pedidos p
+        JOIN public.usuario u ON p.id_usu = u.id_usu
+        ORDER BY p.pedido_em DESC
+        LIMIT 5
+    ");
+    $pedidos_recentes = $stmt_recentes->fetchAll();
+
+    // Produtos Mais Vendidos (LIMIT 4)
+    // Soma a quantidade vendida de cada peça em pedidos não cancelados/pendentes
+    $stmt_mais_vendidos = $pdo->query("
+        SELECT p.nome AS produto_nome, SUM(pi.quantidade) AS total_vendido, SUM(pi.quantidade * pi.preco_unitario) AS valor_vendido
+        FROM public.pedido_itens pi
+        JOIN public.pecas p ON pi.id_pecas = p.id_pecas
+        JOIN public.pedidos ped ON pi.id_pedido = ped.id_pedido
+        WHERE ped.status NOT IN ('PENDENTE', 'CANCELADO')
+        GROUP BY p.id_pecas, p.nome
+        ORDER BY total_vendido DESC
+        LIMIT 4
+    ");
+    $mais_vendidos = $stmt_mais_vendidos->fetchAll();
+
+    // Produtos Recentes na Tabela Inferior (LIMIT 3, como no seu HTML original)
+    $stmt_prod_recentes_tabela = $pdo->query("
+        SELECT p.*, c.nome AS categoria_nome
+        FROM public.pecas p
+        LEFT JOIN public.categorias c ON p.id_cat = c.id_cat
+        ORDER BY p.criado_em DESC
+        LIMIT 3
+    ");
+    $produtos_recentes_tabela = $stmt_prod_recentes_tabela->fetchAll();
+
+
+} catch (PDOException $e) {
+    // Em caso de erro, define valores padrão para evitar que a página quebre
+    error_log("Erro no Dashboard: " . $e->getMessage());
+    $total_produtos = $produtos_ativos = $baixo_estoque = $total_categorias = 0;
+    $vendas_totais = $total_pedidos = $total_usuarios = 0;
+    $pedidos_recentes = $mais_vendidos = $produtos_recentes_tabela = [];
+    $erro_db = "Erro ao carregar dados do dashboard.";
+}
+
+// Função auxiliar para classes CSS de status do pedido
+function getStatusClass($status) {
+    switch (strtoupper($status)) {
+        case 'ENTREGUE': return 'entregue';
+        case 'EM PREPARO': return 'preparando'; // Ajustado para corresponder ao CSS
+        case 'ENVIADO': return 'enivado'; // Corrigido para 'enviado' (seu CSS tem 'enviado')
+        case 'PENDENTE': return 'pendente';
+        case 'CANCELADO': return 'cancelado'; // Adicionado
+        default: return 'pendente';
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard - E-commerce Skate</title>
-  <link rel="stylesheet" href="dash.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
-</head>
-
-<body>
-  <?php include '../admin/partials/headeradmin.php'; ?>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SkateLab</title>
+    <link rel="stylesheet" href="dash.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+  </head>
+  <body>
+  <?php include __DIR__ . '/../admin/partials/headeradmin.php'; ?>
   <main class="dashboard-container">
 
     <h1 class="title">Dashboard</h1>
     <p class="subtitle">Visão geral do seu e-commerce de skate</p>
+
+    <?php if (isset($erro_db)): ?>
+        <p style="color: red; border: 1px solid red; padding: 10px;"><?= $erro_db ?></p>
+    <?php endif; ?>
 
     <section class="cards">
       <div class="card">
@@ -22,7 +113,7 @@
           <div class="icon">📦</div>
           <div>
             <h3>Produtos</h3>
-            <p class="value">21</p>
+            <p class="value"><?= $total_produtos ?></p>
             <span>Total cadastrados</span>
           </div>
         </div>
@@ -33,7 +124,7 @@
           <div class="icon">✅</div>
           <div>
             <h3>Ativos</h3>
-            <p class="value">17</p>
+            <p class="value"><?= $produtos_ativos ?></p>
             <span>Produtos visíveis na loja</span>
           </div>
         </div>
@@ -44,7 +135,7 @@
           <div class="icon">📉</div>
           <div>
             <h3>Estoque baixo</h3>
-            <p class="value">5</p>
+            <p class="value"><?= $baixo_estoque ?></p>
             <span>Itens com 5 ou menos</span>
           </div>
         </div>
@@ -55,21 +146,20 @@
           <div class="icon">🗂️</div>
           <div>
             <h3>Categorias</h3>
-            <p class="value">5</p>
+            <p class="value"><?= $total_categorias ?></p>
             <span>Tipos de produto</span>
           </div>
         </div>
       </div>
-    </section>
+      </section>
 
-
-    <section class="overview-cards">
+      <section class="overview-cards">
       <div class="overview-card">
         <div class="icon">💰</div>
         <div>
           <h3>Vendas Totais</h3>
-          <p class="value">R$ 45.231</p>
-          <span class="growth">+20.1% em relação ao mês passado</span>
+          <p class="value">R$ <?= number_format($vendas_totais, 2, ',', '.') ?></p>
+          <span class="growth">Reflete pedidos pagos</span>
         </div>
       </div>
 
@@ -77,17 +167,8 @@
         <div class="icon">🛒</div>
         <div>
           <h3>Pedidos</h3>
-          <p class="value">152</p>
-          <span class="growth">+12.5% em relação ao mês passado</span>
-        </div>
-      </div>
-
-      <div class="overview-card">
-        <div class="icon">📦</div>
-        <div>
-          <h3>Produtos</h3>
-          <p class="value">89</p>
-          <span class="growth">5 novos produtos este mês</span>
+          <p class="value"><?= $total_pedidos ?></p>
+           <span class="growth">Total de pedidos criados</span>
         </div>
       </div>
 
@@ -95,8 +176,8 @@
         <div class="icon">👥</div>
         <div>
           <h3>Usuários</h3>
-          <p class="value">1.245</p>
-          <span class="growth">+180 novos usuários</span>
+          <p class="value"><?= $total_usuarios ?></p>
+          <span class="growth">Clientes cadastrados</span>
         </div>
       </div>
     </section>
@@ -105,89 +186,47 @@
       <section class="recent-orders">
         <h2>Pedidos Recentes</h2>
         <ul class="order-list">
-          <li>
-            <div>
-              <strong>João Silva</strong><br>
-              <span>Skate Completo Pro</span>
-            </div>
-            <div class="order-value">R$ 299,90</div>
-            <span class="status entregue">Entregue</span>
-          </li>
-          <li>
-            <div>
-              <strong>Maria Santos</strong><br>
-              <span>Shape Element</span>
-            </div>
-            <div class="order-value">R$ 89,90</div>
-            <span class="status preparando">Em preparo</span>
-          </li>
-          <li>
-            <div>
-              <strong>Pedro Costa</strong><br>
-              <span>Truck Independent</span>
-            </div>
-            <div class="order-value">R$ 159,90</div>
-            <span class="status enviado">Enviado</span>
-          </li>
-          <li>
-            <div>
-              <strong>Ana Oliveira</strong><br>
-              <span>Rodas Bones</span>
-            </div>
-            <div class="order-value">R$ 79,90</div>
-            <span class="status pendente">Pendente</span>
-          </li>
+          <?php if (empty($pedidos_recentes)): ?>
+              <li>Nenhum pedido recente.</li>
+          <?php else: ?>
+              <?php foreach ($pedidos_recentes as $pedido): ?>
+                  <li>
+                    <div>
+                      <strong>#<?= $pedido['id_pedido'] ?> - <?= htmlspecialchars($pedido['cliente_nome']) ?></strong><br>
+                      <span>Pedido recente</span>
+                    </div>
+                    <div class="order-value">R$ <?= number_format($pedido['valor_total'], 2, ',', '.') ?></div>
+                    <span class="status <?= getStatusClass($pedido['status']) ?>"><?= htmlspecialchars($pedido['status']) ?></span>
+                  </li>
+              <?php endforeach; ?>
+          <?php endif; ?>
         </ul>
       </section>
 
       <section class="best-products">
         <h2>Produtos Mais Vendidos</h2>
         <ul class="product-list">
-          <li>
-            <div>
-              <strong>Skate Completo Pro</strong><br>
-              <span>45 vendas</span>
-            </div>
-            <div class="product-value">R$ 13.495,50</div>
-            <span class="growth positive">+45%</span>
-          </li>
-          <li>
-            <div>
-              <strong>Shape Element</strong><br>
-              <span>32 vendas</span>
-            </div>
-            <div class="product-value">R$ 2.876,80</div>
-            <span class="growth positive">+32%</span>
-          </li>
-          <li>
-            <div>
-              <strong>Truck Independent</strong><br>
-              <span>28 vendas</span>
-            </div>
-            <div class="product-value">R$ 4.477,20</div>
-            <span class="growth positive">+28%</span>
-          </li>
-          <li>
-            <div>
-              <strong>Rodas Bones</strong><br>
-              <span>25 vendas</span>
-            </div>
-            <div class="product-value">R$ 1.997,50</div>
-            <span class="growth positive">+25%</span>
-          </li>
+           <?php if (empty($mais_vendidos)): ?>
+              <li>Nenhum produto vendido ainda.</li>
+          <?php else: ?>
+               <?php foreach ($mais_vendidos as $produto): ?>
+                  <li>
+                    <div>
+                      <strong><?= htmlspecialchars($produto['produto_nome']) ?></strong><br>
+                      <span><?= $produto['total_vendido'] ?> vendas</span>
+                    </div>
+                    <div class="product-value">R$ <?= number_format($produto['valor_vendido'], 2, ',', '.') ?></div>
+                     <span class="growth positive">--%</span>
+                  </li>
+              <?php endforeach; ?>
+           <?php endif; ?>
         </ul>
       </section>
-    </div>
+     </div>
 
-
-
-
-
-
-    <section class="recent-products">
+     <section class="recent-products">
       <div class="header-section">
-        <h2>Produtos recentes</h2>
-        <button class="btn-add">+ Novo Produto</button>
+        <h2>Produtos Adicionados Recentemente</h2>
       </div>
 
       <table class="products-table">
@@ -203,52 +242,27 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td><img src="img/produto1.png" alt="Cavalo"></td>
-            <td>Cavalo</td>
-            <td>R$ 24,00</td>
-            <td>1</td>
-            <td>Roda</td>
-            <td><span class="status ativo">Ativo</span></td>
-            <td>
-              <button class="btn editar">Editar</button>
-              <button class="btn ver">Ver</button>
-              <button class="btn excluir">Excluir</button>
-            </td>
-          </tr>
-
-          <tr>
-            <td><img src="img/produto2.png" alt="Rolamento ABEC 7"></td>
-            <td>Rolamento ABEC 7</td>
-            <td>R$ 45,90</td>
-            <td>25</td>
-            <td>—</td>
-            <td><span class="status ativo">Ativo</span></td>
-            <td>
-              <button class="btn editar">Editar</button>
-              <button class="btn ver">Ver</button>
-              <button class="btn excluir">Excluir</button>
-            </td>
-          </tr>
-
-          <tr>
-            <td><img src="img/produto3.png" alt="Rodas Bones"></td>
-            <td>Rodas Bones</td>
-            <td>R$ 79,90</td>
-            <td>0</td>
-            <td>—</td>
-            <td><span class="status inativo">Inativo</span></td>
-            <td>
-              <button class="btn editar">Editar</button>
-              <button class="btn ver">Ver</button>
-              <button class="btn excluir">Excluir</button>
-            </td>
-          </tr>
+          <?php if (empty($produtos_recentes_tabela)): ?>
+              <tr><td colspan="7" style="text-align:center;">Nenhum produto cadastrado.</td></tr>
+          <?php else: ?>
+              <?php foreach ($produtos_recentes_tabela as $produto): ?>
+                  <tr>
+                    <td><img src="<?= htmlspecialchars($produto['url_img']) ?>" alt="<?= htmlspecialchars($produto['nome']) ?>"></td>
+                    <td><?= htmlspecialchars($produto['nome']) ?></td>
+                    <td>R$ <?= number_format($produto['preco'], 2, ',', '.') ?></td>
+                    <td><?= htmlspecialchars($produto['estoque']) ?></td>
+                    <td><?= htmlspecialchars($produto['categoria_nome'] ?? 'Sem Categoria') ?></td>
+                    <td><span class="status <?= strtolower($produto['status']) ?>"><?= htmlspecialchars($produto['status']) ?></span></td>
+                    <td>
+                        <a href="../produtos/editar_produto.php?id=<?= $produto['id_pecas'] ?>" class="btn editar">Editar</a>
+                       <a href="../produtos/excluir_produto.php?id=<?= $produto['id_pecas'] ?>" class="btn excluir" onclick="return confirm('Tem certeza?');">Excluir</a>
+                       </td>
+                  </tr>
+              <?php endforeach; ?>
+          <?php endif; ?>
         </tbody>
       </table>
     </section>
   </main>
-
-</body>
-
+  </body>
 </html>
