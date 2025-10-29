@@ -1,8 +1,3 @@
-/* Adicionado para garantir consistência de layout */
-* {
-  box-sizing: border-box;
-}
-
 .hhh {
   display: flex;
   text-align: center;
@@ -29,14 +24,11 @@ body {
 /* BANNER PRINCIPAL */
 .imgebarra {
   position: relative;
-  /* AJUSTE DE MARGEM: Removido margin-left/right duplicado */
   width: calc(100% - 40px);
-  /* 20px de cada lado */
   height: 250px;
   background: url("../img/imgs-skateshop/banner.jpg") center/cover no-repeat;
   border-radius: 15px;
   margin: 20px auto;
-  /* Isso já centraliza e dá as margens de 20px */
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -141,19 +133,17 @@ body {
   background: white;
   border: 1px solid #ddd;
   padding: 14px 25px;
-  /* <-- ALTERADO (era 10px 20px) */
+ 
   border-radius: 25px;
   font-weight: 700;
   font-size: 16px;
-  /* <-- ALTERADO (era 15px) */
+ 
   color: #333;
   cursor: pointer;
   transition: 0.3s;
   width: 100%;
   max-width: 160px;
-  /* <-- ALTERADO (era 140px) */
-  /* height: 50px; */
-  /* <-- REMOVIDO (padding controla a altura) */
+  
   text-decoration: none;
   text-align: center;
   display: flex;
