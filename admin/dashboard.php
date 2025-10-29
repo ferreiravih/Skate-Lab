@@ -77,11 +77,11 @@ try {
 // Função auxiliar para classes CSS de status do pedido
 function getStatusClass($status) {
     switch (strtoupper($status)) {
-        case 'ENTREGUE': return 'entregue';
-        case 'EM PREPARO': return 'preparando'; // Ajustado para corresponder ao CSS
-        case 'ENVIADO': return 'enivado'; // Corrigido para 'enviado' (seu CSS tem 'enviado')
+        case 'CONCLUIDO': return 'concluido';
+        case 'EM PREPARO': return 'preparando'; 
+        case 'ENVIADO': return 'enviado'; 
         case 'PENDENTE': return 'pendente';
-        case 'CANCELADO': return 'cancelado'; // Adicionado
+        case 'CANCELADO': return 'cancelado'; 
         default: return 'pendente';
     }
 }
