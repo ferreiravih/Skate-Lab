@@ -32,7 +32,7 @@ try {
     </div>
 
     <div class="form-container">
-      <form action="criar_produto.php" method="POST" class="form-produto">
+      <form action="criar_produto.php" id="form-add-produto" method="POST" class="form-produto">
         
       <!-- LADO ESQUERDO -->
         <div class="info-basica">
@@ -90,7 +90,7 @@ try {
           </div>
 
           <div class="botoes-form">
-            <button type="submit" class="btn-criar">Criar Produto</button>
+            <button type="submit" id="btn-submit-form" class="btn-criar">Criar Produto</button>
             <a href="../produtos/produtos.php"><button type="button" class="btn-cancelar">Cancelar</button></a>
           </div>
 

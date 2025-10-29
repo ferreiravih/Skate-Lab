@@ -2,46 +2,66 @@
 require_once __DIR__ . '/../admin_auth.php';
 require_once __DIR__ . '/../../config/db.php';
 
-// 2. VERIFICAR O MÉTODO SE É POST, SENÃO REDIRECIONA.
-if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    // Se alguém tentar acessar este URL diretamente, é expulso.
-    header("Location: add_prod.php");
+// --- INÍCIO: Resposta JSON ---
+// Define que a resposta será em JSON
+header('Content-Type: application/json');
+
+// Função para enviar a resposta e parar o script
+function enviarResposta($sucesso, $mensagem) {
+    echo json_encode([
+        'sucesso' => $sucesso,
+        'mensagem' => $mensagem
+    ]);
     exit;
 }
+// --- FIM: Resposta JSON ---
 
-// 3. coletar e sanetizar os dados do formulário, trim remove espaços desnecessários
+// 2. VERIFICAR O MÉTODO SE É POST
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    enviarResposta(false, "Método inválido.");
+}
+
+// 3. coletar e sanetizar os dados do formulário
 $nome = trim($_POST['nome'] ?? '');
 $url_img = trim($_POST['url_img'] ?? '');
 $desc_curta = trim($_POST['desc_curta'] ?? '');
-$dsc_longa = trim($_POST['dsc_longa'] ?? null); // Este pode ser nulo
+$dsc_longa = trim($_POST['dsc_longa'] ?? null);
 $id_cat = filter_var($_POST['id_cat'] ?? '', FILTER_VALIDATE_INT);
 $preco = filter_var($_POST['preco'] ?? '', FILTER_VALIDATE_FLOAT);
 $estoque = filter_var($_POST['estoque'] ?? 0, FILTER_VALIDATE_INT);
-
-// Refifica se o checkbox está marcado, desmarcado nao envia nada.
 $status = ($_POST['status'] ?? 'INATIVO') === 'ATIVO' ? 'ATIVO' : 'INATIVO';
 
-// 4. VALIDAÇÃO MÍNIMA DOS DADOS
-if (empty($nome) || empty($url_img) || empty($desc_curta) || !$id_cat || $preco === false) {
-    // Se dados obrigatórios faltarem, morre e exibe um erro.
-    // (Uma implementação melhor usaria $_SESSION para enviar o erro de volta ao form)
-    die("Erro: Nome, URL, Descrição Curta, Preço e Categoria são obrigatórios.");
+// 4. VALIDAÇÃO MÍNIMA (enviando JSON em caso de erro)
+if (empty($nome)) {
+    enviarResposta(false, "Erro: O campo 'Nome' é obrigatório.");
+}
+if (empty($url_img)) {
+    enviarResposta(false, "Erro: O campo 'URL da Imagem' é obrigatório.");
+}
+if (empty($desc_curta)) {
+    enviarResposta(false, "Erro: O campo 'Descrição Curta' é obrigatório.");
+}
+if ($id_cat === false || $id_cat === 0) {
+    enviarResposta(false, "Erro: Você precisa selecionar uma 'Categoria' válida.");
+}
+if ($preco === false) {
+    enviarResposta(false, "Erro: O campo 'Preço' é obrigatório e deve ser um número válido.");
+}
+if ($estoque === false) { // Verifica se o estoque é um número válido
+    enviarResposta(false, "Erro: O campo 'Estoque' deve ser um número válido.");
 }
 
 // 5. INSERIR NO BANCO DE DADOS
-// Usamos a tabela 'pecas' e as colunas do seu schema
-$sql = "INSERT INTO pecas 
+$sql = "INSERT INTO public.pecas 
             (id_cat, nome, url_img, url_m3d, preco, estoque, desc_curta, dsc_longa, status) 
         VALUES 
             (:id_cat, :nome, :url_img, :url_m3d, :preco, :estoque, :desc_curta, :dsc_longa, :status)";
 
 try {
-    // 6. PREPARED STATEMENTS (A MELHOR PRÁTICA DE SEGURANÇA)
-    // Isso previne 100% dos ataques de SQL Injection.
+    // 6. PREPARED STATEMENTS
     $stmt = $pdo->prepare($sql);
     
     // 7. EXECUTAR A CONSULTA
-    // Passamos os dados em um array separado. O PDO cuida da segurança.
     $stmt->execute([
         ':id_cat' => $id_cat,
         ':nome' => $nome,
@@ -54,16 +74,12 @@ try {
         ':status' => $status
     ]);
 
-    // 8. REDIRECIONAR COM SUCESSO
-    // Se tudo deu certo, envia o admin para a lista de produtos.
-    header("Location: ../produtos/produtos.php?status=success");
-    exit;
+    // 8. ENVIAR RESPOSTA DE SUCESSO
+    enviarResposta(true, "Produto cadastrado com sucesso!");
 
 } catch (PDOException $e) {
     // 9. TRATAR ERROS
-    // Se algo der errado (ex: um 'nome' duplicado), registra no log
-    // e mostra uma mensagem amigável.
     error_log("Erro ao criar produto: " . $e->getMessage());
-    die("Erro ao salvar produto no banco de dados. Verifique os logs.");
+    enviarResposta(false, "Erro de banco de dados. Verifique os logs.");
 }
 ?>

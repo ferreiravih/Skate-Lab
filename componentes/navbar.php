@@ -28,11 +28,10 @@
       <!--  Sidebar de LOGIN -->
       <div id="sidebarLogin" class="sidebar">
         <h2>Login</h2>
-        <form>
-          <label>Usuário</label>
-          <input type="text" placeholder="Digite seu usuário" />
+        <form action="../auth/login.php" method="POST">
+          <label>Email</label> <input type="email" name="email" placeholder="Digite seu email" required />
           <label>Senha</label>
-          <input type="password" placeholder="Digite sua senha" />
+          <input type="password" name="senha" placeholder="Digite sua senha" required />
           <button type="submit">Entrar</button>
         </form>
 

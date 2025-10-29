@@ -1,3 +1,21 @@
+<?php
+require_once __DIR__ . '/../admin_auth.php';
+require_once __DIR__ . '/../../config/db.php';
+
+// Busca produtos e junta com categorias
+try {
+    $sql = "SELECT p.*, c.nome AS categoria_nome 
+            FROM public.pecas p 
+            LEFT JOIN public.categorias c ON p.id_cat = c.id_cat 
+            ORDER BY p.nome";
+    $stmt = $pdo->query($sql);
+    $pecas = $stmt->fetchAll();
+} catch (PDOException $e) {
+    error_log("Erro ao buscar peças: " . $e->getMessage());
+    $pecas = [];
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt - br">
 
@@ -42,66 +60,35 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><img src="../imagens/skate1.png" alt="Skate Completo"></td>
-                            <td>Skate Completo Pro</td>
-                            <td>R$ 299,90</td>
-                            <td>15</td>
-                            <td>Skate Completo</td>
-                            <td><span class="ativo">Ativo</span></td>
-                            <td>
-                                <div class="acoes">
-                                    <button type="button" class="btn-acao"><i class="ri-eye-line"></i></button>
-                                    <button type="button" class="btn-acao"><i class="ri-pencil-line"></i></button>
-                                    <button type="button" class="btn-acao"><i class="ri-delete-bin-6-line"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><img src="https://res.cloudinary.com/dunatmsn9/image/upload/v1761511565/shape_sonic_xnhnfa.png" alt="Shape Element"></td>
-                            <td>Shape Element</td>
-                            <td>R$ 89,90</td>
-                            <td>32</td>
-                            <td>Shape</td>
-                            <td><span class="ativo">Ativo</span></td>
-                            <td>
-                                <div class="acoes">
-                                    <button type="button" class="btn-acao"><i class="ri-eye-line"></i></button>
-                                    <button type="button" class="btn-acao"><i class="ri-pencil-line"></i></button>
-                                    <button type="button" class="btn-acao"><i class="ri-delete-bin-6-line"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><img src="../imagens/truck1.png" alt="Truck"></td>
-                            <td>Truck Independent</td>
-                            <td>R$ 159,90</td>
-                            <td>8</td>
-                            <td>Truck</td>
-                            <td><span class="ativo">Ativo</span></td>
-                            <td>
-                                <div class="acoes">
-                                    <button type="button" class="btn-acao"><i class="ri-eye-line"></i></button>
-                                    <button type="button" class="btn-acao"><i class="ri-pencil-line"></i></button>
-                                    <button type="button" class="btn-acao"><i class="ri-delete-bin-6-line"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><img src="../imagens/rodas1.png" alt="Rodas Bones"></td>
-                            <td>Rodas Bones</td>
-                            <td>R$ 79,90</td>
-                            <td>0</td>
-                            <td>Roda</td>
-                            <td><span class="inativo">Inativo</span></td>
-                            <td>
-                                <div class="acoes">
-                                    <button type="button" class="btn-acao"><i class="ri-eye-line"></i></button>
-                                    <button type="button" class="btn-acao"><i class="ri-pencil-line"></i></button>
-                                    <button type="button" class="btn-acao"><i class="ri-delete-bin-6-line"></i></button>
-                                </div>
-                            </td>
-                        </tr>
+                        <?php if (empty($pecas)): ?>
+                            <tr>
+                                <td colspan="7" style="text-align:center;">Nenhum produto cadastrado.</td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($pecas as $peca): ?>
+                                <tr>
+                                    <td><img src="<?= htmlspecialchars($peca['url_img']) ?>" alt="<?= htmlspecialchars($peca['nome']) ?>"></td>
+                                    <td><?= htmlspecialchars($peca['nome']) ?></td>
+                                    <td>R$ <?= number_format($peca['preco'], 2, ',', '.') ?></td>
+                                    <td><?= htmlspecialchars($peca['estoque']) ?></td>
+                                    <td><?= htmlspecialchars($peca['categoria_nome'] ?? 'Sem Categoria') ?></td>
+                                    <td><span class="<?= strtolower($peca['status']) ?>"><?= htmlspecialchars($peca['status']) ?></span></td>
+                                    <td>
+                                        <div class="acoes">
+                                            <button type="button" class="btn-acao"><i class="ri-<?= $peca['status'] === 'ATIVO' ? 'eye-line' : 'eye-off-line' ?>"></i></button>
+                                            
+                                            <a href="editar_produto.php?id=<?= $peca['id_pecas'] ?>" class="btn-acao">
+                                                <i class="ri-pencil-line"></i>
+                                            </a>
+                                            
+                                            <a href="excluir_produto.php?id=<?= $peca['id_pecas'] ?>" class="btn-acao" onclick="return confirm('Tem certeza que deseja excluir este produto?');">
+                                                <i class="ri-delete-bin-6-line"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
