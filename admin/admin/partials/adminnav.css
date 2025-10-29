@@ -1,0 +1,89 @@
+
+ * {
+  margin: 0;
+  padding: 0;
+}
+
+.hea {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #fff;
+  font-family: 'Poppins', sans-serif;
+  height: 70px; 
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  padding: 0 40px; 
+  position: sticky;
+  z-index: 9999;
+  top: 0;
+}
+
+.logo {
+  font-family: 'Nosifer', cursive;
+  background: linear-gradient(90deg, #5a2472, #f08644); 
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0; 
+}
+
+/* MENU */
+.vika {
+  display: flex;
+  gap: 40px; /* Reduzi um pouco o gap */
+  margin-left: 0; /* Aumentei a margem da logo */
+  align-items: center; /* Garante alinhamento vertical */
+}
+
+.vika a {
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s;
+  font-size: 16px; /* Tamanho um pouco menor */
+  font-weight: 500;
+  display: flex;
+  align-items: center; /* Alinha ícone com texto */
+  gap: 8px; /* Espaço entre ícone e texto */
+  padding: 8px 12px; /* Espaço interno */
+  border-radius: 6px; /* Cantos levemente arredondados */
+}
+
+.vika a:hover {
+  color: #e96b3f;
+  background-color: #f8f8f8; /* Fundo sutil no hover */
+}
+
+.vika i {
+  font-size: 18px; /* Tamanho consistente dos ícones */
+  margin-right: 0; /* Remove margin-right pois agora usa gap */
+}
+
+/* USER - CORRIGIDO */
+.user {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espaço entre ícone e texto */
+}
+
+.user a {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 0.3s;
+}
+
+.user a:hover {
+  color: #e96b3f;
+  background-color: #f8f8f8;
+}
+
+.user i {
+  font-size: 20px;
+  margin-right: 0; 
+}
