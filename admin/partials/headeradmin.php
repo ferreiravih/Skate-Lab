@@ -25,7 +25,12 @@
             <a href="../../../Skate-Lab/admin/categorias/categoria.php"><i class="ri-folder-line"></i>Categorias</a>
             <a href="../../../Skate-Lab/admin/pedidos/pedidos.php"><i class="ri-shopping-cart-2-line"></i>Pedidos</a>
         </nav>
-    <div class="user"><a href="#"><i class="ri-user-line"></i></a> </div>
-    </header>
+        
+        <div class="user">
+            <a href="../../../Skate-Lab/auth/logout.php" title="Sair do Painel">
+                <i class="ri-logout-box-r-line"></i>
+            </a>
+        </div>
+        </header>
 </body>
 </html>
