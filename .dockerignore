@@ -3,4 +3,7 @@
 .dockerignore
 .buildpacks
 MODIFICACOES.md
-# Adicione outros arquivos que você não precisa no container de produção
+vendor
+README.md
+# Adicione outros arquivos que você não precisa no container de produção.git
+

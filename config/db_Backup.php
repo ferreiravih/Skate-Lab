@@ -7,7 +7,7 @@ $host = 'db.gzbeazpbvgiymtmtgffy.supabase.co';
 $port = '5432';
 $dbname = 'postgres';
 $user = 'postgres';
-$password = '3tecSk@teL@b'; // A senha do seu banco
+$password = ''; // A senha do seu banco
 
 // 2. Definir a string de conexão (DSN) para o PostgreSQL
 // Esta linha agora terá os valores corretos:
