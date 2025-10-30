@@ -1,31 +1,49 @@
 <?php
-// config/db.php
-// Configuração para ambiente local (Laragon / XAMPP)
+// Configuração para PostgreSQL (Compatível com Heroku + Supabase)
 
-// 1. Defina suas credenciais do Supabase aqui
-$host = 'db.gzbeazpbvgiymtmtgffy.supabase.co';
-$port = '5432';
-$dbname = 'postgres';
-$user = 'postgres';
-$password = '3tecSk@teL@b'; // A senha do seu banco
+// Nome da variável de ambiente que armazenará a URL de conexão do Supabase no Heroku.
+// Mantenha o nome 'SUPABASE_DATABASE_URL'
+$env_var_name = 'SUPABASE_DATABASE_URL';
+$url = getenv($env_var_name);
 
-// 2. Definir a string de conexão (DSN) para o PostgreSQL
-// Esta linha agora terá os valores corretos:
-$dsn = "pgsql:host=$host;port=$port;dbname=$dbname";
+// 1. Configuração do Banco de Dados
+if ($url) {
+    // Modo HEROKU/SUPABASE (Lê a URL de conexão da variável de ambiente)
+    $db_parts = parse_url($url);
+    $host = $db_parts['host'];
+    $port = $db_parts['port'] ?? '5432';
+    $user = $db_parts['user'];
+    $password = $db_parts['pass'];
+    $database = ltrim($db_parts['path'], '/');
+} else {
+    // Modo LOCAL (Use suas credenciais de desenvolvimento)
+    // ATENÇÃO: Verifique se sua instalação local usa PostgreSQL!
+    $host = 'localhost';
+    $port = '5432'; 
+    $user = 'seu_usuario_local'; 
+    $password = 'sua_senha_local';
+    $database = 'seu_banco_local';
+}
 
-// 3. Definir opções do PDO
-$options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_PERSISTENT         => false 
-];
-
+// 2. Tenta conectar com PDO
 try {
-    // 4. Criar a instância global do PDO
-    $pdo = new PDO($dsn, $user, $password, $options);
+    // String DSN para PostgreSQL (pgsql)
+    $dsn = "pgsql:host=$host;port=$port;dbname=$database;user=$user;password=$password";
+    
+    // A maioria dos provedores exige SSL, mas o Supabase geralmente aceita conexões sem 
+    // `sslmode=require` para simplificar. Se der erro, você pode adicionar no $dsn.
+    $pdo = new PDO($dsn);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 } catch (PDOException $e) {
-    // Modo de Debug: Mostrar o erro real
-    die("ERRO REAL DA CONEXÃO: " . $e->getMessage());
+    // Em produção (Heroku), o erro é logado e não exibido ao usuário
+    // Em desenvolvimento, o erro aparece para debug
+    if ($url) {
+        // No Heroku, apenas registra o erro (melhor prática de segurança)
+        error_log("Database connection error: " . $e->getMessage());
+        die("Ocorreu um erro na conexão do sistema. Tente novamente mais tarde.");
+    } else {
+        // Localmente, mostra o erro completo
+        die("Erro na conexão com o banco de dados local: " . $e->getMessage());
+    }
 }
-?>

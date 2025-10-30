@@ -1,0 +1,29 @@
+services:
+  # Define o serviço principal que é sua aplicação web PHP
+  - type: web
+    name: skate-lab-demo
+    env: php
+    
+    # Plano de Serviço: Define para o nível gratuito
+    plan: free 
+    
+    # Conexão com o Git: Qual branch o Render deve usar
+    repo: https://github.com/ferreiravih/Skate-Lab # SUBSTITUA AQUI
+    branch: main 
+    
+    # Diretório: Onde o código-fonte está dentro do repositório
+    rootDir: . 
+    
+    # Comando de Build: Executado na hora de construir o container (instalar dependências)
+    buildCommand: 'composer install --no-dev'
+    
+    # Comando de Início: Executado para iniciar o servidor web
+    startCommand: 'vendor/bin/heroku-php-apache2'
+    
+    # Configuração de Saúde: Monitora a porta 80 do container
+    healthCheckPath: /home/
+    # Variáveis de Ambiente: IMPORTANTE para a conexão com o Supabase
+    envVars:
+      - key: SUPABASE_DATABASE_URL
+        sync: false
+        # O VALOR DESTA CHAVE SERÁ DEFINIDO NO PAINEL DO RENDER (Passo 3)
