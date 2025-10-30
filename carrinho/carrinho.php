@@ -1,12 +1,24 @@
 <?php
-session_start();
+// 1. INICIA A SESSÃO (DEVE SER A PRIMEIRA COISA)
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
+// 2. VERIFICAÇÃO DE LOGIN
+// Se 'id_usu' NÃO EXISTE na sessão, o usuário não está logado.
+if (!isset($_SESSION['id_usu'])) {
+    
+    // 3. Redireciona para a home (onde está o login) com um erro
+    header("Location: ../home/index.php?error=auth_required");
+    exit; // Para a execução do script
+}
+
+// O restante do seu código original começa aqui
 // Garante que o carrinho exista
 if (!isset($_SESSION['carrinho'])) {
     $_SESSION['carrinho'] = [];
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 

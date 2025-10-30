@@ -1,3 +1,9 @@
+<?php
+// Inicia a sessão em todas as páginas que incluem a navbar
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -15,7 +21,7 @@
 <body>
     <header class="header">
         <div class="logo">
-            <a href="../../Skate-Lab/home/home.php">
+            <a href="../../Skate-Lab/home/index.php">
                 <h1>SKATELAB</h1>
             </a>
         </div>
@@ -25,40 +31,49 @@
         </nav>
         <div class="icones1">
             <a><i class="fa-regular fa-user user-icon" id="userIcon"></i></a>
-      <!--  Sidebar de LOGIN -->
-      <div id="sidebarLogin" class="sidebar">
-        <h2>Login</h2>
-        <form action="../auth/login.php" method="POST">
-          <label>Email</label> <input type="email" name="email" placeholder="Digite seu email" required />
-          <label>Senha</label>
-          <input type="password" name="senha" placeholder="Digite sua senha" required />
-          <button type="submit">Entrar</button>
-        </form>
 
-        <button type="button" id="continuarcomemail">Continuar com E-mail</button>
-        <button type="button" id="abrirCadastro">Faça seu cadastro</button>
-      </div>
+            <?php // AQUI COMEÇA A MÁGICA: Verifica se o ID do usuário NÃO existe na sessão ?>
+            <?php if (!isset($_SESSION['id_usu'])): ?>
 
-      <!-- Sidebar de CADASTRO -->
-      <div id="sidebarCadastro" class="sidebar">
-        <h2>Cadastro</h2>
-        <form>
-          <label>Nome completo</label>
-          <input type="text" placeholder="Digite seu nome" required />
+                <div id="sidebarLogin" class="sidebar">
+                    <h2>Login</h2>
+                    <form action="../auth/login.php" method="POST">
+                        <label>Email</label> <input type="email" name="email" placeholder="Digite seu email" required />
+                        <label>Senha</label>
+                        <input type="password" name="senha" placeholder="Digite sua senha" required />
+                        <button type="submit">Entrar</button>
+                    </form>
+                    <button type="button" id="abrirCadastro">Faça seu cadastro</button>
+                </div>
 
-          <label>Email</label>
-          <input type="email" placeholder="Digite seu email" required />
+                <div id="sidebarCadastro" class="sidebar">
+                    <h2>Cadastro</h2>
+                    <form action="../auth/registrar.php" method="POST">
+                        <label>Nome completo</label>
+                        <input type="text" name="nome" placeholder="Digite seu nome" required />
+                        <label>Email</label>
+                        <input type="email" name="email" placeholder="Digite seu email" required />
+                        <label>Senha</label>
+                        <input type="password" name="senha" placeholder="Crie sua senha" required />
+                        <button type="submit">Cadastrar</button>
+                        <button type="button" id="voltarLogin">Voltar ao login</button>
+                    </form>
+                </div>
 
-          <label>Usuário</label>
-          <input type="text" placeholder="Crie um nome de usuário" required />
+            <?php else: ?>
 
-          <label>Senha</label>
-          <input type="password" placeholder="Crie sua senha" required />
+                <div id="sidebarUsuario" class="sidebar">
+                    <?php // Puxa os dados da Sessão que o login.php e registrar.php criaram ?>
+                    <h2><?php echo htmlspecialchars($_SESSION['nome_usu']); ?></h2>
+                    <p class="sidebar-email"><?php echo htmlspecialchars($_SESSION['email_usu']); ?></p>
+                    
+                    <a href="../perfil/perfil.php" id="editarPerfil">Editar Perfil</a>
+                    <a href="../auth/logout.php" id="sair">Sair (Desconectar)</a>
+                </div>
 
-          <button type="submit">Cadastrar</button>
-          <button type="button" id="voltarLogin">Voltar ao login</button>
-        </form>
-      </div>
+            <?php endif; // Fim da verificação de login ?>
+
+
             <a><i class="fa-regular fa-heart"></i></a>
             <div class="carrinho1">
                 <a href="../carrinho/carrinho.php"><i class="fa-solid fa-cart-shopping"></i></a>
@@ -68,6 +83,7 @@
             </div>
         </div>
     </header>
+    
 
     <script src="../componentes/nav.js"></script>
 </body>

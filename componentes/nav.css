@@ -220,3 +220,193 @@
   transform: scale(1.03);
 }
 
+/* Estilo da barra lateral (AGORA USANDO .user-popup) */
+.user-popup {
+  position: fixed;
+  top: 0;
+  right: -300px; /* começa fora da tela */
+  width: 300px;
+  height: 100%;
+  background: #fff;
+  box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+  padding: 20px;
+  transition: right 0.3s ease;
+  z-index: 1000;
+  
+  /* Fundo gradiente */
+  background: linear-gradient(135deg, white,white);
+  color: #fff;
+  padding: 30px 25px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  box-shadow: -4px 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Quando estiver ativa */
+.user-popup.active {
+  right: 0;
+}
+
+/* Ícone do usuário */
+.user-icon {
+  cursor: pointer;
+  font-size: 24px;
+  transition: transform 0.2s;
+}
+
+.user-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Título (Login/Cadastro) */
+.user-popup h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  letter-spacing: 1px;
+  color: #ff9800; /* laranja */
+}
+
+/* Labels */
+.user-popup label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 500;
+  color: black; 
+}
+
+/* Inputs */
+.user-popup input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Botão principal (Entrar / Cadastrar) */
+.user-popup button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  background-color: #ff9800;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-size: 15px;
+  transition: background 0.3s ease;
+}
+
+.user-popup button[type="submit"]:hover {
+  background-color: #e68900;
+}
+
+/* Botões secundários (Voltar / Abrir Cadastro) */
+#abrirCadastro,
+#voltarLogin {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  margin-top: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  background: #fff;
+  color: #6a0dad;
+  font-weight: 600;
+}
+
+#abrirCadastro:hover,
+#voltarLogin:hover {
+  background: #f2f2f2;
+  transform: scale(1.03);
+}
+
+
+/* --- NOVOS ESTILOS PARA SIDEBAR LOGADO (Ajustes de Centralização) --- */
+
+/* Aplica flexbox na sidebar de usuário */
+#sidebarUsuario {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Alinha no topo por padrão */
+    align-items: center; /* Centraliza horizontalmente */
+    padding: 40px 25px 30px 25px; /* Mais padding no topo */
+    text-align: center; /* Garante que o texto quebre centralizado */
+}
+
+/* NOVA SAUDAÇÃO (H3) */
+.sidebar-greeting {
+    font-size: 22px;
+    font-weight: 600;
+    color: #5a2472; /* Roxo do tema */
+    margin-top: 20px; /* Espaço do topo */
+    margin-bottom: 10px;
+    word-wrap: break-word; /* Quebra nomes longos */
+}
+
+/* AJUSTE NO EMAIL */
+.user-popup p.sidebar-email {
+    text-align: center;
+    color: #555; /* Cor mais escura para legibilidade */
+    margin-top: 0;
+    margin-bottom: 30px; /* Mais espaço antes dos botões */
+    font-size: 14px;
+    word-wrap: break-word; /* Garante que emails longos quebrem */
+}
+
+/* NOVO: Div dos botões */
+.sidebar-actions {
+    width: 100%; /* Ocupa toda a largura */
+    margin-top: auto; /* <-- ESTA É A MÁGICA! Empurra para baixo */
+    padding-top: 20px; /* Espaço para separar do conteúdo de cima */
+    border-top: 1px solid #eee; /* Linha sutil de separação */
+}
+
+/* Estilo base para os links de Ação do Usuário (Editar Perfil / Sair) */
+#editarPerfil,
+#sair {
+    display: block; /* Faz o link ocupar a largura toda */
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    margin-top: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center; /* Centraliza o texto */
+    text-decoration: none; /* Remove sublinhado do link */
+    transition: background 0.3s ease, transform 0.2s ease, color 0.3s ease, border-color 0.3s ease;
+    box-sizing: border-box; /* Garante que o padding não estoure a largura */
+}
+
+/* "Editar Perfil" – botão secundário */
+#editarPerfil {
+  background: #f0f0f0; /* Fundo cinza claro */
+  color: #5a2472; /* Roxo do tema */
+  border: 2px solid #f0f0f0;
+}
+
+#editarPerfil:hover {
+  background: #e0e0e0; /* Escurece um pouco */
+  transform: scale(1.02);
+}
+
+/* "Sair" – botão de destaque negativo */
+#sair {
+  background: transparent;
+  color: #ff9800; /* Laranja do tema */
+  border: 2px solid #ff9800;
+}
+
+#sair:hover {
+  background: #ff9800;
+  color: #fff;
+  transform: scale(1.02);
+}

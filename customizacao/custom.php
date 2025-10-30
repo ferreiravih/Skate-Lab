@@ -256,7 +256,6 @@
       visShape = !visShape;
       setListaVisible(lista, visShape);
       setBtnLabel('btnShape', !visShape);
-      atualizarStatus(`${visShape ? '👁️' : ''} ${tipo} ${visShape ? 'visivel' : 'oculto'}`, 'info');
     }
 
     function toggleTrucks() {
@@ -264,7 +263,6 @@
       visTrucks = !visTrucks;
       setListaVisible(trucks, visTrucks);
       setBtnLabel('btnTrucks', !visTrucks);
-      atualizarStatus(`${visTrucks ? '👁️' : ''} Trucks ${visTrucks?'visíveis':'ocultos'}`, 'info');
     }
 
     function toggleRodinhas() {
@@ -273,21 +271,18 @@
       visRodinhas = !visRodinhas;
       setListaVisible(lista, visRodinhas);
       setBtnLabel('btnRodinhas', !visRodinhas);
-      atualizarStatus(`${visRodinhas ? '👁️' : ''} Rodinhas ${visRodinhas?'visíveis':'ocultas'}`, 'info');
     }
 
     function toggleRolamentos() {
       visRolamentos = !visRolamentos;
       setListaVisible(rolamentos, visRolamentos);
       setBtnLabel('btnRolamentos', !visRolamentos);
-      atualizarStatus(`${visRolamentos ? '👁️' : ''} Rolamentos ${visRolamentos?'visíveis':'ocultos'}`, 'info');
     }
 
     function toggleParafusos() {
       visParafusos = !visParafusos;
       setListaVisible(parafusos, visParafusos);
       setBtnLabel('btnParafusos', !visParafusos);
-      atualizarStatus(`${visParafusos ? '👁️' : ''} Parafusos ${visParafusos?'visíveis':'ocultos'}`, 'info');
     }
 
     // ========== INTEGRAÇÃO SUAVE ==========
@@ -500,7 +495,6 @@
         }
       });
       trucks = lista;
-      atualizarStatus(`🛠 Trucks: ${modelo} (${count}/${lista.length})`, count ? 'sucesso' : 'erro');
     }
 
     // 🔁 SELECIONAR ROLAMENTOS (mostra 4 de uma vez)
@@ -521,7 +515,6 @@
       });
 
       rolamentos = lista; // guarda estado ativo
-      atualizarStatus(`🧷 Rolamentos: ${modelo} (${count}/${lista.length})`, count ? 'sucesso' : 'erro');
     }
 
     // 🔁 SELECIONAR PARAFUSOS (mostra 12 de uma vez)
@@ -542,7 +535,6 @@
       });
 
       parafusos = lista; // guarda estado ativo
-      atualizarStatus(`🔩 Parafusos: ${modelo} (${count}/${lista.length})`, count ? 'sucesso' : 'erro');
     }
 
     // ❌ REMOVER ROLAMENTOS (de todos os modelos)
@@ -552,7 +544,6 @@
         if (todasAsPecas[n]) todasAsPecas[n].visible = false;
       });
       rolamentos = [];
-      atualizarStatus('🧷 Rolamentos removidos', 'info');
     }
 
     // ❌ REMOVER PARAFUSOS (de todos os modelos)
@@ -562,13 +553,12 @@
         if (todasAsPecas[n]) todasAsPecas[n].visible = false;
       });
       parafusos = [];
-      atualizarStatus('🔩 Parafusos removidos', 'info');
     }
 
 
     function resetCamera() {
       controls.reset();
-      camera.position.set(0, 2, 8);
+      camera.position.set(1, 0, 0);
       camera.lookAt(0, 1, 0);
       controls.update();
       atualizarStatus('📷 Câmera resetada - Vista frontal', 'sucesso');
@@ -577,13 +567,13 @@
     function mudarVista(tipo) {
       switch (tipo) {
         case 'frontal':
-          camera.position.set(0, 2, 8);
+          camera.position.set(1, 0, 0);
           break;
         case 'lateral':
-          camera.position.set(8, 2, 0);
+          camera.position.set(0.5, 0, 8);
           break;
         case 'superior':
-          camera.position.set(0, 10, 0.1);
+          camera.position.set(0, 5, 0.1);
           break;
       }
       camera.lookAt(0, 1, 0);
@@ -652,27 +642,6 @@
       mostrarRodinhas(rodinhasAtuais);
       shapeAtual = tipo;
 
-      let mensagem = '';
-      if (tipo === 'luffy') mensagem = ' LUFFY COMPLETO';
-      else if (tipo === 'killjoy') mensagem = 'KILLJOY COMPLETO';
-      else if (tipo === 'shanks') mensagem = ' SHANKS COMPLETO';
-      else if (tipo === 'yoru') mensagem = ' YORU COMPLETO';
-      else if (tipo === 'witcher') mensagem = ' WITCHER COMPLETO';
-      else if (tipo === 'viper') mensagem = ' VIPER COMPLETO';
-      else if (tipo === 'luffyBase') mensagem = ' LUFFY (Apenas Base)';
-      else if (tipo === 'killjoyBase') mensagem = ' KILLJOY (Apenas Base)';
-      else if (tipo === 'shanksBase') mensagem = ' SHANKS (Apenas Base)';
-      else if (tipo === 'yoruBase') mensagem = ' YORU (Apenas Base)';
-      else if (tipo === 'witcherBase') mensagem = ' WITCHER (Apenas Base)';
-      else if (tipo === 'viperBase') mensagem = ' VIPER (Apenas Base)';
-      else if (tipo === 'sonicBase') mensagem = ' SONIC';
-      else if (tipo === 'omenBase') mensagem = ' OMEN (Apenas Base)';
-      else if (tipo === 'circusBase') mensagem = ' CIRCUS (Apenas Base)';
-
-      if (pecasEncontradas < (shapes[tipo] || []).length) {
-        mensagem += ` (${pecasEncontradas}/${(shapes[tipo] || []).length} peças)`;
-      }
-      atualizarStatus(mensagem || ` ${tipo}`, 'sucesso');
 
       document.querySelectorAll('button').forEach(btn => btn.classList.remove('ativo'));
       if (event && event.target) event.target.classList.add('ativo');
@@ -697,8 +666,6 @@
         const t = btn.dataset?.rodinhas;
         if (t) btn.classList.toggle('ativo', t === tipo);
       });
-
-      if (tipo) atualizarStatus(` Rodinhas: ${tipo} (${count}/${lista.length})`, count ? 'sucesso' : 'info');
     }
 
     // ===== Base-only helper (se quiser usar)
@@ -718,7 +685,6 @@
       rolamentos = [];
       parafusos = [];
       shapeAtual = tipoShape;
-      atualizarStatus(` ${tipoShape.toUpperCase()} (apenas BASE) ${count ? '✅' : '⚠️'}`, count ? 'sucesso' : 'erro');
       const cfg = document.getElementById('configAtual');
       if (cfg) cfg.textContent = `Shape: ${tipoShape} (Base) | Rodinhas: — | Cor: ${corTrucksAtual}`;
     }
@@ -736,12 +702,12 @@
       camera.updateProjectionMatrix();
     }
 
-    function init() {
+    function init() { 
       scene = new THREE.Scene();
       scene.background = new THREE.Color(0xcccccc);
 
       camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.set(0, 2, 8);
+      camera.position.set(1, 0, 0);
       camera.lookAt(0, 1, 0);
 
       renderer = new THREE.WebGLRenderer({
@@ -761,14 +727,14 @@
       controls.enableDamping = true;
       controls.dampingFactor = 0.1;
       controls.rotateSpeed = 0.5;
-      controls.minDistance = 4;
-      controls.maxDistance = 20;
+      controls.minDistance = 3.5;
+      controls.maxDistance = 10;
 
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+      const ambientLight = new THREE.AmbientLight(0xffffff, 3);
       scene.add(ambientLight);
 
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
-      directionalLight.position.set(5, 10, 7);
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+      directionalLight.position.set(10, 6, 0);
       directionalLight.castShadow = true;
       scene.add(directionalLight);
 

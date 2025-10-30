@@ -24,7 +24,29 @@ document.addEventListener('DOMContentLoaded', function() {
     saveOriginalData();
     currentPhoto = document.getElementById('profile-picture').src;
 });
+// JS DO PERFIL HEHE
 
+
+// Inicializar quando a página carregar
+document.addEventListener('DOMContentLoaded', function() {
+    saveOriginalData();
+    currentPhoto = document.getElementById('profile-picture').src;
+
+    // --- CÓDIGO NOVO ADICIONADO ---
+    // Verifica se a URL tem o parâmetro 'status=registered'
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('status') === 'registered') {
+        showMessage('Cadastro realizado com sucesso! Bem-vindo(a)!', 'success');
+        
+        // Limpa o parâmetro da URL para não aparecer de novo se atualizar
+        window.history.replaceState(null, '', window.location.pathname);
+    }
+    // --- FIM DO CÓDIGO NOVO ---
+});
+
+// Salvar dados originais 
+function saveOriginalData() {}
+// ... (resto do seu código) ...
 
 // Salvar dados originais 
 function saveOriginalData() {
