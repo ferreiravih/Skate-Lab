@@ -1,9 +1,0 @@
-.git
-.gitignore
-.dockerignore
-.buildpacks
-MODIFICACOES.md
-vendor
-README.md
-# Adicione outros arquivos que você não precisa no container de produção.git
-
