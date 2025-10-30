@@ -13,7 +13,7 @@ if (!isset($_SESSION['id_usu']) || $_SESSION['tipo_usu'] !== 'admin') {
     session_destroy();
     
     // Vamos redirecionar para a home, onde está o sidebar de login.
-    header("Location: /Skate-Lab/home/home.php?error=auth");
+    header("Location: /Skate-Lab/home/index.php?error=auth");
     exit; 
 }
 

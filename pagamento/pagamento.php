@@ -5,7 +5,7 @@ require_once __DIR__ . '/../config/db.php';
 
 // Proteção: Verifica se o usuário está logado
 if (!isset($_SESSION['id_usu'])) {
-    header("Location: ../home/home.php?error=not_logged_in");
+    header("Location: ../home/index.php?error=not_logged_in");
     exit;
 }
 

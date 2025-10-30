@@ -21,7 +21,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <body>
     <header class="header">
         <div class="logo">
-            <a href="../../Skate-Lab/home/home.php">
+            <a href="../../Skate-Lab/home/index.php">
                 <h1>SKATELAB</h1>
             </a>
         </div>

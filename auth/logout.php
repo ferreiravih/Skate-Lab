@@ -10,6 +10,6 @@ session_unset();
 session_destroy();
 
 // Redireciona para a página inicial
-header("Location: ../home/home.php");
+header("Location: ../home/index.php");
 exit;
 ?>

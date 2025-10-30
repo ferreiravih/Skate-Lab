@@ -9,7 +9,7 @@ require_once __DIR__. '/../config/db.php';
 
 // 3. Verifica se o formulário foi enviado (POST)
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: ../home/home.php"); // Expulsa se não for POST
+    header("Location: ../home/index.php"); // Expulsa se não for POST
     exit;
 }
 
@@ -20,7 +20,7 @@ $senha = trim($_POST['senha'] ?? '');
 
 // 5. Validação básica
 if (empty($nome) || empty($email) || empty($senha)) {
-    header("Location: ../home/home.php?error=register_empty");
+    header("Location: ../home/index.php?error=register_empty");
     exit;
 }
 
@@ -35,7 +35,7 @@ try {
     
     if ($stmt_check->fetch()) {
         // Usuário já existe
-        header("Location: ../home/home.php?error=email_exists");
+        header("Location: ../home/index.php?error=email_exists");
         exit;
     }
 
@@ -65,7 +65,7 @@ try {
 
 } catch (PDOException $e) {
     error_log("Erro de registro: " . $e->getMessage());
-    header("Location: ../home/home.php?error=db_register");
+    header("Location: ../home/index.php?error=db_register");
     exit;
 }
 ?>

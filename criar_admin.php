@@ -47,7 +47,7 @@ try {
         echo "<h2 style='color: green;'>SUCESSO! Novo admin criado.</h2>";
     }
 
-    echo "<hr><strong>Agora tente logar em /home/home.php com:</strong><br>";
+    echo "<hr><strong>Agora tente logar em /home/index.php com:</strong><br>";
     echo "<strong>Email:</strong> " . $email_admin . "<br>";
     echo "<strong>Senha:</strong> " . $senha_admin_plana . "<br>";
     echo "<p style='color: red;'>POR SEGURANÇA, DELETE ESTE ARQUIVO (criar_admin.php) AGORA!</p>";

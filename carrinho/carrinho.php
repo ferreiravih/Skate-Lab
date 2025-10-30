@@ -9,7 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
 if (!isset($_SESSION['id_usu'])) {
     
     // 3. Redireciona para a home (onde está o login) com um erro
-    header("Location: ../home/home.php?error=auth_required");
+    header("Location: ../home/index.php?error=auth_required");
     exit; // Para a execução do script
 }
 

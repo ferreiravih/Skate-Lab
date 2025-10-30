@@ -9,7 +9,7 @@ require_once __DIR__. '/../config/db.php';
 
 // 3. Verifica se o formulário foi enviado
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: ../home/home.php"); // Expulsa se não for POST
+    header("Location: ../home/index.php"); // Expulsa se não for POST
     exit;
 }
 
@@ -19,7 +19,7 @@ $senha = trim($_POST['senha'] ?? '');
 
 if (empty($email) || empty($senha)) {
     // Erro: campos vazios (pode ser melhorado com mensagens de erro)
-    header("Location: ../home/home.php?error=empty");
+    header("Location: ../home/index.php?error=empty");
     exit;
 }
 
@@ -56,13 +56,13 @@ try {
 
     } else {
         // Falha no login (usuário ou senha incorretos)
-        header("Location: ../home/home.php?error=invalid");
+        header("Location: ../home/index.php?error=invalid");
         exit;
     }
 
 } catch (PDOException $e) {
     error_log("Erro de login: " . $e->getMessage());
-    header("Location: ../home/home.php?error=db");
+    header("Location: ../home/index.php?error=db");
     exit;
 }
 ?>
