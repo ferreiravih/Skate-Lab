@@ -43,7 +43,8 @@ try {
         $_SESSION['id_usu'] = $usuario['id_usu'];
         $_SESSION['nome_usu'] = $usuario['nome'];
         $_SESSION['tipo_usu'] = $usuario['tipo']; // ex: 'admin' ou 'comum'
-
+        $_SESSION['email_usu'] = $usuario['email'];
+        
         // 9. Redireciona para o dashboard se for admin
         if ($usuario['tipo'] === 'admin') {
             header("Location: ../admin/dashboard.php");

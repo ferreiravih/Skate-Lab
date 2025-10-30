@@ -1,6 +1,15 @@
 <?php
 session_start();
 
+// --- ADICIONADO ---
+// VERIFICAÇÃO DE LOGIN
+if (!isset($_SESSION['id_usu'])) {
+    // Se não estiver logado, redireciona para a home.
+    // O caminho (../../) sobe duas pastas (de /carrinho/contr/ para /)
+    header('Location: ../../home/home.php?error=auth_required');
+    exit;
+}
+// --- FIM DA ADIÇÃO ---
 if (
     !isset($_POST['id']) ||
     !isset($_POST['nome']) ||

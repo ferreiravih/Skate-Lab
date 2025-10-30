@@ -143,7 +143,7 @@ try {
                                     <input type="hidden" name="quantidade" value="1">
                                     <input type="hidden" name="redirect_to" value="checkout">
                                     
-                                    <button type="submit" class="botaocomprar">comprar</button>
+                                    <button type="submit" class="botaocomprar" class="botaocomprar form-protegido">comprar</button>
                                 </form>
 
                                 <form action="../carrinho/contr/adicionar_carrinho.php" method="POST" style="display: inline;">
@@ -155,7 +155,7 @@ try {
                                     <input type="hidden" name="quantidade" value="1">
                                     <input type="hidden" name="redirect_to" value="carrinho">
                                     
-                                    <button type="submit" class="botaocarrinho"><i class="fa-solid fa-cart-shopping"></i></button>
+                                    <button type="submit" class="botaocarrinho" class="botaocarrinho form-protegido"><i class="fa-solid fa-cart-shopping"></i></button>
                                 </form>
                                 
                                 </div>
@@ -177,6 +177,7 @@ try {
     ================================== 
     -->
     <script src="skateshop.js"></script>
+
 </body>
 
 </html>
