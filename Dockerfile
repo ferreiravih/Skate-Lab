@@ -1,21 +1,22 @@
-
 FROM php:8.2-apache
 
-# Atualiza o sistema e instala dependências necessárias
-# Instala extensões PHP necessárias
-RUN docker-php-ext-install pdo pdo_mysql mysqli
-RUN docker-php-ext-install pdo pdo_pgsql pgsql
+# Atualiza pacotes e instala dependências para PostgreSQL e MySQL
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    libzip-dev \
+    zip \
+    unzip \
+    && docker-php-ext-install pdo pdo_mysql mysqli pdo_pgsql pgsql
 
-# Copia os arquivos do projeto para o diretório padrão do Apache
+# Copia o projeto para o diretório padrão do Apache
 COPY . /var/www/html/
 
-# Define o diretório de trabalho
 WORKDIR /var/www/html
 
-# Habilita mod_rewrite (necessário para .htaccess e rotas amigáveis)
+# Habilita mod_rewrite (para .htaccess e rotas amigáveis)
 RUN a2enmod rewrite
 
-# Ajusta permissões
+# Corrige permissões
 RUN chown -R www-data:www-data /var/www/html
 
 # Cria um novo VirtualHost apontando para /home
@@ -38,5 +39,4 @@ ENV APACHE_RUN_USER www-data
 ENV APACHE_RUN_GROUP www-data
 
 EXPOSE 80
-# Inicia o Apache em primeiro plano
 CMD ["apache2-foreground"]
