@@ -62,7 +62,7 @@
               Witcher
             </button>
             <button class="pena" onclick="mostrarShape('viper')">
-              <img class="btn-imagem" src="image/" alt="viper"><br>
+              <img class="btn-imagem" src="image/viper.png" alt="viper"><br>
               Viper
             </button>
             <button class="pena" onclick="mostrarShape('sonic')">
@@ -70,7 +70,7 @@
               Sonic
             </button>
             <button class="pena" onclick="mostrarShape('omen')">
-              <img class="btn-imagem" src="image/" alt="omen"><br>
+              <img class="btn-imagem" src="image/transferir1.png" alt="omen"><br>
               omen
             </button>
             <button class="pena" onclick="mostrarShape('circus')">
@@ -108,7 +108,7 @@
               HQ
             </button>
             <button class="pena" onclick="selecionarTrucks('lisa')">
-              <img class="btn-imagem" src="image/truck alt="lisa"><br>
+              <img class="btn-imagem" src="image/trucklisa_czddxp.jpeg" alt="lisa"><br>
               lisa
             </button>
             <button class="pena" onclick="selecionarTrucks('stitch')">
@@ -145,7 +145,7 @@
               hello
             </button>
             <button class="pena" onclick="mostrarRodinhas('fire')">
-              <img class="btn-imagem" src="image/" alt="shanks"><br>
+              <img class="btn-imagem" src="image/rodinhafire.png" alt="shanks"><br>
               fire
             </button>
             <button class="pena" onclick="mostrarRodinhas('kuro')">
