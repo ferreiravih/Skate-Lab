@@ -1,56 +1,79 @@
-// Aguarda o carregamento completo da página
 document.addEventListener("DOMContentLoaded", () => {
-  const botoes = document.querySelectorAll(".categories button");
-  const cards = document.querySelectorAll(".card");
+  const categoriesContainer = document.querySelector(".categories");
+  const botoes = categoriesContainer ? Array.from(categoriesContainer.querySelectorAll("button")) : [];
+  const cards = Array.from(document.querySelectorAll(".card"));
   const inputPesquisa = document.querySelector(".search-bar input");
 
-  // === FILTRO POR CATEGORIA ===
-  botoes.forEach(botao => {
-    botao.addEventListener("click", () => {
-      // Remove a classe 'active' de todos os botões e adiciona ao clicado
-      botoes.forEach(btn => btn.classList.remove("active"));
-      botao.classList.add("active");
+  if (!categoriesContainer || botoes.length === 0 || cards.length === 0) {
+    return;
+  }
 
-      const categoria = botao.textContent.trim().toLowerCase();
+  const normalizar = (valor = "") => {
+    const texto = valor.toString().trim().toLowerCase();
+    return typeof texto.normalize === "function"
+      ? texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      : texto;
+  };
 
-      // Mostra ou esconde cards conforme a categoria
-      cards.forEach(card => {
-        const cardCategoria = card.querySelector(".categoria")?.textContent.toLowerCase();
+  let filtroCategoriaAtual = normalizar(categoriesContainer.dataset.default || "todos");
+  let termoPesquisaNormalizado = "";
 
-        if (categoria === "todos" || cardCategoria === categoria) {
-          card.style.visibility = "visible";
-          card.style.opacity = "1";
-          card.style.position = "static";
-          card.style.pointerEvents = "auto";
-        } else {
-          card.style.visibility = "hidden";
-          card.style.opacity = "0";
-          card.style.position = "absolute";
-          card.style.pointerEvents = "none";
-        }
-      });
+  const atualizarEstadoBotoes = () => {
+    botoes.forEach((botao) => {
+      const categoriaBotao = normalizar(botao.dataset.categoria || botao.textContent);
+      botao.classList.toggle("active", categoriaBotao === filtroCategoriaAtual);
+    });
+  };
+
+  const deveriaMostrarCard = (card) => {
+    const categoriaDataset = normalizar(card.dataset.categoria || "");
+    const titulo = normalizar(card.querySelector("h3")?.textContent || "");
+    const categoriaTexto = normalizar(card.querySelector(".categoria")?.textContent || "");
+
+    const coincideCategoria =
+      filtroCategoriaAtual === "todos" ||
+      categoriaDataset === filtroCategoriaAtual ||
+      categoriaTexto === filtroCategoriaAtual;
+
+    const coincidePesquisa =
+      termoPesquisaNormalizado === "" ||
+      titulo.includes(termoPesquisaNormalizado) ||
+      categoriaTexto.includes(termoPesquisaNormalizado);
+
+    return coincideCategoria && coincidePesquisa;
+  };
+
+  const atualizarCards = () => {
+    cards.forEach((card) => {
+      const mostrar = deveriaMostrarCard(card);
+      card.style.visibility = mostrar ? "visible" : "hidden";
+      card.style.opacity = mostrar ? "1" : "0";
+      card.style.position = mostrar ? "static" : "absolute";
+      card.style.pointerEvents = mostrar ? "auto" : "none";
+    });
+  };
+
+  const aplicarFiltro = (novaCategoria = "todos") => {
+    filtroCategoriaAtual = normalizar(novaCategoria);
+    atualizarEstadoBotoes();
+    atualizarCards();
+  };
+
+  botoes.forEach((botao) => {
+    botao.addEventListener("click", (event) => {
+      event.preventDefault();
+      aplicarFiltro(botao.dataset.categoria || botao.textContent);
     });
   });
 
-  // === FILTRO POR PESQUISA ===
-  inputPesquisa.addEventListener("input", () => {
-    const termo = inputPesquisa.value.toLowerCase();
-
-    cards.forEach(card => {
-      const titulo = card.querySelector("h3")?.textContent.toLowerCase();
-      const categoria = card.querySelector(".categoria")?.textContent.toLowerCase();
-
-      if (titulo.includes(termo) || categoria.includes(termo) || termo === "") {
-        card.style.visibility = "visible";
-        card.style.opacity = "1";
-        card.style.position = "static";
-        card.style.pointerEvents = "auto";
-      } else {
-        card.style.visibility = "hidden";
-        card.style.opacity = "0";
-        card.style.position = "absolute";
-        card.style.pointerEvents = "none";
-      }
+  if (inputPesquisa) {
+    inputPesquisa.addEventListener("input", () => {
+      termoPesquisaNormalizado = normalizar(inputPesquisa.value);
+      atualizarCards();
     });
-  });
+  }
+
+  aplicarFiltro(categoriesContainer.dataset.default || "todos");
 });
+
+

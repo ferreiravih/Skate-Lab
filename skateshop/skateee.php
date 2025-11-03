@@ -16,23 +16,13 @@ try {
 $filtro_categoria = isset($_GET['categoria']) ? $_GET['categoria'] : 'todos';
 
 try {
-    // Query base que junta peças e categorias
+    // Query base que junta pecas e categorias; carregamos tudo para filtrar no front-end
     $sql = "SELECT p.*, c.nome AS categoria_nome 
             FROM pecas p
             JOIN categorias c ON p.id_cat = c.id_cat
-            WHERE p.status = 'ATIVO'"; // Garante que só produtos ativos apareçam
+            WHERE p.status = 'ATIVO'";
 
-    // Se a categoria NÃO for "todos", adicionamos o filtro
-    if ($filtro_categoria != 'todos') {
-        $sql .= " AND c.nome = :categoria_nome";
-        $stmt_produtos = $pdo->prepare($sql);
-        $stmt_produtos->bindParam(':categoria_nome', $filtro_categoria);
-    } else {
-        // Se for "todos", apenas prepara a query sem filtro extra
-        $stmt_produtos = $pdo->prepare($sql);
-    }
-
-    $stmt_produtos->execute();
+    $stmt_produtos = $pdo->query($sql);
     $produtos = $stmt_produtos->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo "Erro ao buscar produtos: " . $e->getMessage();
@@ -87,22 +77,22 @@ try {
     </div>
     
     <!-- 3. FILTROS (Vieram para baixo, mais perto dos produtos) -->
-    <nav class="categories">
-        <a href="skateee.php?categoria=todos" class="<?php echo ($filtro_categoria == 'todos') ? 'active' : ''; ?>">
+    <nav class="categories" data-default="<?php echo htmlspecialchars($filtro_categoria, ENT_QUOTES, 'UTF-8'); ?>">
+        <button type="button" data-categoria="todos" class="<?php echo ($filtro_categoria == 'todos') ? 'active' : ''; ?>">
             Todos
-        </a>
+        </button>
 
         <?php foreach ($categorias as $categoria) : ?>
             <?php
-            // Prepara o nome da categoria para o link
-            $nome_cat_url = htmlspecialchars($categoria['nome']);
+            // Prepara o nome da categoria para o botão
+            $nome_categoria = htmlspecialchars($categoria['nome'], ENT_QUOTES, 'UTF-8');
             // Verifica se é o filtro ativo para aplicar a classe 'active'
-            $classe_ativa = ($filtro_categoria == $nome_cat_url) ? 'active' : '';
+            $classe_ativa = ($filtro_categoria == $nome_categoria) ? 'active' : '';
             ?>
-            <a href="skateee.php?categoria=<?php echo $nome_cat_url; ?>" class="<?php echo $classe_ativa; ?>">
-                <?php echo $nome_cat_url; // Ex: "Shapes", "Rodas", etc. 
+            <button type="button" data-categoria="<?php echo $nome_categoria; ?>" class="<?php echo $classe_ativa; ?>">
+                <?php echo $nome_categoria; // Ex: "Shapes", "Rodas", etc. 
                 ?>
-            </a>
+            </button>
         <?php endforeach; ?>
     </nav>
 
@@ -117,7 +107,7 @@ try {
                 <?php else : ?>
                     <?php foreach ($produtos as $produto) : ?>
 
-                        <div class="card" data-categoria="<?php echo htmlspecialchars($produto['categoria_nome']); ?>">
+                        <div class="card" data-categoria="<?php echo htmlspecialchars($produto['categoria_nome'], ENT_QUOTES, 'UTF-8'); ?>">
                             
                             <a href="../produto/produto.php?id=<?php echo $produto['id_pecas']; ?>" class="produto-card-link">
                                 <img src="<?php echo htmlspecialchars($produto['url_img']); ?>" alt="<?php echo htmlspecialchars($produto['nome']); ?>">
@@ -181,4 +171,3 @@ try {
 </body>
 
 </html>
-

@@ -116,7 +116,7 @@ body {
 }
 
 /* ========================== */
-/* CATEGORIAS / BOTÕES */
+/* CATEGORIAS / BOTÃ•ES */
 /* ========================== */
 .categories {
   display: flex;
@@ -128,8 +128,8 @@ body {
   padding: 0 20px;
 }
 
-/* === BOTÕES DE FILTRO MAIORES === */
-.categories a {
+/* === BOTÃ•ES DE FILTRO MAIORES === */
+.categories a, .categories button {
   background: white;
   border: 1px solid #ddd;
   padding: 14px 25px;
@@ -137,6 +137,8 @@ body {
   border-radius: 25px;
   font-weight: 700;
   font-size: 16px;
+  appearance: none;
+  font-family: inherit;
  
   color: #333;
   cursor: pointer;
@@ -152,14 +154,14 @@ body {
   box-sizing: border-box;
 }
 
-.categories a:hover {
+.categories a:hover, .categories button:hover {
   border-color: #4B0082;
   color: #4B0082;
   background-color: #ece5f2;
   transform: scale(1.05);
 }
 
-.categories a.active {
+.categories a.active, .categories button.active {
   background: #482770;
   color: white;
   box-shadow: 0px 4px 12px rgba(75, 0, 130, 0.4);
@@ -212,11 +214,11 @@ body {
   overflow: hidden;
   position: relative;
 
-  /* === CORREÇÃO 1: LAYOUT DE 4 CARDS === */
+  /* === CORREÃ‡ÃƒO 1: LAYOUT DE 4 CARDS === */
   flex: 0 1 23%;
   max-width: 350px;
   min-width: 220px;
-  /* Mantém o limite mínimo */
+  /* MantÃ©m o limite mÃ­nimo */
 
   height: auto;
   transition: transform 0.3s ease, width 0.3s ease;
@@ -224,7 +226,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  /* mantém tudo alinhado pra cima */
+  /* mantÃ©m tudo alinhado pra cima */
 }
 
 .produtos .card:hover {
@@ -330,7 +332,7 @@ a.produto-card-link-titulo:hover h3 {
   margin-left: 5px;
 }
 
-/* Botões de compra */
+/* BotÃµes de compra */
 .botaocomprar,
 .botaocarrinho {
   background: #400080;
@@ -448,7 +450,7 @@ a.produto-card-link-titulo:hover h3 {
     padding: 0 10px;
   }
 
-  .categories a {
+  .categories a, .categories button {
     max-width: 100%;
     /* height: 45px; */
     /* <-- REMOVIDO */
@@ -506,3 +508,4 @@ a.produto-card-link-titulo:hover h3 {
   transform: scale(0.98);
   transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.2s ease;
 }
+
