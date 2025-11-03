@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const sidebarUsuario = document.getElementById("sidebarUsuario");
   const abrirCadastroBtn = document.getElementById("abrirCadastro");
   const voltarLoginBtn = document.getElementById("voltarLogin");
+  const authModal = document.getElementById("auth-modal-overlay");
 
   if (userIcon) {
     userIcon.addEventListener("click", () => {
@@ -36,6 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
       (!sidebarLogin || !sidebarLogin.contains(event.target)) &&
       (!sidebarCadastro || !sidebarCadastro.contains(event.target)) &&
       (!sidebarUsuario || !sidebarUsuario.contains(event.target)) &&
+      (!authModal || !authModal.contains(event.target)) &&
       userIcon && !userIcon.contains(event.target)
     ) {
       if (sidebarLogin) sidebarLogin.classList.remove("active");

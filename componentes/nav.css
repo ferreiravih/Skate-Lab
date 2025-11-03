@@ -494,3 +494,101 @@
 .sidebar .toggle-password:hover {
   color: #000;
 }
+
+/* ==== ESTILOS DO NOVO MODAL DE LOGIN ==== */
+
+/* O fundo escuro (overlay) */
+.auth-modal-overlay {
+  display: none; /* Começa escondido */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  z-index: 1049; /* Mais alto que a navbar (1000) */
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Classe 'show' que o JS vai adicionar */
+.auth-modal-overlay.show {
+  display: flex;
+  opacity: 1;
+}
+
+/* O conteúdo (caixa branca) */
+.auth-modal-content {
+  background: #fff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 350px;
+  width: 90%;
+  position: relative;
+  transform: scale(0.95);
+  transition: transform 0.3s ease;
+}
+
+.auth-modal-overlay.show .auth-modal-content {
+  transform: scale(1);
+}
+
+/* O ícone de cadeado */
+.auth-modal-icon {
+  font-size: 3rem;
+  color: #ff6a1f; /* Laranja do seu tema */
+  margin-bottom: 15px;
+}
+
+.auth-modal-content h2 {
+  color: #4B0082; /* Roxo do seu tema */
+  margin: 10px 0 5px 0;
+  font-size: 1.5rem;
+}
+
+.auth-modal-content p {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 25px;
+}
+
+/* Botão "Fazer Login" */
+.auth-modal-button {
+  background: #4B0082; /* Roxo */
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  width: 100%;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.auth-modal-button:hover {
+  background: #3a0063;
+}
+
+/* Botão de fechar (X) */
+.auth-modal-close {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  font-size: 2rem;
+  color: #aaa;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.auth-modal-close:hover {
+  color: #333;
+}

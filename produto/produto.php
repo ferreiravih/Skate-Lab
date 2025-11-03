@@ -98,11 +98,11 @@ $titulo_pagina = $produto ? htmlspecialchars($produto['nome']) : 'Produto não e
                         </div>
                     </div>
                     
-                    <button type="submit" class="botaocomprar1"
+                    <button type="submit" class="botaocomprar1 form-protegido"
                         onclick="this.closest('form').querySelector('.redirect_to_input').value = 'checkout';">
                         Comprar Agora
                     </button>
-                    <button type="submit" class="botaoadcarrinho"
+                    <button type="submit" class="botaoadcarrinho form-protegido"
                         onclick="this.closest('form').querySelector('.redirect_to_input').value = 'carrinho';">
                         <i class="fa-solid fa-cart-shopping"></i> Adicionar ao Carrinho
                     </button>

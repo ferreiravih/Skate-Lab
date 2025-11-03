@@ -32,21 +32,22 @@ if (session_status() === PHP_SESSION_NONE) {
         <div class="icones1">
             <a><i class="fa-regular fa-user user-icon" id="userIcon"></i></a>
 
-            <?php // AQUI COMEÇA A MÁGICA: Verifica se o ID do usuário NÃO existe na sessão ?>
+            <?php // AQUI COMEÇA A MÁGICA: Verifica se o ID do usuário NÃO existe na sessão 
+            ?>
             <?php if (!isset($_SESSION['id_usu'])): ?>
 
                 <div id="sidebarLogin" class="sidebar">
                     <h2>Login</h2>
                     <form action="../auth/login.php" method="POST">
-                        <label>Email</label> 
+                        <label>Email</label>
                         <input type="email" name="email" placeholder="Digite seu email" required />
-                        
+
                         <label>Senha</label>
                         <div class="password-wrapper">
                             <input type="password" name="senha" placeholder="Digite sua senha" required id="loginSenhaInput" />
                             <i class="fa-solid fa-eye-slash toggle-password" id="toggleLoginPassword"></i>
                         </div>
-                        
+
                         <button type="submit">Entrar</button>
                     </form>
                     <button type="button" id="abrirCadastro">Faça seu cadastro</button>
@@ -57,10 +58,10 @@ if (session_status() === PHP_SESSION_NONE) {
                     <form action="../auth/registrar.php" method="POST" id="formCadastro">
                         <label>Nome completo</label>
                         <input type="text" name="nome" placeholder="Digite seu nome" required />
-                        
+
                         <label>Email</label>
                         <input type="email" name="email" placeholder="Digite seu email" required />
-                        
+
                         <label>Senha</label>
                         <div class="password-wrapper">
                             <input type="password" name="senha" placeholder="Crie sua senha" required id="registerSenhaInput" />
@@ -72,7 +73,7 @@ if (session_status() === PHP_SESSION_NONE) {
                             <input type="password" name="confirmar_senha" placeholder="Confirme sua senha" required id="confirmSenhaInput" />
                             <i class="fa-solid fa-eye-slash toggle-password" id="toggleConfirmPassword"></i>
                         </div>
-                        
+
                         <button type="submit">Cadastrar</button>
                         <button type="button" id="voltarLogin">Voltar ao login</button>
                     </form>
@@ -81,17 +82,28 @@ if (session_status() === PHP_SESSION_NONE) {
             <?php else: ?>
 
                 <div id="sidebarUsuario" class="sidebar">
-                    <?php // Puxa os dados da Sessão que o login.php e registrar.php criaram ?>
+                    <?php // Puxa os dados da Sessão que o login.php e registrar.php criaram 
+                    ?>
                     <h3 class="sidebar-greeting"><?php echo htmlspecialchars($_SESSION['nome_usu']); ?></h3>
                     <p class="sidebar-email"><?php echo htmlspecialchars($_SESSION['email_usu']); ?></p>
-                    
+
                     <div class="sidebar-actions">
                         <a href="../perfil/perfil.php" id="editarPerfil">Editar Perfil</a>
                         <a href="../auth/logout.php" id="sair">Sair</a>
                     </div>
                 </div>
 
-            <?php endif; // Fim da verificação de login ?>
+            <?php endif; // Fim da verificação de login 
+            ?>
+            <div id="auth-modal-overlay" class="auth-modal-overlay">
+                <div class="auth-modal-content">
+                    <button id="auth-modal-close" class="auth-modal-close">&times;</button>
+                    <i class="fa-solid fa-lock auth-modal-icon"></i>
+                    <h2>Login Necessário</h2>
+                    <p>Você precisa fazer login para adicionar itens ao carrinho.</p>
+                    <button id="auth-modal-login-btn" class="auth-modal-button">Fazer Login</button>
+                </div>
+            </div>
 
 
             <a><i class="fa-regular fa-heart"></i></a>
@@ -103,9 +115,12 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
         </div>
     </header>
-    
+    <script>
+        const isUserLoggedIn = <?php echo isset($_SESSION['id_usu']) ? 'true' : 'false'; ?>;
+    </script>
 
     <script src="../componentes/nav.js"></script>
+    <script src="../componentes/auth_popup.js"></script>
 </body>
 
 </html>

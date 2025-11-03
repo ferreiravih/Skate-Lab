@@ -133,7 +133,7 @@ try {
                                     <input type="hidden" name="quantidade" value="1">
                                     <input type="hidden" name="redirect_to" value="checkout">
                                     
-                                    <button type="submit" class="botaocomprar" class="botaocomprar form-protegido">comprar</button>
+                                    <button type="submit" class="botaocomprar form-protegido">comprar</button>
                                 </form>
 
                                 <form action="../carrinho/contr/adicionar_carrinho.php" method="POST" style="display: inline;">
@@ -145,7 +145,7 @@ try {
                                     <input type="hidden" name="quantidade" value="1">
                                     <input type="hidden" name="redirect_to" value="carrinho">
                                     
-                                    <button type="submit" class="botaocarrinho" class="botaocarrinho form-protegido"><i class="fa-solid fa-cart-shopping"></i></button>
+                                    <button type="submit" class="botaocarrinho form-protegido"><i class="fa-solid fa-cart-shopping"></i></button>
                                 </form>
                                 
                                 </div>
@@ -158,14 +158,7 @@ try {
         </section>
     </main>
     <?php include '../componentes/footer.php'; ?>
-    
-    <!-- 
-    ==================================
-    CORREÇÃO DO BUG DO "PULO"
-    O caminho estava errado (../../Skate-Lab/...). 
-    O correto é carregar da mesma pasta:
-    ================================== 
-    -->
+
     <script src="skateshop.js"></script>
 
 </body>
