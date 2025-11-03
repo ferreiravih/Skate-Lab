@@ -2,11 +2,6 @@
 // 1. INCLUI O BD
 require_once __DIR__ . '/../config/db.php';
 
-$shapes = [];
-$trucks = [];
-$rodinhas = [];
-$erro_db = null;
-
 try {
     // 2. BUSCA AS PEÇAS SEPARADAS POR CATEGORIA
     // NOTA: Certifique-se que os nomes 'Shapes', 'Trucks', e 'Rodas' 
@@ -287,8 +282,14 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
     function setBtnLabel(id, mostrar) {
       const el = document.getElementById(id);
       if (!el) return;
-      const base = el.dataset.base || el.textContent.replace(/^Mostrar |^Ocultar /, '');
-      el.dataset.base = base; // guarda uma vez
+      let base = el.dataset.base;
+      if (!base) {
+        base = (el.textContent || '')
+          .replace(/\s+/g, ' ')
+          .trim()
+          .replace(/^(?:Mostrar|Ocultar)\s+/i, '');
+        el.dataset.base = base;
+      }
       el.textContent = (mostrar ? 'Mostrar ' : 'Ocultar ') + base;
     }
 
@@ -644,7 +645,9 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
 
     // ===== Mostrar =====
     function mostrarShape(tipo) {
-      esconderTudo(); // Esconde todos os shapes
+      // Esconde apenas os shapes atuais
+      const todosShapes = Object.values(shapes).flat();
+      todosShapes.forEach(n => { if (todasAsPecas[n]) todasAsPecas[n].visible = false; });
 
       // Mostra o shape selecionado
       let pecasEncontradas = 0;
@@ -658,10 +661,11 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
 
       // Re-aplica as outras partes (trucks, rodas, etc.)
       // para que apareçam com o novo shape
-      selecionarTrucks(Object.keys(trucksModelos).find(key => trucksModelos[key] === trucks) || 'padrao');
-      mostrarRodinhas(rodinhasAtuais);
-      selecionarRolamentos(rolamentos.length > 0 ? 'padrao' : null);
-      selecionarParafusos(parafusos.length > 0 ? 'padrao' : null);
+      setListaVisible(trucks || [], visTrucks);
+      const rodasLista = rodinhasAtuais ? (rodinhasModelos[rodinhasAtuais] || []) : [];
+      setListaVisible(rodasLista, visRodinhas);
+      setListaVisible(rolamentos || [], visRolamentos);
+      setListaVisible(parafusos || [], visParafusos);
 
       // =============================================
       // ATUALIZA O PREÇO
@@ -709,9 +713,8 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
       if (!renderer || !camera) return;
       const container = document.getElementById('container');
       if (!container) return;
-      const bounds = container.getBoundingClientRect();
-      const width = Math.max(bounds.width, 320);
-      const height = Math.max(bounds.height, 320);
+      const width = Math.max(container.clientWidth, 320);
+      const height = Math.max(container.clientHeight, 320);
       renderer.setSize(width, height);
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
@@ -736,6 +739,11 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
         canvasContainer.innerHTML = '';
         canvasContainer.appendChild(renderer.domElement);
         ajustarTamanhoCanvas();
+        if (window.ResizeObserver) {
+          const ro = new ResizeObserver(() => ajustarTamanhoCanvas());
+          ro.observe(canvasContainer);
+          window.__skateLabRO = ro;
+        }
       }
 
       controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -745,10 +753,10 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
       controls.minDistance = 3.5;
       controls.maxDistance = 10;
 
-      const ambientLight = new THREE.AmbientLight(0xffffff, 3);
+      const ambientLight = new THREE.AmbientLight(0xffffff, 1);
       scene.add(ambientLight);
 
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
       directionalLight.position.set(10, 6, 0);
       directionalLight.castShadow = true;
       scene.add(directionalLight);
@@ -821,12 +829,14 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
 
     init();
   </script>
-  </script>
   <script>
     function toggleGrupo(id, botao) {
       const grupo = document.getElementById(id);
       const aberto = grupo.classList.toggle("aberto");
       botao.classList.toggle("ativo", aberto);
+      if (typeof ajustarTamanhoCanvas === 'function') {
+        requestAnimationFrame(ajustarTamanhoCanvas);
+      }
     }
   </script>
 </body>

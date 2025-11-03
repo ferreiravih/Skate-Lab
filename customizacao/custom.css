@@ -193,7 +193,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: all 0.25s ease;
+  transition: background 0.12s ease, transform 0.12s ease, box-shadow 0.12s ease;
   box-shadow: 0 5px 15px rgba(124, 82, 217, 0.25);
 }
 
@@ -217,14 +217,15 @@ body {
   max-height: 0;
   opacity: 0;
   transform: translateY(-6px);
-  transition: all 0.35s ease;
+  overflow: hidden;
+  transition: opacity 0.12s ease, transform 0.12s ease;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 10px;
 }
 
 .grupo-colapsado.aberto {
-  max-height: 800px;
+  max-height: 9999px;
   opacity: 1;
   transform: translateY(0);
   padding-top: 10px;
