@@ -141,6 +141,7 @@ body {
   justify-content: center;
   cursor: pointer;
   transition: 0.3s;
+  text-decoration: none;
 }
 
 .btn-acao:hover {

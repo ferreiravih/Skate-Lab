@@ -171,6 +171,7 @@ th:last-child {
     justify-content: center;
     width: 36px;
     height: 36px;
+    text-decoration: none;
 }
 
 .btn-acao:hover {
