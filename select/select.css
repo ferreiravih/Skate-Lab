@@ -1,60 +1,97 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
-    margin: 0;
-    padding: 0;
+  background-color: #fff;
+  font-family: 'Poppins', sans-serif;
 }
 
-.estilo-skate {
-    text-align: center;
-    padding: 50px 20px;
+.skate-section {
+  text-align: center;
+  padding: 60px 20px;
 }
 
-.estilo-skate h2 {
-    color: #55185D; /* roxo escuro */
-    margin-bottom: 40px;
+.skate-section h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #222;
+  margin-bottom: 10px;
 }
 
-.cards {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
+.underline {
+  width: 80px;
+  height: 3px;
+  background-color: #4B0082;
+  margin: 0 auto 40px;
+  border-radius: 2px;
 }
 
-.card {
-    background-color: #ffffff;
-    border: 2px solid #55185D;
-    border-radius: 10px;
-    width: 250px;
-    padding: 20px;
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
-    text-align: center;
+.skate-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  align-items: stretch; 
 }
 
-.card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+.skate-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 2 4px 12px rgba(0, 0, 0, 0.1);
+  width: 280px;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; 
 }
 
-.card .imagem img {    max-width: 100%;
-    height: auto;
-    margin-bottom: 15px;
-    align-items: center;
-    object-fit: contain;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+.skate-card img {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  margin-bottom: 15px;
+  display: block;
 }
 
-.card h3 {
-    color: #000000; /* texto preto */
-    margin-bottom: 10px;
-    font-size: 1.3em;
+.skate-card h2 {
+  font-size: 1.2rem;
+  color: #222;
+  margin-bottom: 8px;
 }
 
-.card p {
-    color: #000000; /* texto preto */
-    font-size: 0.9em;
+.skate-card p {
+  font-size: 0.95rem;
+  color: #666;
+  min-height: 48px; 
+  margin-bottom: 20px;
+  padding: 0 5px;
+}
+
+.skate-card button {
+  background-color: #ff6a00;
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 250px;
+}
+
+.skate-card button:hover {
+  background-color: #e65c00;
+}
+
+.skate-card:hover {
+  transform: translateY(-5px);
+  outline: 1px solid #4B0082;
+  outline-offset: 3px;
 }

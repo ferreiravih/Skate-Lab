@@ -49,18 +49,8 @@ body {
   font-size: 14px;
 }
 
-.footercoluna a {
-  text-decoration: none;
-  color: #666565;
-  transition: color 0.2s;
-}
-
 .footercoluna i {
   margin-right: 5px;
-}
-
-.footercoluna a:hover {
-  color: #ec6b2d;
 }
 
 .footercoluna p {
