@@ -1,315 +1,341 @@
-const buttons = document.querySelectorAll('.menu-item');
-const sections = document.querySelectorAll('.section');
-
-buttons.forEach(button => {
-  button.addEventListener('click', () => {
-    buttons.forEach(btn => btn.classList.remove('active'));
-    sections.forEach(sec => sec.classList.remove('active'));
-
-    button.classList.add('active');
-    const target = button.getAttribute('data-target');
-    document.getElementById(target).classList.add('active');
-  });
-});
-
-
-// JS DO PERFIL HEHE
-
-// Variáveis para guardar
-let originalData = {};
-let currentPhoto = '';
-
-// Inicializar quando a página carregar | preciso arrumar isso slk
 document.addEventListener('DOMContentLoaded', function() {
-    saveOriginalData();
-    currentPhoto = document.getElementById('profile-picture').src;
-});
-// JS DO PERFIL HEHE
-
-
-// Inicializar quando a página carregar
-document.addEventListener('DOMContentLoaded', function() {
-    saveOriginalData();
-    currentPhoto = document.getElementById('profile-picture').src;
-
-    // --- CÓDIGO NOVO ADICIONADO ---
-    // Verifica se a URL tem o parâmetro 'status=registered'
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('status') === 'registered') {
-        showMessage('Cadastro realizado com sucesso! Bem-vindo(a)!', 'success');
-        
-        // Limpa o parâmetro da URL para não aparecer de novo se atualizar
-        window.history.replaceState(null, '', window.location.pathname);
-    }
-    // --- FIM DO CÓDIGO NOVO ---
-});
-
-// Salvar dados originais 
-function saveOriginalData() {}
-// ... (resto do seu código) ...
-
-// Salvar dados originais 
-function saveOriginalData() {
-    const form = document.getElementById('profile-form');
-    const inputs = form.querySelectorAll('input');
     
-    inputs.forEach(input => {
-        originalData[input.name] = input.value;
-    });
-}
-
-// Restaurar dados originais
-function restoreOriginalData() {
-    const form = document.getElementById('profile-form');
-    const inputs = form.querySelectorAll('input');
-    
-    inputs.forEach(input => {
-        if (originalData[input.name]) {
-            input.value = originalData[input.name];
-        }
-    });
-    
-    // Restaurar foto original
-    document.getElementById('profile-picture').src = currentPhoto;
-}
-
-// Função para alternar modo de edição
-function toggleEditMode() {
-    const form = document.getElementById('profile-form');
-    const inputs = form.querySelectorAll('input:not(.readonly-field)');
-    const editBtn = document.querySelector('.edit-btn');
-    const formActions = document.getElementById('form-actions');
-    
-    const isEditing = inputs[0].readOnly;
-    
-    // Alternar estado dos campos
-    inputs.forEach(input => {
-        input.readOnly = !isEditing;
-        input.style.background = isEditing ? '#fff' : '#f8f9fa';
-        input.style.cursor = isEditing ? 'text' : 'not-allowed';
-        input.style.borderColor = isEditing ? '#6a1b9a' : '#e9ecef';
-    });
-    
-    // Alternar botão
-    if (isEditing) {
-        editBtn.textContent = 'Cancelar Edição';
-        editBtn.style.background = '#6c757d';
-        formActions.style.display = 'flex';
-        
-        // Salvar estado atual antes de editar
-        saveOriginalData();
-        currentPhoto = document.getElementById('profile-picture').src;
-        
-    } else {
-        editBtn.textContent = 'Editar Perfil';
-        editBtn.style.background = '';
-        editBtn.style.background = '#6a1b9a';
-        formActions.style.display = 'none';
-        
-        // Restaurar dados originais no cancelar
-        restoreOriginalData();
-        resetFieldStyles();
-    }
-}
-
-// Função para upload de foto
-function handlePhotoUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    
-    // Validar tipo de arquivo
-    if (!file.type.startsWith('image/')) {
-        alert('Por favor, selecione uma imagem válida!');
-        return;
-    }
-    
-    // Validar tamanho (máximo 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-        alert('A imagem deve ter no máximo 5MB!');
-        return;
-    }
-    
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        const profilePicture = document.getElementById('profile-picture');
-        
-        // Criar uma nova imagem para garantir o carregamento
-        const newImage = new Image();
-        newImage.onload = function() {
-            // Aplicar a nova foto
-            profilePicture.src = e.target.result;
-            
-            // Atualizar a foto atual
-            currentPhoto = e.target.result;
-            
-            // Feedback visual
-            showMessage('Foto atualizada com sucesso!', 'success');
-        };
-        newImage.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-}
-
-// Submit do formulário
-document.getElementById('profile-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    // Validar dados
-    if (!validateForm()) {
-        showMessage('Por favor, preencha todos os campos obrigatórios!', 'error');
-        return;
-    }
-    
-    // Coletar dados do formulário
-    const formData = new FormData(this);
-    const data = Object.fromEntries(formData);
-    
-    //Dados p enviar p o servidor! 
-    console.log('Dados a serem salvos:', data);
-    console.log('Foto atual:', currentPhoto);
-    
-    // Atualizar dados originais com as novas
-    updateOriginalData();
-    
-    // Feedback
-    showMessage('Perfil atualizado com sucesso!', 'success');
-    
-    // Sair do modo edição
-    const editBtn = document.querySelector('.edit-btn');
-    const formActions = document.getElementById('form-actions');
-    
-    editBtn.textContent = 'Editar Perfil';
-    editBtn.style.background = '#6a1b9a';
-    formActions.style.display = 'none';
-    
-    // Manter campos como readonly
-    const inputs = this.querySelectorAll('input:not(.readonly-field)');
-    inputs.forEach(input => {
-        input.readOnly = true;
-        input.style.background = '#f8f9fa';
-        input.style.cursor = 'not-allowed';
-        input.style.borderColor = '#e9ecef';
-    });
-    
-    // Atualizar display do username se mudou
-    const usernameInput = document.getElementById('username');
+    // --- LÓGICA DO FORMULÁRIO DE PERFIL ---
+    const editBtn = document.getElementById('edit-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const saveBtn = document.getElementById('save-btn');
+    const profileForm = document.getElementById('profile-form');
+    const photoOverlayBtn = document.getElementById('photo-overlay-btn');
+    const photoInput = document.getElementById('photo-upload');
+    const profilePic = document.getElementById('profile-picture');
+    const feedbackMessage = document.getElementById('feedback-message'); // Feedback GLOBAL
     const usernameDisplay = document.getElementById('username-display');
-    if (usernameInput.value !== usernameDisplay.textContent) {
-        usernameDisplay.textContent = usernameInput.value;
-    }
-});
+    const profileContainer = document.querySelector('.profile-grid'); 
 
-// Atualizar dados originais
-function updateOriginalData() {
-    const form = document.getElementById('profile-form');
-    const inputs = form.querySelectorAll('input');
-    
-    inputs.forEach(input => {
-        originalData[input.name] = input.value;
-    });
-}
+    if (profileForm && editBtn && cancelBtn) {
+        
+        const editableFields = profileForm.querySelectorAll('input[name="nome"], input[name="apelido"], input[name="tell"], input[name="data_nascimento"]');
+        let originalValues = {};
 
-// Resetar estilos dos campos
-function resetFieldStyles() {
-    const inputs = document.querySelectorAll('input');
-    inputs.forEach(input => {
-        input.style.borderColor = '#e9ecef';
-        input.style.background = '#f8f9fa';
-    });
-}
-
-// Função para mostrar mensagens
-function showMessage(message, type) {
-    // Remover mensagens existentes
-    const existingAlerts = document.querySelectorAll('.alert');
-    existingAlerts.forEach(alert => alert.remove());
-    
-    // Criar elemento de mensagem
-    const alertDiv = document.createElement('div');
-    alertDiv.className = `alert ${type === 'success' ? 'success' : 'error'}`;
-    alertDiv.style.cssText = `
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        font-weight: 500;
-        background: ${type === 'success' ? '#d4edda' : '#f8d7da'};
-        color: ${type === 'success' ? '#155724' : '#721c24'};
-        border: 1px solid ${type === 'success' ? '#c3e6cb' : '#f5c6cb'};
-    `;
-    alertDiv.textContent = message;
-    
-    // Inserir antes do container do perfil
-    const profileContainer = document.querySelector('.profile-container');
-    profileContainer.parentNode.insertBefore(alertDiv, profileContainer);
-    
-    // Remover após 5 segundos
-    setTimeout(() => {
-        if (alertDiv.parentNode) {
-            alertDiv.remove();
+        function saveOriginals() {
+            originalValues = {};
+            editableFields.forEach(field => {
+                originalValues[field.name] = field.value;
+            });
         }
-    }, 5000);
-}
 
-// Validação do formulário
-function validateForm() {
-    const requiredFields = document.querySelectorAll('input[required]');
-    let isValid = true;
-    
-    requiredFields.forEach(field => {
-        if (!field.value.trim()) {
-            field.style.borderColor = '#dc3545';
-            isValid = false;
-        } else {
-            field.style.borderColor = '#28a745';
+        function restoreOriginals() {
+            editableFields.forEach(field => {
+                field.value = originalValues[field.name];
+            });
         }
-    });
-    
-    // Validação específica para email
-    const emailField = document.getElementById('email');
-    if (emailField.value && !isValidEmail(emailField.value)) {
-        emailField.style.borderColor = '#dc3545';
-        isValid = false;
-    }
-    
-    return isValid;
-}
 
-// Validar email
-function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-// Máscara para telefone
-document.getElementById('telefone').addEventListener('input', function(e) {
-    let value = e.target.value.replace(/\D/g, '');
-    
-    if (value.length <= 11) {
-        if (value.length <= 10) {
-            value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
-        } else {
-            value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+        function enterEditMode() {
+            saveOriginals();
+            if (profileContainer) profileContainer.classList.add('is-editing');
+            editableFields.forEach(field => { field.readOnly = false; });
+            document.getElementById('form-actions').style.display = 'flex'; 
+            editBtn.style.display = 'none'; 
         }
-        e.target.value = value;
-    }
-});
 
-// Máscara para CEP
-document.getElementById('cep').addEventListener('input', function(e) {
-    let value = e.target.value.replace(/\D/g, '');
-    
-    if (value.length <= 8) {
-        value = value.replace(/(\d{5})(\d)/, '$1-$2');
-        e.target.value = value;
-    }
-    
-    // Buscar endereço automaticamente
-    if (value.length === 9) {
-        // buscarEnderecoPorCEP(value);
-    }
-});
+        function exitEditMode(restore = false) {
+            if (restore) {
+                restoreOriginals();
+            }
+            if (profileContainer) profileContainer.classList.remove('is-editing');
+            editableFields.forEach(field => { field.readOnly = true; });
+            document.getElementById('form-actions').style.display = 'none'; 
+            editBtn.style.display = 'inline-flex'; 
+        }
 
-// Prevenir caracteres não numéricos em campos específicos
-document.getElementById('numero').addEventListener('input', function(e) {
-    this.value = this.value.replace(/\D/g, '');
-});
+        editBtn.addEventListener('click', enterEditMode);
+        cancelBtn.addEventListener('click', () => exitEditMode(true));
+
+        // Listener para o formulário de PERFIL
+        profileForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); 
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Salvando...';
+            const formData = new FormData(profileForm);
+            try {
+                // Envia para 'atualizar_perfil.php'
+                const response = await fetch('atualizar_perfil.php', { method: 'POST', body: formData });
+                const result = await response.json();
+                
+                if (result.sucesso) {
+                    showGlobalFeedback(result.mensagem, 'success');
+                    if (usernameDisplay && result.novoNomeDisplay) {
+                        usernameDisplay.textContent = result.novoNomeDisplay;
+                    }
+                    editableFields.forEach(field => {
+                        const span = profileForm.querySelector(`.info-item label[for="${field.name}"] + .info-text`);
+                        if (span) {
+                            span.textContent = field.value ? field.value : `Não cadastrado`;
+                        }
+                    });
+                    exitEditMode(false); 
+                } else {
+                    showGlobalFeedback(result.mensagem || 'Ocorreu um erro.', 'error');
+                }
+            } catch (error) {
+                showGlobalFeedback('Erro de conexão. Tente novamente.', 'error');
+            }
+            saveBtn.disabled = false;
+            saveBtn.textContent = 'Salvar Alterações';
+        });
+
+        // Lógica de Upload de Foto
+        if (photoOverlayBtn && photoInput && profilePic) {
+            photoOverlayBtn.addEventListener('click', () => {
+                if (profileContainer && profileContainer.classList.contains('is-editing')) {
+                    photoInput.click(); 
+                }
+            });
+            photoInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => { profilePic.src = e.target.result; };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+    }
+
+    // --- LÓGICA DO MODAL DE SENHA ---
+    const passwordModal = document.getElementById('password-modal');
+    const btnShowPasswordModal = document.getElementById('btn-show-password-modal');
+    const passwordModalCloseBtn = document.getElementById('password-modal-close-btn');
+    const passwordModalCancelBtn = document.getElementById('password-modal-cancel-btn');
+    const passwordForm = document.getElementById('password-form');
+    const passwordSaveBtn = document.getElementById('password-save-btn');
+    const passwordFeedbackMessage = document.getElementById('password-feedback-message'); // Feedback LOCAL
+
+    if (passwordModal && btnShowPasswordModal && passwordModalCloseBtn && passwordModalCancelBtn && passwordForm) {
+
+        function openPasswordModal() {
+            passwordModal.classList.add('active');
+            document.body.classList.add('modal-open'); 
+        }
+
+        // Função para feedback DENTRO do modal
+        function showPasswordFeedback(message, type = 'error') {
+            if (!passwordFeedbackMessage) return;
+            passwordFeedbackMessage.textContent = message;
+            passwordFeedbackMessage.className = `feedback ${type}`;
+            passwordFeedbackMessage.style.display = 'block';
+        }
+        function hidePasswordFeedback() {
+             if (passwordFeedbackMessage) {
+                passwordFeedbackMessage.style.display = 'none';
+             }
+        }
+
+        function closePasswordModal() {
+            passwordModal.classList.remove('active');
+            document.body.classList.remove('modal-open');
+            hidePasswordFeedback();
+            passwordForm.reset(); 
+        }
+
+        btnShowPasswordModal.addEventListener('click', openPasswordModal);
+        passwordModalCloseBtn.addEventListener('click', closePasswordModal);
+        passwordModalCancelBtn.addEventListener('click', closePasswordModal);
+        
+        passwordModal.addEventListener('click', (e) => {
+            if (e.target === passwordModal) {
+                closePasswordModal();
+            }
+        });
+
+        // Listener para o formulário de SENHA
+        passwordForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            passwordSaveBtn.disabled = true;
+            passwordSaveBtn.textContent = 'Salvando...';
+            hidePasswordFeedback(); // Limpa erros antigos
+
+            const formData = new FormData(passwordForm);
+
+            try {
+                // Envia para 'atualizar_senha.php'
+                const response = await fetch('atualizar_senha.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+
+                if (result.sucesso) {
+                    // SUCESSO: Mostra feedback GLOBAL e fecha o modal
+                    showGlobalFeedback(result.mensagem, 'success'); 
+                    closePasswordModal(); 
+                } else {
+                    // ERRO: Mostra feedback DENTRO do modal
+                    showPasswordFeedback(result.mensagem || 'Ocorreu um erro.', 'error');
+                }
+            } catch (error) {
+                showPasswordFeedback('Erro de conexão ao salvar senha.', 'error');
+            }
+            
+            passwordSaveBtn.disabled = false;
+            passwordSaveBtn.textContent = 'Salvar Senha';
+        });
+    }
+
+    
+    // --- LÓGICA DO MODAL DE DETALHES DO PEDIDO ---
+    const pedidoModal = document.getElementById('pedido-detalhes-modal');
+    const pedidoModalContent = document.getElementById('pedido-modal-content');
+    const pedidoModalCloseBtn = document.getElementById('pedido-modal-close-btn');
+    const pedidoModalFecharBtn = document.getElementById('pedido-modal-fechar-btn');
+    const orderButtons = document.querySelectorAll('.order-item-button');
+
+    if (pedidoModal && pedidoModalContent && pedidoModalCloseBtn && pedidoModalFecharBtn) {
+        
+        function openPedidoModal() {
+            pedidoModal.classList.add('active');
+            document.body.classList.add('modal-open'); 
+        }
+        
+        function closePedidoModal() {
+            pedidoModal.classList.remove('active');
+            document.body.classList.remove('modal-open'); 
+        }
+
+        pedidoModalCloseBtn.addEventListener('click', closePedidoModal);
+        pedidoModalFecharBtn.addEventListener('click', closePedidoModal);
+        pedidoModal.addEventListener('click', (e) => {
+            if (e.target === pedidoModal) {
+                closePedidoModal();
+            }
+        });
+
+        orderButtons.forEach(button => {
+            button.addEventListener('click', async () => {
+                const pedidoId = button.getAttribute('data-pedido-id');
+                
+                openPedidoModal();
+                pedidoModalContent.innerHTML = `
+                    <div class="pedido-modal-loading">
+                        <i class="ri-loader-4-line ri-spin"></i>
+                        <span>Carregando detalhes...</span>
+                    </div>`;
+
+                try {
+                    const response = await fetch(`obter_detalhes_pedido.php?id=${pedidoId}`);
+                    const result = await response.json();
+
+                    if (result.sucesso) {
+                        renderizarDetalhesPedido(result.dados);
+                    } else {
+                        throw new Error(result.mensagem);
+                    }
+                } catch (error) {
+                    pedidoModalContent.innerHTML = `<p style="color: red;">Erro ao buscar detalhes: ${error.message}</p>`;
+                }
+            });
+        });
+
+        function renderizarDetalhesPedido(dados) {
+            const { pedido, itens } = dados;
+
+            const dataPedido = new Date(pedido.pedido_em).toLocaleDateString('pt-BR', {
+                day: '2-digit', month: '2-digit', year: 'numeric'
+            });
+
+            const statusClass = pedido.status ? pedido.status.toLowerCase().replace(' ', '') : 'pendente';
+            
+            // Agora usa a coluna 'codigo_rastreio' que adicionámos
+            const rastreioHtml = pedido.codigo_rastreio
+                ? `<p class="rastreio-code">${pedido.codigo_rastreio}</p>`
+                : `<p>Nenhum código disponível</p>`;
+
+            let itensHtml = '';
+            itens.forEach(item => {
+                const precoTotalItem = (parseFloat(item.preco_unitario) * parseInt(item.quantidade)).toFixed(2).replace('.', ',');
+                itensHtml += `
+                    <div class="item-pedido">
+                        <img src="${item.url_img}" alt="${item.nome}">
+                        <div class="item-info">
+                            <p>${item.nome}</p>
+                            <span>${item.quantidade} x R$ ${parseFloat(item.preco_unitario).toFixed(2).replace('.', ',')}</span>
+                        </div>
+                        <span class="item-preco">R$ ${precoTotalItem}</span>
+                    </div>
+                `;
+            });
+
+            const html = `
+                <div class="pedido-detalhes-header">
+                    <h3>Detalhes do Pedido #${pedido.id_pedido}</h3>
+                    <span class="status-badge ${statusClass}">${pedido.status}</span>
+                </div>
+
+                <div class="pedido-detalhes-grid">
+                    <div class="detalhe-bloco">
+                        <label>Data do Pedido</label>
+                        <p>${dataPedido}</p>
+                    </div>
+                    <div class="detalhe-bloco">
+                        <label>Valor Total</label>
+                        <p>R$ ${parseFloat(pedido.valor_total).toFixed(2).replace('.', ',')}</p>
+                    </div>
+                    <div class="detalhe-bloco full-width">
+                        <label>Código de Rastreio</label>
+                        ${rastreioHtml}
+                    </div>
+                </div>
+
+                <div class="pedido-itens-lista">
+                    <h4>Itens do Pedido (${itens.length})</h4>
+                    ${itensHtml}
+                </div>
+            `;
+            
+            pedidoModalContent.innerHTML = html;
+        }
+    }
+
+
+    // --- FUNÇÕES GERAIS ---
+    
+    // Feedback na PÁGINA PRINCIPAL
+    function showGlobalFeedback(message, type = 'success') {
+        if (!feedbackMessage) return;
+        feedbackMessage.textContent = message;
+        feedbackMessage.className = `feedback ${type}`;
+        feedbackMessage.style.display = 'block';
+        window.scrollTo(0, 0); 
+        setTimeout(() => {
+            feedbackMessage.style.display = 'none';
+        }, 5000);
+    }
+
+    // Máscaras de input
+    const telInput = document.getElementById('tell');
+    if (telInput) {
+        telInput.addEventListener('input', (e) => {
+            if (e.target.readOnly) return; 
+            let value = e.target.value.replace(/\D/g, ''); 
+            value = value.substring(0, 11); 
+            if (value.length > 10) { value = value.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3'); }
+            else if (value.length > 6) { value = value.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3'); }
+            else if (value.length > 2) { value = value.replace(/^(\d{2})(\d{0,4}).*/, '($1) $2'); }
+            else if (value.length > 0) { value = value.replace(/^(\d{0,2}).*/, '($1'); }
+            e.target.value = value;
+        });
+    }
+
+    const dateInput = document.getElementById('data_nascimento');
+    if(dateInput) {
+        dateInput.addEventListener('input', (e) => {
+            if (e.target.readOnly) return;
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.substring(0, 8);
+            if (value.length > 4) { value = value.replace(/^(\d{2})(\d{2})(\d{0,4}).*/, '$1/$2/$3'); }
+            else if (value.length > 2) { value = value.replace(/^(\d{2})(\d{0,2}).*/, '$1/$2'); }
+            e.target.value = value;
+        });
+    }
+
+}); // --- FIM DO DOMCONTENTLOADED ---
