@@ -1,11 +1,66 @@
+<?php
+// 1. INCLUI O BD
+require_once __DIR__ . '/../config/db.php';
+
+$shapes = [];
+$trucks = [];
+$rodinhas = [];
+$erro_db = null;
+
+try {
+    // 2. BUSCA AS PEÇAS SEPARADAS POR CATEGORIA
+    // NOTA: Certifique-se que os nomes 'Shapes', 'Trucks', e 'Rodas' 
+    //       são EXATAMENTE como estão no seu banco na tabela 'categorias'
+    
+    // Busca Shapes
+    $stmt_shapes = $pdo->prepare(
+        "SELECT p.nome, p.preco, p.url_img, p.url_m3d
+         FROM public.pecas p
+         JOIN public.categorias c ON p.id_cat = c.id_cat
+         WHERE c.nome = 'Shapes' AND p.status = 'ATIVO' AND p.url_m3d IS NOT NULL"
+    );
+    $stmt_shapes->execute();
+    $shapes = $stmt_shapes->fetchAll(PDO::FETCH_ASSOC);
+
+    // Busca Trucks
+    $stmt_trucks = $pdo->prepare(
+        "SELECT p.nome, p.preco, p.url_img, p.url_m3d
+         FROM public.pecas p
+         JOIN public.categorias c ON p.id_cat = c.id_cat
+         WHERE c.nome = 'Trucks' AND p.status = 'ATIVO' AND p.url_m3d IS NOT NULL"
+    );
+    $stmt_trucks->execute();
+    $trucks = $stmt_trucks->fetchAll(PDO::FETCH_ASSOC);
+
+    // Busca Rodinhas
+    $stmt_rodinhas = $pdo->prepare(
+        "SELECT p.nome, p.preco, p.url_img, p.url_m3d
+         FROM public.pecas p
+         JOIN public.categorias c ON p.id_cat = c.id_cat
+         WHERE c.nome = 'Rodas' AND p.status = 'ATIVO' AND p.url_m3d IS NOT NULL"
+    );
+    $stmt_rodinhas->execute();
+    $rodinhas = $stmt_rodinhas->fetchAll(PDO::FETCH_ASSOC);
+
+} catch (PDOException $e) {
+    error_log("Erro ao buscar peças da customização: " . $e->getMessage());
+    $erro_db = "Erro ao carregar peças. Verifique a conexão com o banco.";
+}
+
+// Peças Padrão (para garantir que a lógica JS funcione)
+$shape_padrao = ['nome' => 'Shape Branco', 'preco' => 120.00, 'url_m3d' => 'white', 'url_img' => null];
+$truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padrao', 'url_img' => null];
+
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8">
   <title>customização</title>
-  <link rel="stylesheet" href="custom.css">
+  <link rel="stylesheet" href="custom.css?v=1.11"> 
   <link rel="stylesheet" href="../componentes/nav.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
@@ -14,209 +69,161 @@
     <div class="viewer-area">
       <div id="container"></div>
 
-      <!-- VISTA PR�%VIA LATERAL -->
       <div class="vista-previa">
         <div class="status">
           <span id="configAtual">Carregando...</span>
         </div>
         <div class="mini-botoes">
-          <button onclick="mudarVista('frontal')">Frente</button>
-          <button onclick="mudarVista('lateral')">Lado</button>
-          <button onclick="mudarVista('superior')">Cima</button>
+          <button type="button" onclick="mudarVista('frontal')">Frente</button>
+          <button type="button" onclick="mudarVista('lateral')">Lado</button>
+          <button type="button" onclick="mudarVista('superior')">Cima</button>
         </div>
       </div>
     </div>
 
     <div class="controls-area">
-      <div id="ui">
-        <h2></h2>
+      
+      <form id="form-carrinho" action="../carrinho/contr/adicionar_carrinho.php" method="POST">
+        
+        <input type="hidden" id="cart-id" name="id" value="custom-skate">
+        <input type="hidden" id="cart-nome" name="nome" value="Skate Customizado">
+        <input type="hidden" id="cart-preco" name="preco" value="0">
+        <input type="hidden" id="cart-imagem" name="imagem" value="../img/imgs-skateshop/image.png">
+        <input type="hidden" id="cart-descricao" name="descricao" value="Peças customizadas">
+        <input type="hidden" name="quantidade" value="1">
+        <input type="hidden" name="redirect_to" value="carrinho">
 
-        <div class="status" id="status">
-          �Ys? Sistema carregando...
-        </div>
-        <!-- SHAPES -->
-        <div class="grupo-botoes">
-          <h3 class="centro">Customização</h3>
+        <div id="ui">
+          <h2></h2>
+
+          <div class="status" id="status">
+            <?php if ($erro_db): ?>
+                <span style="color: red;"><?php echo $erro_db; ?></span>
+            <?php else: ?>
+                📦 Sistema carregando...
+            <?php endif; ?>
+          </div>
+          
+          <div class="grupo-botoes">
+            <h3 class="centro">Customização</h3>
+            <button class="btn-titulo" type="button" onclick="toggleGrupo('shapeGrupo', this)">Shape</button>
+            <div id="shapeGrupo" class="grupo-colapsado">
+                
+                <button class="pena active" type="button" 
+                        onclick="mostrarShape('<?php echo $shape_padrao['url_m3d']; ?>')" 
+                        data-price="<?php echo $shape_padrao['preco']; ?>" 
+                        data-name="<?php echo htmlspecialchars($shape_padrao['nome']); ?>">
+                  <div class="btn-imagem" style="background-color:#ffffff;">O</div>
+                  <span class="nome-pena"><?php echo $shape_padrao['nome']; ?></span>
+                  <span class="preco-pena">R$ <?php echo number_format($shape_padrao['preco'], 2, ',', '.'); ?></span>
+                </button>
+                
+                <?php foreach ($shapes as $shape): ?>
+                <button class="pena" type="button" 
+                        onclick="mostrarShape('<?php echo htmlspecialchars($shape['url_m3d']); ?>')" 
+                        data-price="<?php echo $shape['preco']; ?>" 
+                        data-name="<?php echo htmlspecialchars($shape['nome']); ?>">
+                  <img class="btn-imagem" src="<?php echo htmlspecialchars($shape['url_img']); ?>" alt="<?php echo htmlspecialchars($shape['nome']); ?>">
+                  <span class="nome-pena"><?php echo htmlspecialchars($shape['nome']); ?></span>
+                  <span class="preco-pena">R$ <?php echo number_format($shape['preco'], 2, ',', '.'); ?></span>
+                </button>
+                <?php endforeach; ?>
+            </div>
+
+            <button class="btn-titulo" type="button" onclick="toggleGrupo('truckGrupo', this)">Truck</button>
+            <div id="truckGrupo" class="grupo-colapsado">
+                
+                <button class="pena active" type="button" 
+                        onclick="selecionarTrucks('<?php echo $truck_padrao['url_m3d']; ?>')" 
+                        data-price="<?php echo $truck_padrao['preco']; ?>" 
+                        data-name="<?php echo htmlspecialchars($truck_padrao['nome']); ?>">
+                  <div class="btn-imagem" style="background-color:#ccc;">O</div>
+                  <span class="nome-pena"><?php echo $truck_padrao['nome']; ?></span>
+                  <span class="preco-pena">R$ <?php echo number_format($truck_padrao['preco'], 2, ',', '.'); ?></span>
+                </button>
+                
+                <?php foreach ($trucks as $truck): ?>
+                <button class="pena" type="button" 
+                        onclick="selecionarTrucks('<?php echo htmlspecialchars($truck['url_m3d']); ?>')" 
+                        data-price="<?php echo $truck['preco']; ?>" 
+                        data-name="<?php echo htmlspecialchars($truck['nome']); ?>">
+                  <img class="btn-imagem" src="<?php echo htmlspecialchars($truck['url_img']); ?>" alt="<?php echo htmlspecialchars($truck['nome']); ?>">
+                  <span class="nome-pena"><?php echo htmlspecialchars($truck['nome']); ?></span>
+                  <span class="preco-pena">R$ <?php echo number_format($truck['preco'], 2, ',', '.'); ?></span>
+                </button>
+                <?php endforeach; ?>
+            </div>
+            
+            <button class="btn-titulo" type="button" onclick="toggleGrupo('rodinhaGrupo', this)">Rodinha</button>
+            <div id="rodinhaGrupo" class="grupo-colapsado">
+                
+                <?php foreach ($rodinhas as $rodinha): ?>
+                <button class="pena" type="button" 
+                        onclick="mostrarRodinhas('<?php echo htmlspecialchars($rodinha['url_m3d']); ?>')" 
+                        data-price="<?php echo $rodinha['preco']; ?>" 
+                        data-name="<?php echo htmlspecialchars($rodinha['nome']); ?>">
+                  <img class="btn-imagem" src="<?php echo htmlspecialchars($rodinha['url_img']); ?>" alt="<?php echo htmlspecialchars($rodinha['nome']); ?>">
+                  <span class="nome-pena"><?php echo htmlspecialchars($rodinha['nome']); ?></span>
+                  <span class="preco-pena">R$ <?php echo number_format($rodinha['preco'], 2, ',', '.'); ?></span>
+                </button>
+                <?php endforeach; ?>
+            </div>
+          
+            <h3> Mostrar/Ocultar</h3>
+            <button id="btnShape" type="button" onclick="toggleShape()">Ocultar shape</button>
+            <button id="btnTrucks" type="button" onclick="toggleTrucks()">Ocultar trucks</button>
+            <button id="btnRodinhas" type="button" onclick="toggleRodinhas()">Ocultar rodinhas</button>
+          </div>
+          
+          <div class="grupo-botoes">
+            <h3>ROLAMENTOS</h3>
+            <button type="button" onclick="selecionarRolamentos('padrao')" data-price="30" data-name="Padrão">
+              <div class="btn-imagem"></div>
+              Rolamento padrão (4x)
+            </button>
+            <button type="button" onclick="removerRolamentos()">
+              <div class="btn-imagem"></div>
+              Remover rolamentos
+            </button>
+          </div>
 
           <div class="grupo-botoes">
-
-          </div>
-          <!-- Botão principal SHAPE -->
-          <button class="btn-titulo" onclick="toggleGrupo('shapeGrupo', this)">Shape</button>
-          <div id="shapeGrupo" class="grupo-colapsado">
-            <!-- seus botões de shape aqui -->
-            <button class="pena" onclick="mostrarShape('luffy')">
-              <img class="btn-imagem" src="image/shape luffy.png" alt="Luffy"><br>
-              Luffy
+            <h3>PARAFUSOS</h3>
+            <button type="button" onclick="selecionarParafusos('padrao')" data-price="15" data-name="Padrão">
+              <div class="btn-imagem"></div>
+              Parafuso padrão (12x)
             </button>
-            <button class="pena" onclick="mostrarShape('killjoy')">
-              <img class="btn-imagem" src="image/shape killjoy.png" alt="killjoy"><br>
-              Killjoy
-            </button>
-            <button class="pena" id="btnYoru" onclick="mostrarShape('yoru')">
-              <img class="btn-imagem" src="image/shape yoru.png" alt="Yoru"><br>
-              Yoru
-            </button>
-            <button class="pena" onclick="mostrarShape('witcher')">
-              <img class="btn-imagem" src="image/shape the wicher.png" alt="witcher"><br>
-              Witcher
-            </button>
-            <button class="pena" onclick="mostrarShape('viper')">
-              <img class="btn-imagem" src="image/viper.png" alt="viper"><br>
-              Viper
-            </button>
-            <button class="pena" onclick="mostrarShape('sonic')">
-              <img class="btn-imagem" src="image/shape sonic.png" alt="sonic"><br>
-              Sonic
-            </button>
-            <button class="pena" onclick="mostrarShape('omen')">
-              <img class="btn-imagem" src="image/transferir1.png" alt="omen"><br>
-              omen
-            </button>
-            <button class="pena" onclick="mostrarShape('circus')">
-              <img class="btn-imagem" src="image/shape circo digital.png" alt="circus"><br>
-              circus
-            </button>
-            <button class="pena" class="ativo" onclick="mostrarShape('white')">
-              <div class="btn-imagem" style="background-color:#ffffff;">O</div><br>
-              white
+            <button type="button" onclick="removerParafusos()">
+              <div class="btn-imagem"></div>
+              Remover parafusos
             </button>
           </div>
 
-          <!-- Botão principal TRUCK -->
-          <button class="btn-titulo" onclick="toggleGrupo('truckGrupo', this)">Truck</button>
-          <div id="truckGrupo" class="grupo-colapsado">
-
-            <button class="pena" onclick="selecionarTrucks('kuromi')">
-              <img class="btn-imagem" src="image/truck kuromi.png" alt="kuromi"><br>
-              kuromi
-            </button>
-            <button class="pena" onclick="selecionarTrucks('black')">
-              <img class="btn-imagem" src="image/truck preto.png" alt="black"><br>
-              black
-            </button>
-            <button class="pena" onclick="selecionarTrucks('hello')">
-              <img class="btn-imagem" src="image/truck hello_kitty.png" alt="hello"><br>
-              hello
-            </button>
-            <button class="pena" onclick="selecionarTrucks('miranha')">
-              <img class="btn-imagem" src="image/truck homem_aranha.png" alt="miranha"><br>
-              spider
-            </button>
-            <button class="pena" onclick="selecionarTrucks('hq')">
-              <img class="btn-imagem" src="image/truck marvel.png" alt="hq"><br>
-              HQ
-            </button>
-            <button class="pena" onclick="selecionarTrucks('lisa')">
-              <img class="btn-imagem" src="image/trucklisa_czddxp.jpeg" alt="lisa"><br>
-              lisa
-            </button>
-            <button class="pena" onclick="selecionarTrucks('stitch')">
-              <img class="btn-imagem" src="image/truck stitch.png" alt="stitch"><br>
-              stitch
-            </button>
-
+          <div class="grupo-botoes">
+            <h3>CONTROLES</h3>
+            <button type="button" id="salvarBtn" onclick="salvarConfiguracao()">SALVAR CONFIGURAÇÃO</button>
+            <button type="button" id="exportarBtn" onclick="exportarImagem()">EXPORTAR IMAGEM</button>
+            <button type="button" onclick="resetCamera()">Resetar Câmera</button>
           </div>
-          <button class="btn-titulo" onclick="toggleGrupo('rodinhaGrupo', this)">rodinha</button>
-          <div id="rodinhaGrupo" class="grupo-colapsado">
-
-            <button class="pena" onclick="mostrarRodinhas('circus')">
-              <img class="btn-imagem" src="image/rodinha_circo_digital.png" alt="circus"><br>
-              Circus
+        </div> <div class="custom-checkout-area">
+            <div class="preco-total-container">
+              <span class="preco-label">Valor Total do Skate:</span>
+              <span class="preco-valor" id="preco-total-display">R$ 0,00</span>
+            </div>
+            
+            <button type="submit" class="btn-add-to-cart">
+              <i class="fa-solid fa-cart-shopping"></i> Adicionar ao Carrinho
             </button>
-            <button class="pena" onclick="mostrarRodinhas('sasuke')">
-              <img class="btn-imagem" src="image/rodinha_sasuke.png" alt="sasuke"><br>
-              Sasuke
-            </button>
-            <button class="pena" onclick="mostrarRodinhas('tails')">
-              <img class="btn-imagem" src="image/rodinah_tails.png" alt="shanks"><br>
-              Tails
-            </button>
-            <button class="pena" onclick="mostrarRodinhas('stitch')">
-              <img class="btn-imagem" src="image/rodinha_stitch.png" alt="shanks"><br>
-              stich
-            </button>
-            <button class="pena" onclick="mostrarRodinhas('hq')">
-              <img class="btn-imagem" src="image/rodinha_marvel.png" alt="shanks"><br>
-              hq
-            </button>
-            <button class="pena" onclick="mostrarRodinhas('hello')">
-              <img class="btn-imagem" src="image/rodinha_hello_kitty.png" alt="shanks"><br>
-              hello
-            </button>
-            <button class="pena" onclick="mostrarRodinhas('fire')">
-              <img class="btn-imagem" src="image/rodinhafire.png" alt="shanks"><br>
-              fire
-            </button>
-            <button class="pena" onclick="mostrarRodinhas('kuro')">
-              <img class="btn-imagem" src="image/rodinha_kuromi.png" alt="shanks"><br>
-              kuro
-            </button>
-          </div>
-        
-
-          <h3> Mostrar/Ocultar</h3>
-
-          <button id="btnShape" onclick="toggleShape()">Ocultar shape</button>
-          <button id="btnTrucks" onclick="toggleTrucks()">Ocultar trucks</button>
-          <button id="btnRodinhas" onclick="toggleRodinhas()">Ocultar rodinhas</button>
-
-          <!-- Exemplos de botões prontos para futuros modelos:
-      <button onclick="mostrarRodinhas('viper')"><div class="btn-imagem" style="background-color:#4ecdc4;">V</div>Viper</button>
-      <button onclick="mostrarRodinhas('omen')"><div class="btn-imagem" style="background-color:#230e40;">O</div>Omen</button>
-      -->
-        </div>
-        <!-- ROLAMENTOS -->
-        <div class="grupo-botoes">
-          <h3>ROLAMENTOS</h3>
-          <button onclick="selecionarRolamentos('padrao')">
-            <div class="btn-imagem" style=</div>
-            Rolamento padrão (4x)
-          </button>
-          <button onclick="removerRolamentos()">
-            <div class="btn-imagem"/div>
-            Remover rolamentos
-          </button>
         </div>
 
-        <!-- PARAFUSOS -->
-        <div class="grupo-botoes">
-          <h3>PARAFUSOS</h3>
-          <button onclick="selecionarParafusos('padrao')">
-            <div class="btn-imagem" </div>
-            Parafuso padrão (12x)
-          </button>
-          <button onclick="removerParafusos()">
-            <div class="btn-imagem"</div>
-            Remover parafusos
-          </button>
-        </div>
-
-
-        <!-- CONTROLES -->
-        <div class="grupo-botoes">
-          <h3>CONTROLES</h3>
-          <button onclick="resetCamera()">
-            <div class="btn-imagem" </div>
-            Resetar Câmera
-          </button>
-          <button id="salvarBtn" onclick="salvarConfiguracao()">
-            <div class="btn-imagem" </div>
-            SALVAR CONFIGURAÇÃO
-          </button>
-          <button id="exportarBtn" onclick="exportarImagem()">
-            <div class="btn-imagem" </div>
-            EXPORTAR IMAGEM
-          </button>
-        </div>
-      </div>
-    </div>
+      </form> </div>>
   </div>
 
-  <!-- THREE.JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  
+  <script src="custom.js?v=1.10"></script>
 
   <script>
     // VARIÁVEIS GLOBAIS
@@ -230,6 +237,43 @@
     let visRodinhas = true;
     let visRolamentos = true;
     let visParafusos = true;
+
+    // =============================================
+    // NOVO: LÓGICA DE PREÇO
+    // =============================================
+    const PRECOS = {
+        shape: 120,    // Preço base do shape 'white'
+        truck: 0,      // Preço base do truck 'padrao'
+        rodinha: 0,  // Preço base (sem rodinha)
+        rolamento: 0,
+        parafuso: 0
+    };
+
+    function atualizarPrecoTotal() {
+        // 1. Soma todos os preços
+        const total = PRECOS.shape + PRECOS.truck + PRECOS.rodinha + PRECOS.rolamento + PRECOS.parafuso;
+        
+        // 2. Formata como R$
+        const precoFormatado = `R$ ${total.toFixed(2).replace('.', ',')}`;
+        
+        // 3. Atualiza o visor no topo
+        document.getElementById('preco-total-display').textContent = precoFormatado;
+
+        // 4. Atualiza os inputs escondidos do formulário
+        const nomeShape = shapeAtual.charAt(0).toUpperCase() + shapeAtual.slice(1);
+        const nomeTruck = trucks === trucksModelos.padrao ? 'Padrão' : (Object.keys(trucksModelos).find(key => trucksModelos[key] === trucks) || 'Padrão');
+        const nomeRodinha = rodinhasAtuais ? (rodinhasAtuais.charAt(0).toUpperCase() + rodinhasAtuais.slice(1)) : 'Nenhuma';
+        
+        const nomeDescricao = `Shape: ${nomeShape}, Truck: ${nomeTruck}, Roda: ${nomeRodinha}`;
+        const nomeProduto = `Skate Customizado (${nomeShape})`;
+        const idProduto = `custom-${shapeAtual}-${nomeTruck.toLowerCase()}-${rodinhasAtuais || 'none'}`;
+
+        document.getElementById('cart-id').value = idProduto;
+        document.getElementById('cart-nome').value = nomeProduto;
+        document.getElementById('cart-preco').value = total.toFixed(2);
+        document.getElementById('cart-descricao').value = nomeDescricao;
+    }
+
 
     // util: liga/desliga visibilidade de uma lista de nomes de meshes
     function setListaVisible(lista, on) {
@@ -250,7 +294,6 @@
 
     // ========== TOGGLES ==========
     function toggleShape() {
-      // garante shapeAtual
       const tipo = shapeAtual || 'white';
       const lista = shapes[tipo] || [];
       visShape = !visShape;
@@ -259,14 +302,12 @@
     }
 
     function toggleTrucks() {
-      // usa o conjunto de trucks atualmente selecionado
       visTrucks = !visTrucks;
       setListaVisible(trucks, visTrucks);
       setBtnLabel('btnTrucks', !visTrucks);
     }
 
     function toggleRodinhas() {
-      // pega a lista do modelo ativo de rodinhas
       const lista = rodinhasAtuais ? (rodinhasModelos[rodinhasAtuais] || []) : [];
       visRodinhas = !visRodinhas;
       setListaVisible(lista, visRodinhas);
@@ -276,48 +317,18 @@
     function toggleRolamentos() {
       visRolamentos = !visRolamentos;
       setListaVisible(rolamentos, visRolamentos);
-      setBtnLabel('btnRolamentos', !visRolamentos);
+      // setBtnLabel('btnRolamentos', !visRolamentos); // Botão não existe
     }
 
     function toggleParafusos() {
       visParafusos = !visParafusos;
       setListaVisible(parafusos, visParafusos);
-      setBtnLabel('btnParafusos', !visParafusos);
+      // setBtnLabel('btnParafusos', !visParafusos); // Botão não existe
     }
 
     // ========== INTEGRAÇÃO SUAVE ==========
-    // sempre que você trocar de shape/rodinhas/trucks, respeite os toggles:
-    const _mostrarShape_orig = mostrarShape;
-    mostrarShape = function(tipo) {
-      _mostrarShape_orig(tipo); // faz seu fluxo normal
-
-      // re-aplica visibilidades conforme toggles atuais:
-      // shape
-      setListaVisible(shapes[shapeAtual] || [], visShape);
-      // trucks
-      setListaVisible(trucks || [], visTrucks);
-      // rodinhas
-      const rodasLista = rodinhasAtuais ? (rodinhasModelos[rodinhasAtuais] || []) : [];
-      setListaVisible(rodasLista, visRodinhas);
-      // rolamentos/parafusos
-      setListaVisible(rolamentos || [], visRolamentos);
-      setListaVisible(parafusos || [], visParafusos);
-    };
-
-    // se você chama selecionarTrucks/mostrarRodinhas/selecionarRolamentos/Parafusos em outros lugares,
-    // é bom também re-aplicar o toggle depois que os arrays mudarem. exemplo:
-    const _selecionarTrucks_orig = selecionarTrucks;
-    selecionarTrucks = function(modelo) {
-      _selecionarTrucks_orig(modelo);
-      setListaVisible(trucks || [], visTrucks);
-    };
-
-    const _mostrarRodinhas_orig = mostrarRodinhas;
-    mostrarRodinhas = function(tipo) {
-      _mostrarRodinhas_orig(tipo);
-      const lista = rodinhasAtuais ? (rodinhasModelos[rodinhasAtuais] || []) : [];
-      setListaVisible(lista, visRodinhas);
-    };
+    // (Esta seção foi removida para simplificar,
+    // as funções originais abaixo agora cuidam disso)
 
     // 🎯 SHAPES
     const shapes = {
@@ -440,7 +451,7 @@
     let shapeAtual = 'white'; // shape atual
     let rodinhasAtuais = null; // modelo de rodinha ativo (ou null)
 
-    // ✅ ROLAMENTOS & PARAFUSOS (NOMES REAIS DO SEU GLB)
+    // ✅ ROLAMENTOS & PARAFUSOS
     const rolamentos_padrao = [
       "Radial_ball_bearing_type_1000088001",
       "Radial_ball_bearing_type_1000088002",
@@ -454,18 +465,14 @@
 
 
     // Estados ativos (vazios ao iniciar)
-    let rolamentos = []; // 4 peças quando selecionar
-    let parafusos = []; // 12 peças quando selecionar
+    let rolamentos = [];
+    let parafusos = [];
 
-    // Mapas de modelos (pelo menos o 'padrao')
     const rolamentosModelos = {
       padrao: rolamentos_padrao,
-      // ex: stitch: [...], hello: [...]
     };
-
     const parafusosModelos = {
       padrao: parafusos_padrao,
-      // ex: stitch: [...], hello: [...]
     };
 
     // ===== Utils UI =====
@@ -478,26 +485,36 @@
 
     // ===== Seletores =====
     function selecionarTrucks(modelo) {
+      // Esconde todos os trucks
       const todas = Object.values(trucksModelos).flat();
       todas.forEach(n => {
         if (todasAsPecas[n]) todasAsPecas[n].visible = false;
       });
+      
+      // Mostra o modelo selecionado
       const lista = trucksModelos[modelo] || [];
-      let count = 0;
       lista.forEach(n => {
         const mesh = todasAsPecas[n];
         if (mesh) {
-          mesh.visible = true;
+          mesh.visible = visTrucks; // Respeita o toggle
           if (mesh.material && mesh.material.color) mesh.material.color.set(corTrucksAtual);
-          count++;
         } else {
           console.warn('Truck não encontrado no GLB:', n);
         }
       });
-      trucks = lista;
+      trucks = lista; // Atualiza o estado
+      
+      // =============================================
+      // ATUALIZA O PREÇO
+      // =============================================
+      // Encontra o botão que foi clicado para pegar o data-price
+      const
+        botaoClicado = [...document.querySelectorAll('#truckGrupo .pena')].find(b => b.getAttribute('onclick') === `selecionarTrucks('${modelo}')`);
+      PRECOS.truck = parseFloat(botaoClicado?.dataset.price || 0);
+      atualizarPrecoTotal();
     }
 
-    // 🔁 SELECIONAR ROLAMENTOS (mostra 4 de uma vez)
+    // 🔁 SELECIONAR ROLAMENTOS
     function selecionarRolamentos(modelo) {
       const todosRolos = Object.values(rolamentosModelos).flat();
       todosRolos.forEach(n => {
@@ -505,19 +522,23 @@
       });
 
       const lista = rolamentosModelos[modelo] || [];
-      let count = 0;
       lista.forEach(n => {
         const mesh = todasAsPecas[n];
         if (mesh) {
-          mesh.visible = true;
-          count++;
+          mesh.visible = visRolamentos; // Respeita o toggle
         }
       });
+      rolamentos = lista;
 
-      rolamentos = lista; // guarda estado ativo
+      // =============================================
+      // ATUALIZA O PREÇO
+      // =============================================
+      const botaoClicado = document.querySelector(`button[onclick="selecionarRolamentos('${modelo}')"]`);
+      PRECOS.rolamento = parseFloat(botaoClicado?.dataset.price || 0);
+      atualizarPrecoTotal();
     }
 
-    // 🔁 SELECIONAR PARAFUSOS (mostra 12 de uma vez)
+    // 🔁 SELECIONAR PARAFUSOS
     function selecionarParafusos(modelo) {
       const todosParafusos = Object.values(parafusosModelos).flat();
       todosParafusos.forEach(n => {
@@ -525,34 +546,50 @@
       });
 
       const lista = parafusosModelos[modelo] || [];
-      let count = 0;
       lista.forEach(n => {
         const mesh = todasAsPecas[n];
         if (mesh) {
-          mesh.visible = true;
-          count++;
+          mesh.visible = visParafusos; // Respeita o toggle
         }
       });
-
-      parafusos = lista; // guarda estado ativo
+      parafusos = lista;
+      
+      // =============================================
+      // ATUALIZA O PREÇO
+      // =============================================
+      const botaoClicado = document.querySelector(`button[onclick="selecionarParafusos('${modelo}')"]`);
+      PRECOS.parafuso = parseFloat(botaoClicado?.dataset.price || 0);
+      atualizarPrecoTotal();
     }
 
-    // ❌ REMOVER ROLAMENTOS (de todos os modelos)
+    // ❌ REMOVER ROLAMENTOS
     function removerRolamentos() {
       const todosRolos = Object.values(rolamentosModelos).flat();
       todosRolos.forEach(n => {
         if (todasAsPecas[n]) todasAsPecas[n].visible = false;
       });
       rolamentos = [];
+      
+      // =============================================
+      // ATUALIZA O PREÇO
+      // =============================================
+      PRECOS.rolamento = 0;
+      atualizarPrecoTotal();
     }
 
-    // ❌ REMOVER PARAFUSOS (de todos os modelos)
+    // ❌ REMOVER PARAFUSOS
     function removerParafusos() {
       const todosParafusos = Object.values(parafusosModelos).flat();
       todosParafusos.forEach(n => {
         if (todasAsPecas[n]) todasAsPecas[n].visible = false;
       });
       parafusos = [];
+      
+      // =============================================
+      // ATUALIZA O PREÇO
+      // =============================================
+      PRECOS.parafuso = 0;
+      atualizarPrecoTotal();
     }
 
 
@@ -596,98 +633,76 @@
       const config = {
         shape: shapeAtual,
         rodinhas: rodinhasAtuais,
-        corTrucks: corTrucksAtual,
+        truck: Object.keys(trucksModelos).find(key => trucksModelos[key] === trucks) || 'padrao',
         data: new Date().toLocaleString('pt-BR')
       };
       localStorage.setItem('skateConfig', JSON.stringify(config, null, 2));
       document.getElementById('configAtual').textContent =
-        `Shape: ${shapeAtual} | Rodinhas: ${rodinhasAtuais} | Cor: ${corTrucksAtual}`;
+        `Shape: ${config.shape} | Rodinhas: ${config.rodinhas} | Truck: ${config.truck}`;
       atualizarStatus('💾 Configuração salva!', 'sucesso');
     }
 
     // ===== Mostrar =====
     function mostrarShape(tipo) {
-      esconderTudo();
+      esconderTudo(); // Esconde todos os shapes
 
-      // trucks
-      trucks.forEach(nome => {
-        if (todasAsPecas[nome]) {
-          todasAsPecas[nome].visible = true;
-          if (todasAsPecas[nome].material) {
-            todasAsPecas[nome].material.color.set(corTrucksAtual);
-          }
-        }
-      });
-
-      // rolamentos
-      rolamentos.forEach(nome => {
-        if (todasAsPecas[nome]) todasAsPecas[nome].visible = true;
-      });
-
-      // parafusos
-      parafusos.forEach(nome => {
-        if (todasAsPecas[nome]) todasAsPecas[nome].visible = true;
-      });
-
-      // shape
+      // Mostra o shape selecionado
       let pecasEncontradas = 0;
       (shapes[tipo] || []).forEach(nome => {
         if (todasAsPecas[nome]) {
-          todasAsPecas[nome].visible = true;
+          todasAsPecas[nome].visible = visShape; // Respeita o toggle
           pecasEncontradas++;
         }
       });
-
-      // rodinhas
-      mostrarRodinhas(rodinhasAtuais);
       shapeAtual = tipo;
 
+      // Re-aplica as outras partes (trucks, rodas, etc.)
+      // para que apareçam com o novo shape
+      selecionarTrucks(Object.keys(trucksModelos).find(key => trucksModelos[key] === trucks) || 'padrao');
+      mostrarRodinhas(rodinhasAtuais);
+      selecionarRolamentos(rolamentos.length > 0 ? 'padrao' : null);
+      selecionarParafusos(parafusos.length > 0 ? 'padrao' : null);
 
-      document.querySelectorAll('button').forEach(btn => btn.classList.remove('ativo'));
-      if (event && event.target) event.target.classList.add('ativo');
+      // =============================================
+      // ATUALIZA O PREÇO
+      // =============================================
+      const botaoClicado = [...document.querySelectorAll('#shapeGrupo .pena')].find(b => b.getAttribute('onclick') === `mostrarShape('${tipo}')`);
+      PRECOS.shape = parseFloat(botaoClicado?.dataset.price || 0);
+      atualizarPrecoTotal();
+      
+      // Atualiza UI dos botões
+      document.querySelectorAll('#shapeGrupo .pena').forEach(btn => btn.classList.remove('ativo'));
+      if (botaoClicado) botaoClicado.classList.add('ativo');
     }
 
     function mostrarRodinhas(tipo) {
+      // Esconde todas as rodinhas
       const todas = Object.values(rodinhasModelos).flat();
       todas.forEach(nome => {
         if (todasAsPecas[nome]) todasAsPecas[nome].visible = false;
       });
+
+      // Mostra o modelo selecionado
       const lista = rodinhasModelos[tipo] || [];
-      let count = 0;
       lista.forEach(nome => {
         if (todasAsPecas[nome]) {
-          todasAsPecas[nome].visible = true;
-          count++;
+          todasAsPecas[nome].visible = visRodinhas; // Respeita o toggle
         }
       });
       rodinhasAtuais = tipo;
 
-      document.querySelectorAll('button').forEach(btn => {
-        const t = btn.dataset?.rodinhas;
-        if (t) btn.classList.toggle('ativo', t === tipo);
-      });
+      // =============================================
+      // ATUALIZA O PREÇO
+      // =============================================
+      const botaoClicado = [...document.querySelectorAll('#rodinhaGrupo .pena')].find(b => b.getAttribute('onclick') === `mostrarRodinhas('${tipo}')`);
+      PRECOS.rodinha = parseFloat(botaoClicado?.dataset.price || 0);
+      atualizarPrecoTotal();
+      
+      // Atualiza UI dos botões
+      document.querySelectorAll('#rodinhaGrupo .pena').forEach(btn => btn.classList.remove('ativo'));
+      if (botaoClicado) botaoClicado.classList.add('ativo');
     }
 
-    // ===== Base-only helper (se quiser usar)
-    function mostrarSomenteBase(tipoShape) {
-      esconderTudo();
-      const baseKey = tipoShape + 'white';
-      const listaBase = shapes[baseKey] || [];
-      let count = 0;
-      listaBase.forEach(white => {
-        if (todasAsPecas[white]) {
-          todasAsPecas[white].visible = true;
-          count++;
-        }
-      });
-      trucks = [];
-      rodinhasAtuais = null;
-      rolamentos = [];
-      parafusos = [];
-      shapeAtual = tipoShape;
-      const cfg = document.getElementById('configAtual');
-      if (cfg) cfg.textContent = `Shape: ${tipoShape} (Base) | Rodinhas: — | Cor: ${corTrucksAtual}`;
-    }
 
     // ===== Init 3D =====
     function ajustarTamanhoCanvas() {
@@ -774,15 +789,22 @@
 
         scene.add(skateBase);
         organizarTodasAsPecas(skateBase);
+        
+        // Inicializa o estado padrão
         esconderTudo();
         removerRolamentos();
         removerParafusos();
-        mostrarShape('white');
+        selecionarTrucks('padrao'); // Define truck padrão (preço 0)
+        mostrarShape('white'); // Define shape padrão (preço 120)
 
         document.getElementById('configAtual').textContent =
-          'Shape: White | Rodinhas: — | Cor: Branco';
+          'Shape: White | Rodinhas: — | Truck: Padrão';
 
         atualizarStatus('✅ Modelo carregado com sucesso!', 'sucesso');
+        
+        // Define o preço inicial
+        atualizarPrecoTotal();
+
       }, undefined, (error) => {
         console.error('❌ Erro ao carregar modelo:', error);
         atualizarStatus('❌ Erro ao carregar modelo', 'erro');
