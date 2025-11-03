@@ -1,4 +1,26 @@
 <?php
+// 1. INCLUI O BANCO DE DADOS
+require_once __DIR__ . '/../config/db.php';
+
+$categoria_kits = 'Completos';
+
+$kits = []; // Array padrão
+try {
+
+    $stmt = $pdo->prepare(
+        "SELECT p.id_pecas, p.nome, p.preco, p.url_img
+         FROM public.pecas p
+         JOIN public.categorias c ON p.id_cat = c.id_cat
+         WHERE c.nome = :categoria_nome AND p.status = 'ATIVO'
+         ORDER BY p.criado_em DESC -- (Ou use RANDOM() se preferir aleatório)
+         LIMIT 3"
+    );
+    $stmt->execute([':categoria_nome' => $categoria_kits]);
+    $kits = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+
+    error_log("Erro ao buscar kits da home: " . $e->getMessage());
+}
 
 ?>
 
@@ -20,7 +42,7 @@
             <?php include '../componentes/navbar.php'; ?>
         </nav>
     </header>
-    
+
     <main>
         <!-- HOME - CAPA -->
         <section id="capa">
@@ -96,27 +118,34 @@
         <section class="kits">
             <h3>KITS TEMÁTICOS PARA CADA SKATISTA</h3>
             <div class="galeria-kits">
-                <div class="kit">
-                    <img src="https://i.imgur.com/d0bYp2f.png" alt="Kit de Rolamentos e Rodas">
-                    <p class="nome-kit">RODA SPITFIRE BURNER WHITE & ROLAMENTO RED BONES</p>
-                    <p class="preco-kit">R$ 349,90</p>
-                    <p class="parcelamento-kit">Em até 12x de R$ 29,15</p>
-                    <a href="#" class="botao-ver-mais">Ver Mais</a>
-                </div>
-                <div class="kit">
-                    <img src="https://i.imgur.com/2s3xXpL.png" alt="Kit de Shape">
-                    <p class="nome-kit">SKATE KAROTO SHIRUPUKEN - G.SHIRATSUKI</p>
-                    <p class="preco-kit">R$ 399,90</p>
-                    <p class="parcelamento-kit">Em até 12x de R$ 33,32</p>
-                    <a href="#" class="botao-ver-mais">Ver Mais</a>
-                </div>
-                <div class="kit">
-                    <img src="https://i.imgur.com/r62Kq4R.png" alt="Kit de Trucks">
-                    <p class="nome-kit">TRUCK ESSÊNCIA 129</p>
-                    <p class="preco-kit">R$ 221,32</p>
-                    <p class="parcelamento-kit">Em até 12x de R$ 18,44</p>
-                    <a href="#" class="botao-ver-mais">Ver Mais</a>
-                </div>
+
+                <?php if (empty($kits)): ?>
+
+                    <p style="color: #333; font-size: 1.1rem; padding: 20px;">
+                        Nenhum kit encontrado.
+                        <br><small>(Verifique se a categoria "<?php echo htmlspecialchars($categoria_kits); ?>" existe e tem produtos)</small>
+                    </p>
+
+               <?php else: ?>
+                    
+                    <?php foreach ($kits as $kit): ?>
+                        <div class="kit">
+                            <a href="../produto/produto.php?id=<?php echo $kit['id_pecas']; ?>">
+                                <img src="<?php echo htmlspecialchars($kit['url_img']); ?>" alt="<?php echo htmlspecialchars($kit['nome']); ?>">
+                            </a>
+                            
+                            <p class="nome-kit"><?php echo htmlspecialchars($kit['nome']); ?></p>
+                            <p class="preco-kit">R$ <?php echo number_format($kit['preco'], 2, ',', '.'); ?></p>
+                            <p class="parcelamento-kit">
+                                Em até 12x de R$ <?php echo number_format($kit['preco'] / 12, 2, ',', '.'); ?>
+                            </p>
+                            
+                            <a href="../produto/produto.php?id=<?php echo $kit['id_pecas']; ?>" class="botao-ver-mais">Ver Mais</a>
+                        </div>
+                    <?php endforeach; ?>
+
+                <?php endif; ?>
+
             </div>
 
             <div class="nov">
