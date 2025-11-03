@@ -94,7 +94,7 @@ try {
     unset($_SESSION['carrinho']);
     
     // (O ideal é ter uma página "pedido_concluido.php")
-    header("Location: ../perfil/perfil.php?status=order_success");
+    header("Location: pedido_sucesso.php");
     exit;
 
 } catch (Exception $e) {

@@ -1,0 +1,87 @@
+/* Arquivo: Skate-Lab/pagamento/pedido_sucesso.css */
+
+body {
+    background-color: #f8f8fc; /* Fundo padrão (do skateshop/perfil) */
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Garante que o footer vá para o final */
+header, footer {
+    flex-shrink: 0;
+}
+
+main.success-container {
+    flex-grow: 1; /* Faz o main ocupar o espaço */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    box-sizing: border-box;
+}
+
+.success-card {
+    background: #ffffff;
+    border-radius: 12px;
+    /* Estilo de card padrão do seu projeto (ex: perfil.css) */
+    box-shadow: 0 6px 24px rgba(0,0,0,0.15); 
+    padding: 40px;
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+}
+
+.success-icon {
+    font-size: 5rem;
+    color: #10b981; /* Um verde sucesso (do seu admin) */
+    margin-bottom: 20px;
+}
+
+.success-card h1 {
+    color: #4B0082; /* Roxo principal do tema */
+    font-size: 1.8rem;
+    margin: 0 0 10px 0;
+}
+
+.success-card p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.success-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Botões com o padrão do site (ex: modal de login) */
+.btn-primary, .btn-secondary {
+    display: block;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: #4B0082; /* Roxo (botão principal) */
+    color: white;
+}
+.btn-primary:hover {
+    background: #3a0063;
+}
+
+.btn-secondary {
+    background: #f4f4f8; /* Cinza (botão secundário do perfil) */
+    color: #4B0082;
+    border: 1px solid #ddd;
+}
+.btn-secondary:hover {
+    background: #e8e8e8;
+}
