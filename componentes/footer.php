@@ -20,8 +20,8 @@
       <!-- coluna 1 (contatos) -->
       <h3>Contato</h3>
       <ul>
-        <li><a href="#"><i class="fa-solid fa-phone" style="color: #4B0082;"></i>+55 (11) 98888-8888</a></li>
-        <li><a href="#"><i class="fa-solid fa-envelope" style="color: #4B0082;"></i>SkateLaboficial@gmail.com </a></li>
+        <li><i class="fa-solid fa-phone" style="color: #4B0082;"></i>+55 (11) 98888-8888</li>
+        <li><i class="fa-solid fa-envelope" style="color: #4B0082;"></i>SkateLaboficial@gmail.com</li>
       </ul>
     </div>
 
@@ -39,8 +39,8 @@
     <div class="footercoluna">
       <h3>Sobre Nós</h3>
         <ul>
-            <li><a href="#">Termos e Condições</a></li>
-            <li><a href="#">Política de Privacidade</a></li>
+            <li>Termos e Condições</li>
+            <li>Política de Privacidade</li>
         </ul>
 
     </div>

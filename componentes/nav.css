@@ -12,7 +12,9 @@
   border-bottom: 1px solid #ddd;
   background-color: #fff;
   font-family: 'poppins', sans-serif;
-  height: 70px;
+  height: auto;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .logo {
@@ -409,4 +411,38 @@
   background: #ff9800;
   color: #fff;
   transform: scale(1.02);
+}
+
+
+@media (max-width: 900px) {
+  .header {
+    flex-direction: column; /* empilha os itens */
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    padding: 20px;
+  }
+
+  .menu {
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .logo h1 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 500px) {
+  .menu a {
+    font-size: 15px;
+  }
+
+  .icones1 a {
+    font-size: 20px;
+  }
+
+  .logo h1 {
+    font-size: 20px;
+  }
 }
