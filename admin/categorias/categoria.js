@@ -5,6 +5,36 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnSalvar = document.getElementById("btn-salvar-categoria");
     const form = document.getElementById("form-nova-categoria");
 
+
+// --- INÍCIO DA LÓGICA DE FILTRO DE BUSCA ---
+
+    const inputBusca = document.querySelector(".input-busca");
+    const tabela = document.querySelector(".tabela-categorias");
+
+    // Verifica se a barra de busca e a tabela existem
+    if (inputBusca && tabela) {
+        
+        // Pega todas as linhas do corpo da tabela (tbody)
+        const linhas = tabela.querySelectorAll("tbody tr");
+
+        // Adiciona um "ouvinte" que dispara toda vez que você digita
+        inputBusca.addEventListener("input", () => {
+            const termoBusca = inputBusca.value.toLowerCase();
+
+            linhas.forEach(linha => {
+                // Pega o texto da linha inteira e converte para minúsculo
+                const textoLinha = linha.textContent.toLowerCase();
+
+                // Verifica se o texto da linha inclui o termo digitado
+                if (textoLinha.includes(termoBusca)) {
+                    linha.style.display = ""; // Mostra a linha
+                } else {
+                    linha.style.display = "none"; // Esconde a linha
+                }
+            });
+        });
+    }
+
     // Abre o modal
     btnAbrirModal.addEventListener("click", () => {
         overlay.style.display = "flex";

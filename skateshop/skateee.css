@@ -201,7 +201,7 @@ body {
 .produtos .containershop {
   display: flex;
   justify-content: center;
-  gap: 17px;
+  gap: 30px;
   flex-wrap: wrap;
   /* Faz os cards quebrarem a linha */
 }
@@ -215,7 +215,7 @@ body {
   position: relative;
 
   /* === CORREÃ‡ÃƒO 1: LAYOUT DE 4 CARDS === */
-  flex: 0 1 23%;
+  flex: 0 1 30%;
   max-width: 350px;
   min-width: 220px;
   /* MantÃ©m o limite mÃ­nimo */
@@ -239,9 +239,9 @@ body {
   /* tira qualquer comportamento inline */
   margin: 15px auto 0 auto;
   /* centraliza horizontalmente */
-  width: 70%;
-  max-width: 220px;
-  height: auto;
+  width: 85%;           /* <-- AUMENTADO (para usar mais do card) */
+  max-width: 100%;      /* <-- MUDADO (remove o limite de 220px) */
+  height: 220px;        /* <-- MUDADO (define uma altura fixa) */
   object-fit: contain;
 }
 

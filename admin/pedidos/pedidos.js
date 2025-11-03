@@ -1,4 +1,52 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const inputBuscaPedidos = document.querySelector(".filtro-busca input");
+    const selectStatusPedidos = document.querySelector(".filtro-status");
+    const tabelaPedidos = document.querySelector(".tabela-pedidos");
+
+    // Verifica se todos os elementos necessários existem
+    if (inputBuscaPedidos && selectStatusPedidos && tabelaPedidos) {
+        
+        const linhasPedidos = tabelaPedidos.querySelectorAll("tbody tr");
+
+        // 1. Cria a função de filtro principal
+        function filtrarPedidos() {
+            // Pega os valores atuais dos dois filtros
+            const termoBusca = inputBuscaPedidos.value.toLowerCase();
+            const statusSelecionado = selectStatusPedidos.value; // ex: "PENDENTE" ou "todos"
+
+            linhasPedidos.forEach(linha => {
+                const textoLinha = linha.textContent.toLowerCase();
+                
+                // Pega o texto do status da linha (ex: "PENDENTE")
+                // Usamos .trim() para remover espaços em branco
+                const statusDaLinha = linha.querySelector(".status").textContent.trim();
+
+                // --- Regras de visibilidade ---
+
+                // Regra 1: O texto da busca bate?
+                // (Se o termo de busca estiver vazio, passa direto)
+                const passouNaBusca = (termoBusca === "" || textoLinha.includes(termoBusca));
+
+                // Regra 2: O status bate?
+                // (Se "Todos" estiver selecionado, passa direto)
+                const passouNoStatus = (statusSelecionado === "todos" || statusDaLinha === statusSelecionado);
+
+                // A linha SÓ aparece se passar nos DOIS filtros
+                if (passouNaBusca && passouNoStatus) {
+                    linha.style.display = ""; // Mostra a linha
+                } else {
+                    linha.style.display = "none"; // Esconde a linha
+                }
+            });
+        }
+
+        // 2. Adiciona o "ouvinte" na barra de busca
+        inputBuscaPedidos.addEventListener("input", filtrarPedidos);
+
+        // 3. Adiciona o "ouvinte" no select de status
+        selectStatusPedidos.addEventListener("change", filtrarPedidos);
+    }
+    
     const modal = document.getElementById('modalPedido');
     const fechar = document.getElementById('fecharModal');
     const btnPreparo = document.getElementById('btnPreparo');

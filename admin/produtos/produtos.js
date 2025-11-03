@@ -38,5 +38,30 @@ document.addEventListener("DOMContentLoaded", () => {
         icone.classList.add("ri-eye-line");
       }
     });
+    const inputBuscaProdutos = document.getElementById("buscarProduto");
+  const tabelaProdutos = document.querySelector(".tabela");
+
+  if (inputBuscaProdutos && tabelaProdutos) {
+      
+      // Pega todas as linhas do corpo da tabela (tbody)
+      const linhasProdutos = tabelaProdutos.querySelectorAll("tbody tr");
+
+      // Adiciona um "ouvinte" que dispara toda vez que você digita
+      inputBuscaProdutos.addEventListener("input", () => {
+          const termoBusca = inputBuscaProdutos.value.toLowerCase();
+
+          linhasProdutos.forEach(linha => {
+              // Pega o texto da linha inteira
+              const textoLinha = linha.textContent.toLowerCase();
+
+              // Verifica se o texto da linha inclui o termo digitado
+              if (textoLinha.includes(termoBusca)) {
+                  linha.style.display = ""; // Mostra a linha
+              } else {
+                  linha.style.display = "none"; // Esconde a linha
+              }
+          });
+      });
+  }
   });
 });
