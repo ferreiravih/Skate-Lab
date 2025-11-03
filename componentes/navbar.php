@@ -38,9 +38,15 @@ if (session_status() === PHP_SESSION_NONE) {
                 <div id="sidebarLogin" class="sidebar">
                     <h2>Login</h2>
                     <form action="../auth/login.php" method="POST">
-                        <label>Email</label> <input type="email" name="email" placeholder="Digite seu email" required />
+                        <label>Email</label> 
+                        <input type="email" name="email" placeholder="Digite seu email" required />
+                        
                         <label>Senha</label>
-                        <input type="password" name="senha" placeholder="Digite sua senha" required />
+                        <div class="password-wrapper">
+                            <input type="password" name="senha" placeholder="Digite sua senha" required id="loginSenhaInput" />
+                            <i class="fa-solid fa-eye-slash toggle-password" id="toggleLoginPassword"></i>
+                        </div>
+                        
                         <button type="submit">Entrar</button>
                     </form>
                     <button type="button" id="abrirCadastro">Faça seu cadastro</button>
@@ -48,13 +54,25 @@ if (session_status() === PHP_SESSION_NONE) {
 
                 <div id="sidebarCadastro" class="sidebar">
                     <h2>Cadastro</h2>
-                    <form action="../auth/registrar.php" method="POST">
+                    <form action="../auth/registrar.php" method="POST" id="formCadastro">
                         <label>Nome completo</label>
                         <input type="text" name="nome" placeholder="Digite seu nome" required />
+                        
                         <label>Email</label>
                         <input type="email" name="email" placeholder="Digite seu email" required />
+                        
                         <label>Senha</label>
-                        <input type="password" name="senha" placeholder="Crie sua senha" required />
+                        <div class="password-wrapper">
+                            <input type="password" name="senha" placeholder="Crie sua senha" required id="registerSenhaInput" />
+                            <i class="fa-solid fa-eye-slash toggle-password" id="toggleRegisterPassword"></i>
+                        </div>
+
+                        <label>Confirmar Senha</label>
+                        <div class="password-wrapper">
+                            <input type="password" name="confirmar_senha" placeholder="Confirme sua senha" required id="confirmSenhaInput" />
+                            <i class="fa-solid fa-eye-slash toggle-password" id="toggleConfirmPassword"></i>
+                        </div>
+                        
                         <button type="submit">Cadastrar</button>
                         <button type="button" id="voltarLogin">Voltar ao login</button>
                     </form>
@@ -64,11 +82,13 @@ if (session_status() === PHP_SESSION_NONE) {
 
                 <div id="sidebarUsuario" class="sidebar">
                     <?php // Puxa os dados da Sessão que o login.php e registrar.php criaram ?>
-                    <h2><?php echo htmlspecialchars($_SESSION['nome_usu']); ?></h2>
+                    <h3 class="sidebar-greeting"><?php echo htmlspecialchars($_SESSION['nome_usu']); ?></h3>
                     <p class="sidebar-email"><?php echo htmlspecialchars($_SESSION['email_usu']); ?></p>
                     
-                    <a href="../perfil/perfil.php" id="editarPerfil">Editar Perfil</a>
-                    <a href="../auth/logout.php" id="sair">Sair (Desconectar)</a>
+                    <div class="sidebar-actions">
+                        <a href="../perfil/perfil.php" id="editarPerfil">Editar Perfil</a>
+                        <a href="../auth/logout.php" id="sair">Sair</a>
+                    </div>
                 </div>
 
             <?php endif; // Fim da verificação de login ?>

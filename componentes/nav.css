@@ -446,3 +446,51 @@
     font-size: 20px;
   }
 }
+
+/* ======== NOVOS ESTILOS PARA VER SENHA (CORREÇÃO DE POSICIONAMENTO) ======== */
+
+/* 1. O Container (Wrapper) */
+/* Usamos .sidebar (que está no seu HTML) e não .user-popup */
+.sidebar .password-wrapper {
+  position: relative; /* Essencial! Permite o posicionamento absoluto do ícone */
+  width: 100%;
+  margin-top: 5px; /* Mantém o espaçamento original do <input> */
+}
+
+/* 2. O Input de Senha */
+/* Precisamos ser mais específicos para sobrescrever o .sidebar input original */
+.sidebar .password-wrapper input {
+  /* O input deve ocupar 100% da largura do wrapper */
+  width: 100%; 
+  
+  /* Adiciona espaço à DIREITA para o ícone não tampar o texto digitado */
+  padding-right: 45px !important; 
+  
+  /* Remove margens que podem atrapalhar o wrapper */
+  margin-top: 0;
+  margin-bottom: 0;
+  
+  /* Garante que o padding não estoure a largura de 100% */
+  box-sizing: border-box; 
+}
+
+/* 3. O Ícone de "Olho" */
+/* Usamos .sidebar (que está no seu HTML) e não .user-popup */
+.sidebar .toggle-password {
+  position: absolute; /* Posição absoluta EM RELAÇÃO AO WRAPPER */
+  
+  /* Estas 3 linhas centralizam o ícone verticalmente */
+  top: 50%;
+  transform: translateY(-50%);
+  
+  right: 15px; /* Distância da borda direita (dentro do padding do input) */
+  
+  cursor: pointer;
+  color: #777;
+  font-size: 16px;
+  transition: color 0.2s;
+}
+
+.sidebar .toggle-password:hover {
+  color: #000;
+}

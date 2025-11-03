@@ -17,18 +17,25 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 $nome = trim($_POST['nome'] ?? '');
 $email = trim($_POST['email'] ?? '');
 $senha = trim($_POST['senha'] ?? '');
+$confirmar_senha = trim($_POST['confirmar_senha'] ?? ''); // <-- NOVO
 
 // 5. Validação básica
-if (empty($nome) || empty($email) || empty($senha)) {
+if (empty($nome) || empty($email) || empty($senha) || empty($confirmar_senha)) { // <-- ATUALIZADO
     header("Location: ../home/index.php?error=register_empty");
     exit;
 }
 
-// 6. Criptografa a senha (IMPORTANTE!)
+// 6. VALIDAÇÃO DE CONFIRMAÇÃO DE SENHA (BACK-END) <-- NOVO
+if ($senha !== $confirmar_senha) {
+    header("Location: ../home/index.php?error=password_mismatch");
+    exit;
+}
+
+// 7. Criptografa a senha (IMPORTANTE!)
 $hash_senha = password_hash($senha, PASSWORD_DEFAULT);
 
 try {
-    // 7. Verifica se o e-mail já existe
+    // 8. Verifica se o e-mail já existe
     $sql_check = "SELECT id_usu FROM public.usuario WHERE email = :email";
     $stmt_check = $pdo->prepare($sql_check);
     $stmt_check->execute([':email' => $email]);
@@ -39,7 +46,7 @@ try {
         exit;
     }
 
-    // 8. Insere o novo usuário no banco
+    // 9. Insere o novo usuário no banco
     $sql_insert = "INSERT INTO public.usuario (nome, email, senha, tipo) VALUES (:nome, :email, :senha, 'comum')";
     $stmt_insert = $pdo->prepare($sql_insert);
     
@@ -49,17 +56,17 @@ try {
         ':senha' => $hash_senha
     ]);
 
-    // 9. Pega o ID do usuário que acabamos de criar
+    // 10. Pega o ID do usuário que acabamos de criar
     $id_novo_usuario = $pdo->lastInsertId('public.usuario_id_usu_seq'); // Sintaxe do PostgreSQL
 
-    // 10. FAZ O LOGIN AUTOMÁTICO: Cria a sessão para o usuário
+    // 11. FAZ O LOGIN AUTOMÁTICO: Cria a sessão para o usuário
     session_regenerate_id(true);
     $_SESSION['id_usu'] = $id_novo_usuario;
     $_SESSION['nome_usu'] = $nome;
     $_SESSION['email_usu'] = $email; // <-- AQUI TAMBÉM!
     $_SESSION['tipo_usu'] = 'comum'; 
 
-    // 11. Redireciona para a página de perfil
+    // 12. Redireciona para a página de perfil
     header("Location: ../perfil/perfil.php?status=registered");
     exit;
 
