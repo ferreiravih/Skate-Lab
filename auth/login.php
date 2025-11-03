@@ -9,7 +9,7 @@ require_once __DIR__. '/../config/db.php';
 
 // 3. Verifica se o formulário foi enviado
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: ../home/index.php"); // Expulsa se não for POST
+    header("Location: ../home/index.php?status=login_success"); // Expulsa se não for POST
     exit;
 }
 
@@ -50,7 +50,7 @@ try {
             header("Location: ../admin/dashboard.php");
         } else {
             // Redireciona para o perfil se for usuário comum
-            header("Location: ../perfil/perfil.php");
+            header("Location: ../perfil/perfil.php?status=login_success");
         }
         exit;
 

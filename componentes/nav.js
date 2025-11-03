@@ -1,3 +1,5 @@
+// Arquivo: Skate-Lab/componentes/nav.js (Corrigido)
+
 // Espera o HTML carregar antes de rodar o script
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -9,6 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const abrirCadastroBtn = document.getElementById("abrirCadastro");
   const voltarLoginBtn = document.getElementById("voltarLogin");
   const authModal = document.getElementById("auth-modal-overlay");
+  
+  // --- NOSSAS DIVS DE ERRO ---
+  const loginErrorDiv = document.getElementById("login-error-message");
+  const registerErrorDiv = document.getElementById("register-error-message");
 
   if (userIcon) {
     userIcon.addEventListener("click", () => {
@@ -47,14 +53,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   
-  // --- NOVA LÓGICA PARA MOSTRAR/OCULTAR SENHA ---
+  // --- LÓGICA PARA MOSTRAR/OCULTAR SENHA ---
 
-  // Função reutilizável para alternar a visibilidade
   const togglePasswordVisibility = (toggleBtn, input) => {
     if (input.type === "password") {
       input.type = "text";
-      toggleBtn.classList.remove("fa-eye-slash"); // Ícone de olho fechado
-      toggleBtn.classList.add("fa-eye"); // Ícone de olho aberto
+      toggleBtn.classList.remove("fa-eye-slash"); 
+      toggleBtn.classList.add("fa-eye"); 
     } else {
       input.type = "password";
       toggleBtn.classList.remove("fa-eye");
@@ -62,7 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // 1. Para o formulário de Login
   const toggleLoginBtn = document.getElementById("toggleLoginPassword");
   const loginInput = document.getElementById("loginSenhaInput");
   if (toggleLoginBtn && loginInput) {
@@ -71,7 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 2. Para o formulário de Cadastro (Senha)
   const toggleRegisterBtn = document.getElementById("toggleRegisterPassword");
   const registerInput = document.getElementById("registerSenhaInput");
   if (toggleRegisterBtn && registerInput) {
@@ -80,7 +83,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 3. Para o formulário de Cadastro (Confirmar Senha)
   const toggleConfirmBtn = document.getElementById("toggleConfirmPassword");
   const confirmInput = document.getElementById("confirmSenhaInput");
   if (toggleConfirmBtn && confirmInput) {
@@ -89,20 +91,80 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-
-  // --- NOVA LÓGICA PARA VALIDAR "CONFIRMAR SENHA" (Front-end) ---
+  // --- LÓGICA PARA VALIDAR "CONFIRMAR SENHA" (Front-end) ---
   const registerForm = document.getElementById("formCadastro");
 
   if (registerForm && registerInput && confirmInput) {
     registerForm.addEventListener("submit", (e) => {
       
-      // Verifica se as senhas são diferentes
       if (registerInput.value !== confirmInput.value) {
-        e.preventDefault(); // Impede o envio do formulário
-        alert("As senhas não coincidem. Por favor, verifique.");
-        confirmInput.focus(); // Coloca o foco no campo de confirmação
+        e.preventDefault(); 
+        
+        // MOSTRA O ERRO NA DIV QUE CRIAMOS
+        if(registerErrorDiv) {
+            registerErrorDiv.textContent = "As senhas não coincidem. Por favor, verifique.";
+            registerErrorDiv.style.display = "block";
+        } else {
+            alert("As senhas não coincidem. Por favor, verifique.");
+        }
+        confirmInput.focus(); 
       }
     });
   }
+
+  // --- LÓGICA PARA MOSTRAR ERROS DE LOGIN/CADASTRO NA SIDEBAR ---
+  // (MOVIDO PARA DENTRO DO DOMCONTENTLOADED)
+  
+  const urlParams = new URLSearchParams(window.location.search);
+  const error = urlParams.get('error');
+
+  if (error && (loginErrorDiv || registerErrorDiv)) {
+      let errorMessage = "Ocorreu um erro desconhecido.";
+      let sidebarToOpen = null;
+      let divToUse = null;
+
+      switch (error) {
+          case 'empty':
+              errorMessage = "Por favor, preencha todos os campos.";
+              sidebarToOpen = sidebarLogin;
+              divToUse = loginErrorDiv;
+              break;
+          case 'invalid':
+              errorMessage = "Email ou senha incorretos.";
+              sidebarToOpen = sidebarLogin;
+              divToUse = loginErrorDiv;
+              break;
+          case 'register_empty':
+              errorMessage = "Por favor, preencha todos os campos.";
+              sidebarToOpen = sidebarCadastro;
+              divToUse = registerErrorDiv;
+              break;
+          case 'password_mismatch':
+              errorMessage = "As senhas não coincidem.";
+              sidebarToOpen = sidebarCadastro;
+              divToUse = registerErrorDiv;
+              break;
+          case 'email_exists':
+              errorMessage = "Este email já está cadastrado.";
+              sidebarToOpen = sidebarCadastro;
+              divToUse = registerErrorDiv;
+              break;
+          case 'db':
+          case 'db_register':
+              errorMessage = "Erro no banco de dados. Tente mais tarde.";
+              sidebarToOpen = sidebarLogin;
+              divToUse = loginErrorDiv;
+              break;
+      }
+
+      if (divToUse && sidebarToOpen) {
+          divToUse.textContent = errorMessage;
+          divToUse.style.display = "block"; 
+          sidebarToOpen.classList.add("active"); 
+      }
+
+      window.history.replaceState({}, document.title, window.location.pathname);
+  }
+  // --- FIM DA LÓGICA DE ERROS ---
 
 }); // Fim do DOMContentLoaded

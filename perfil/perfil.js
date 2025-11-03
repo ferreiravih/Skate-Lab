@@ -337,5 +337,42 @@ document.addEventListener('DOMContentLoaded', function() {
             e.target.value = value;
         });
     }
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get('status');
+
+    if (status) {
+        if (status === 'login_success') {
+            // Usa a função 'showGlobalFeedback' que já existe neste arquivo
+            showGlobalFeedback("Login realizado com sucesso!", 'success');
+        }
+        if (status === 'registered') {
+            showGlobalFeedback("Cadastro realizado com sucesso! Bem-vindo.", 'success');
+        }
+        // Limpa a URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
 
 }); // --- FIM DO DOMCONTENTLOADED ---
+
+const urlParams = new URLSearchParams(window.location.search);
+const status = urlParams.get('status');
+
+// 2. Espera a página carregar
+window.addEventListener("load", () => {
+    if (status) {
+        // Pega a função que já existe no perfil.js
+        const feedbackFunc = window.showGlobalFeedback; 
+        
+        if (feedbackFunc) {
+            if (status === 'login_success') {
+                feedbackFunc("Login realizado com sucesso!", 'success');
+            }
+            if (status === 'registered') {
+                feedbackFunc("Cadastro realizado com sucesso! Bem-vindo.", 'success');
+            }
+        }
+        
+        // 3. Limpa a URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+});

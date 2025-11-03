@@ -38,6 +38,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
                 <div id="sidebarLogin" class="sidebar">
                     <h2>Login</h2>
+                    <div id="login-error-message" class="auth-error-message"></div>
                     <form action="../auth/login.php" method="POST">
                         <label>Email</label>
                         <input type="email" name="email" placeholder="Digite seu email" required />
@@ -55,6 +56,8 @@ if (session_status() === PHP_SESSION_NONE) {
 
                 <div id="sidebarCadastro" class="sidebar">
                     <h2>Cadastro</h2>
+                    
+                    <div id="register-error-message" class="auth-error-message"></div>
                     <form action="../auth/registrar.php" method="POST" id="formCadastro">
                         <label>Nome completo</label>
                         <input type="text" name="nome" placeholder="Digite seu nome" required />

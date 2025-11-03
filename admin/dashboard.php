@@ -99,6 +99,7 @@ function getStatusClass($status) {
   <body>
   <?php include __DIR__ . '/../admin/partials/headeradmin.php'; ?>
   <main class="dashboard-container">
+  <div id="feedback-message" class="feedback" style="display: none;"></div>
 
     <h1 class="title">Dashboard</h1>
     <p class="subtitle">Visão geral do seu e-commerce de skate</p>
@@ -264,5 +265,22 @@ function getStatusClass($status) {
       </table>
     </section>
   </main>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get('status');
+    const feedbackMessage = document.getElementById('feedback-message');
+
+    if (status && feedbackMessage) {
+        if (status === 'login_success') {
+            feedbackMessage.textContent = 'Login de administrador realizado com sucesso!';
+            feedbackMessage.className = 'feedback success';
+            feedbackMessage.style.display = 'block';
+        }
+        // Limpa a URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  });
+</script>
   </body>
 </html>
