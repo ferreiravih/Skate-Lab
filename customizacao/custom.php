@@ -830,6 +830,60 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
     init();
   </script>
   <script>
+    // Sobrescreve salvarConfiguracao para salvar no perfil (backend)
+    async function salvarConfiguracao() {
+      const tituloPadrao = `Minha Customização (${new Date().toLocaleDateString('pt-BR')})`;
+      const titulo = prompt('Dê um nome para sua customização:', tituloPadrao);
+      if (titulo === null) return;
+      const tituloFinal = (titulo || tituloPadrao).trim();
+
+      // Coleta estado atual
+      try { if (typeof atualizarPrecoTotal === 'function') atualizarPrecoTotal(); } catch(e) {}
+      const truckNome = (typeof trucksModelos !== 'undefined' && trucks)
+        ? (Object.keys(trucksModelos).find(key => trucksModelos[key] === trucks) || 'padrao')
+        : 'padrao';
+      const total = (typeof PRECOS !== 'undefined')
+        ? (PRECOS.shape + PRECOS.truck + PRECOS.rodinha + PRECOS.rolamento + PRECOS.parafuso)
+        : 0;
+      const previewImg = document.getElementById('cart-imagem')?.value || '../img/imgs-skateshop/image.png';
+
+      const config = {
+        shape: (typeof shapeAtual !== 'undefined') ? shapeAtual : null,
+        rodinhas: (typeof rodinhasAtuais !== 'undefined') ? (rodinhasAtuais || null) : null,
+        truck: truckNome,
+        corTrucks: (typeof corTrucksAtual !== 'undefined') ? (corTrucksAtual || '#ffffff') : '#ffffff',
+        precos: (typeof PRECOS !== 'undefined') ? {
+          shape: PRECOS.shape, truck: PRECOS.truck, rodinha: PRECOS.rodinha,
+          rolamento: PRECOS.rolamento, parafuso: PRECOS.parafuso, total
+        } : { total },
+        salvo_em: new Date().toISOString()
+      };
+
+      try { localStorage.setItem('skateConfig', JSON.stringify(config)); } catch (e) {}
+
+      try {
+        const resp = await fetch('salvar_customizacao.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ titulo: tituloFinal, config, preco_total: total, preview_img: previewImg })
+        });
+        if (resp.status === 401) {
+          window.location.href = '../home/index.php?error=auth_required';
+          return;
+        }
+        const data = await resp.json().catch(() => ({}));
+        if (resp.ok && data && data.sucesso) {
+          if (typeof atualizarStatus === 'function') { atualizarStatus('✅ Customização salva com sucesso!', 'sucesso'); }
+          setTimeout(() => { window.location.href = '../perfil/customizacoes.php'; }, 600);
+        } else {
+          if (typeof atualizarStatus === 'function') { atualizarStatus('⚠️ Não foi possível salvar agora. Tente novamente.', 'erro'); }
+        }
+      } catch (e) {
+        if (typeof atualizarStatus === 'function') { atualizarStatus('⚠️ Erro de rede ao salvar.', 'erro'); }
+      }
+    }
+  </script>
+  <script>
     function toggleGrupo(id, botao) {
       const grupo = document.getElementById(id);
       const aberto = grupo.classList.toggle("aberto");

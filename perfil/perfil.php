@@ -89,7 +89,7 @@ try {
                     <i class="ri-heart-line"></i> Favoritos
                 </a>
                 
-                <a href="#" class="menu-item disabled">
+                <a href="../perfil/customizacoes.php" class="menu-item">
                     <i class="ri-equalizer-line"></i> Customizações
                 </a>
                 <a href="../carrinho/carrinho.php" class="menu-item">
