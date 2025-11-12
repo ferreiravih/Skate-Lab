@@ -3,46 +3,40 @@
 require_once __DIR__ . '/../config/db.php';
 
 try {
-    // 2. BUSCA AS PEÇAS SEPARADAS POR CATEGORIA
-    // NOTA: Certifique-se que os nomes 'Shapes', 'Trucks', e 'Rodas' 
-    //       são EXATAMENTE como estão no seu banco na tabela 'categorias'
-    
-    // Busca Shapes
-    $stmt_shapes = $pdo->prepare(
-        "SELECT p.nome, p.preco, p.url_img, p.url_m3d
+  $stmt_shapes = $pdo->prepare(
+    "SELECT p.nome, p.preco, p.url_img, p.url_m3d
          FROM public.pecas p
          JOIN public.categorias c ON p.id_cat = c.id_cat
          WHERE c.nome = 'Shapes' AND p.status = 'ATIVO' AND p.url_m3d IS NOT NULL"
-    );
-    $stmt_shapes->execute();
-    $shapes = $stmt_shapes->fetchAll(PDO::FETCH_ASSOC);
+  );
+  $stmt_shapes->execute();
+  $shapes = $stmt_shapes->fetchAll(PDO::FETCH_ASSOC);
 
-    // Busca Trucks
-    $stmt_trucks = $pdo->prepare(
-        "SELECT p.nome, p.preco, p.url_img, p.url_m3d
+  // Busca Trucks
+  $stmt_trucks = $pdo->prepare(
+    "SELECT p.nome, p.preco, p.url_img, p.url_m3d
          FROM public.pecas p
          JOIN public.categorias c ON p.id_cat = c.id_cat
          WHERE c.nome = 'Trucks' AND p.status = 'ATIVO' AND p.url_m3d IS NOT NULL"
-    );
-    $stmt_trucks->execute();
-    $trucks = $stmt_trucks->fetchAll(PDO::FETCH_ASSOC);
+  );
+  $stmt_trucks->execute();
+  $trucks = $stmt_trucks->fetchAll(PDO::FETCH_ASSOC);
 
-    // Busca Rodinhas
-    $stmt_rodinhas = $pdo->prepare(
-        "SELECT p.nome, p.preco, p.url_img, p.url_m3d
+  // Busca Rodinhas
+  $stmt_rodinhas = $pdo->prepare(
+    "SELECT p.nome, p.preco, p.url_img, p.url_m3d
          FROM public.pecas p
          JOIN public.categorias c ON p.id_cat = c.id_cat
          WHERE c.nome = 'Rodas' AND p.status = 'ATIVO' AND p.url_m3d IS NOT NULL"
-    );
-    $stmt_rodinhas->execute();
-    $rodinhas = $stmt_rodinhas->fetchAll(PDO::FETCH_ASSOC);
-
+  );
+  $stmt_rodinhas->execute();
+  $rodinhas = $stmt_rodinhas->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    error_log("Erro ao buscar peças da customização: " . $e->getMessage());
-    $erro_db = "Erro ao carregar peças. Verifique a conexão com o banco.";
+  error_log("Erro ao buscar peças da customização: " . $e->getMessage());
+  $erro_db = "Erro ao carregar peças. Verifique a conexão com o banco.";
 }
 
-// Peças Padrão (para garantir que a lógica JS funcione)
+// Peças Padrão
 $shape_padrao = ['nome' => 'Shape Branco', 'preco' => 120.00, 'url_m3d' => 'white', 'url_img' => null];
 $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padrao', 'url_img' => null];
 
@@ -53,7 +47,7 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
 <head>
   <meta charset="UTF-8">
   <title>customização</title>
-  <link rel="stylesheet" href="custom.css?v=1.11"> 
+  <link rel="stylesheet" href="custom.css?v=1.11">
   <link rel="stylesheet" href="../componentes/nav.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -77,9 +71,9 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
     </div>
 
     <div class="controls-area">
-      
+
       <form id="form-carrinho" action="../carrinho/contr/adicionar_carrinho.php" method="POST">
-        
+
         <input type="hidden" id="cart-id" name="id" value="custom-skate">
         <input type="hidden" id="cart-nome" name="nome" value="Skate Customizado">
         <input type="hidden" id="cart-preco" name="preco" value="0">
@@ -93,83 +87,83 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
 
           <div class="status" id="status">
             <?php if ($erro_db): ?>
-                <span style="color: red;"><?php echo $erro_db; ?></span>
+              <span style="color: red;"><?php echo $erro_db; ?></span>
             <?php else: ?>
-                📦 Sistema carregando...
+              📦 Sistema carregando...
             <?php endif; ?>
           </div>
-          
+
           <div class="grupo-botoes">
             <h3 class="centro">Customização</h3>
             <button class="btn-titulo" type="button" onclick="toggleGrupo('shapeGrupo', this)">Shape</button>
             <div id="shapeGrupo" class="grupo-colapsado">
-                
-                <button class="pena active" type="button" 
-                        onclick="mostrarShape('<?php echo $shape_padrao['url_m3d']; ?>')" 
-                        data-price="<?php echo $shape_padrao['preco']; ?>" 
-                        data-name="<?php echo htmlspecialchars($shape_padrao['nome']); ?>">
-                  <div class="btn-imagem" style="background-color:#ffffff;">O</div>
-                  <span class="nome-pena"><?php echo $shape_padrao['nome']; ?></span>
-                  <span class="preco-pena">R$ <?php echo number_format($shape_padrao['preco'], 2, ',', '.'); ?></span>
-                </button>
-                
-                <?php foreach ($shapes as $shape): ?>
-                <button class="pena" type="button" 
-                        onclick="mostrarShape('<?php echo htmlspecialchars($shape['url_m3d']); ?>')" 
-                        data-price="<?php echo $shape['preco']; ?>" 
-                        data-name="<?php echo htmlspecialchars($shape['nome']); ?>">
+
+              <button class="pena active" type="button"
+                onclick="mostrarShape('<?php echo $shape_padrao['url_m3d']; ?>')"
+                data-price="<?php echo $shape_padrao['preco']; ?>"
+                data-name="<?php echo htmlspecialchars($shape_padrao['nome']); ?>">
+                <div class="btn-imagem" style="background-color:#ffffff;">O</div>
+                <span class="nome-pena"><?php echo $shape_padrao['nome']; ?></span>
+                <span class="preco-pena">R$ <?php echo number_format($shape_padrao['preco'], 2, ',', '.'); ?></span>
+              </button>
+
+              <?php foreach ($shapes as $shape): ?>
+                <button class="pena" type="button"
+                  onclick="mostrarShape('<?php echo htmlspecialchars($shape['url_m3d']); ?>')"
+                  data-price="<?php echo $shape['preco']; ?>"
+                  data-name="<?php echo htmlspecialchars($shape['nome']); ?>">
                   <img class="btn-imagem" src="<?php echo htmlspecialchars($shape['url_img']); ?>" alt="<?php echo htmlspecialchars($shape['nome']); ?>">
                   <span class="nome-pena"><?php echo htmlspecialchars($shape['nome']); ?></span>
                   <span class="preco-pena">R$ <?php echo number_format($shape['preco'], 2, ',', '.'); ?></span>
                 </button>
-                <?php endforeach; ?>
+              <?php endforeach; ?>
             </div>
 
             <button class="btn-titulo" type="button" onclick="toggleGrupo('truckGrupo', this)">Truck</button>
             <div id="truckGrupo" class="grupo-colapsado">
-                
-                <button class="pena active" type="button" 
-                        onclick="selecionarTrucks('<?php echo $truck_padrao['url_m3d']; ?>')" 
-                        data-price="<?php echo $truck_padrao['preco']; ?>" 
-                        data-name="<?php echo htmlspecialchars($truck_padrao['nome']); ?>">
-                  <div class="btn-imagem" style="background-color:#ccc;">O</div>
-                  <span class="nome-pena"><?php echo $truck_padrao['nome']; ?></span>
-                  <span class="preco-pena">R$ <?php echo number_format($truck_padrao['preco'], 2, ',', '.'); ?></span>
-                </button>
-                
-                <?php foreach ($trucks as $truck): ?>
-                <button class="pena" type="button" 
-                        onclick="selecionarTrucks('<?php echo htmlspecialchars($truck['url_m3d']); ?>')" 
-                        data-price="<?php echo $truck['preco']; ?>" 
-                        data-name="<?php echo htmlspecialchars($truck['nome']); ?>">
+
+              <button class="pena active" type="button"
+                onclick="selecionarTrucks('<?php echo $truck_padrao['url_m3d']; ?>')"
+                data-price="<?php echo $truck_padrao['preco']; ?>"
+                data-name="<?php echo htmlspecialchars($truck_padrao['nome']); ?>">
+                <div class="btn-imagem" style="background-color:#ccc;">O</div>
+                <span class="nome-pena"><?php echo $truck_padrao['nome']; ?></span>
+                <span class="preco-pena">R$ <?php echo number_format($truck_padrao['preco'], 2, ',', '.'); ?></span>
+              </button>
+
+              <?php foreach ($trucks as $truck): ?>
+                <button class="pena" type="button"
+                  onclick="selecionarTrucks('<?php echo htmlspecialchars($truck['url_m3d']); ?>')"
+                  data-price="<?php echo $truck['preco']; ?>"
+                  data-name="<?php echo htmlspecialchars($truck['nome']); ?>">
                   <img class="btn-imagem" src="<?php echo htmlspecialchars($truck['url_img']); ?>" alt="<?php echo htmlspecialchars($truck['nome']); ?>">
                   <span class="nome-pena"><?php echo htmlspecialchars($truck['nome']); ?></span>
                   <span class="preco-pena">R$ <?php echo number_format($truck['preco'], 2, ',', '.'); ?></span>
                 </button>
-                <?php endforeach; ?>
+              <?php endforeach; ?>
             </div>
-            
+
             <button class="btn-titulo" type="button" onclick="toggleGrupo('rodinhaGrupo', this)">Rodinha</button>
             <div id="rodinhaGrupo" class="grupo-colapsado">
-                
-                <?php foreach ($rodinhas as $rodinha): ?>
-                <button class="pena" type="button" 
-                        onclick="mostrarRodinhas('<?php echo htmlspecialchars($rodinha['url_m3d']); ?>')" 
-                        data-price="<?php echo $rodinha['preco']; ?>" 
-                        data-name="<?php echo htmlspecialchars($rodinha['nome']); ?>">
+
+              <?php foreach ($rodinhas as $rodinha): ?>
+                <button class="pena" type="button"
+                  onclick="mostrarRodinhas('<?php echo htmlspecialchars($rodinha['url_m3d']); ?>')"
+                  data-price="<?php echo $rodinha['preco']; ?>"
+                  data-name="<?php echo htmlspecialchars($rodinha['nome']); ?>">
                   <img class="btn-imagem" src="<?php echo htmlspecialchars($rodinha['url_img']); ?>" alt="<?php echo htmlspecialchars($rodinha['nome']); ?>">
                   <span class="nome-pena"><?php echo htmlspecialchars($rodinha['nome']); ?></span>
                   <span class="preco-pena">R$ <?php echo number_format($rodinha['preco'], 2, ',', '.'); ?></span>
                 </button>
-                <?php endforeach; ?>
+              <?php endforeach; ?>
             </div>
-          
+
             <h3> Mostrar/Ocultar</h3>
             <button id="btnShape" type="button" onclick="toggleShape()">Ocultar shape</button>
             <button id="btnTrucks" type="button" onclick="toggleTrucks()">Ocultar trucks</button>
             <button id="btnRodinhas" type="button" onclick="toggleRodinhas()">Ocultar rodinhas</button>
           </div>
-          
+
           <div class="grupo-botoes">
             <h3>ROLAMENTOS</h3>
             <button type="button" onclick="selecionarRolamentos('padrao')" data-price="30" data-name="Padrão">
@@ -200,24 +194,38 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
             <button type="button" id="exportarBtn" onclick="exportarImagem()">EXPORTAR IMAGEM</button>
             <button type="button" onclick="resetCamera()">Resetar Câmera</button>
           </div>
-        </div> <div class="custom-checkout-area">
-            <div class="preco-total-container">
-              <span class="preco-label">Valor Total do Skate:</span>
-              <span class="preco-valor" id="preco-total-display">R$ 0,00</span>
-            </div>
-            
-            <button type="submit" class="btn-add-to-cart">
-              <i class="fa-solid fa-cart-shopping"></i> Adicionar ao Carrinho
-            </button>
+        </div>
+        <div class="custom-checkout-area">
+          <div class="preco-total-container">
+            <span class="preco-label">Valor Total do Skate:</span>
+            <span class="preco-valor" id="preco-total-display">R$ 0,00</span>
+          </div>
+
+          <button type="submit" class="btn-add-to-cart">
+            <i class="fa-solid fa-cart-shopping"></i> Adicionar ao Carrinho
+          </button>
         </div>
 
-      </form> </div>>
+      </form>
+    </div>>
+  </div>
+  <div id="salvar-overlay" class="salvar-modal-overlay" style="display: none;">
+    <div class="salvar-modal-box">
+      <h2>Salvar Customização</h2>
+      <p>Dê um nome para sua build:</p>
+      <input type="text" id="salvar-nome-input" placeholder="Minha Customização">
+      <div class="salvar-modal-botoes">
+        <button type="button" id="salvar-btn-cancelar" class="modal-btn-cancelar">Cancelar</button>
+        <button type="button" id="salvar-btn-confirmar" class="modal-btn-confirmar">Salvar</button>
+      </div>
+    </div>
+  </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-  
+
   <script src="custom.js?v=1.10"></script>
 
   <script>
@@ -237,36 +245,36 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
     // NOVO: LÓGICA DE PREÇO
     // =============================================
     const PRECOS = {
-        shape: 120,    // Preço base do shape 'white'
-        truck: 0,      // Preço base do truck 'padrao'
-        rodinha: 0,  // Preço base (sem rodinha)
-        rolamento: 0,
-        parafuso: 0
+      shape: 120, // Preço base do shape 'white'
+      truck: 0, // Preço base do truck 'padrao'
+      rodinha: 0, // Preço base (sem rodinha)
+      rolamento: 0,
+      parafuso: 0
     };
 
     function atualizarPrecoTotal() {
-        // 1. Soma todos os preços
-        const total = PRECOS.shape + PRECOS.truck + PRECOS.rodinha + PRECOS.rolamento + PRECOS.parafuso;
-        
-        // 2. Formata como R$
-        const precoFormatado = `R$ ${total.toFixed(2).replace('.', ',')}`;
-        
-        // 3. Atualiza o visor no topo
-        document.getElementById('preco-total-display').textContent = precoFormatado;
+      // 1. Soma todos os preços
+      const total = PRECOS.shape + PRECOS.truck + PRECOS.rodinha + PRECOS.rolamento + PRECOS.parafuso;
 
-        // 4. Atualiza os inputs escondidos do formulário
-        const nomeShape = shapeAtual.charAt(0).toUpperCase() + shapeAtual.slice(1);
-        const nomeTruck = trucks === trucksModelos.padrao ? 'Padrão' : (Object.keys(trucksModelos).find(key => trucksModelos[key] === trucks) || 'Padrão');
-        const nomeRodinha = rodinhasAtuais ? (rodinhasAtuais.charAt(0).toUpperCase() + rodinhasAtuais.slice(1)) : 'Nenhuma';
-        
-        const nomeDescricao = `Shape: ${nomeShape}, Truck: ${nomeTruck}, Roda: ${nomeRodinha}`;
-        const nomeProduto = `Skate Customizado (${nomeShape})`;
-        const idProduto = `custom-${shapeAtual}-${nomeTruck.toLowerCase()}-${rodinhasAtuais || 'none'}`;
+      // 2. Formata como R$
+      const precoFormatado = `R$ ${total.toFixed(2).replace('.', ',')}`;
 
-        document.getElementById('cart-id').value = idProduto;
-        document.getElementById('cart-nome').value = nomeProduto;
-        document.getElementById('cart-preco').value = total.toFixed(2);
-        document.getElementById('cart-descricao').value = nomeDescricao;
+      // 3. Atualiza o visor no topo
+      document.getElementById('preco-total-display').textContent = precoFormatado;
+
+      // 4. Atualiza os inputs escondidos do formulário
+      const nomeShape = shapeAtual.charAt(0).toUpperCase() + shapeAtual.slice(1);
+      const nomeTruck = trucks === trucksModelos.padrao ? 'Padrão' : (Object.keys(trucksModelos).find(key => trucksModelos[key] === trucks) || 'Padrão');
+      const nomeRodinha = rodinhasAtuais ? (rodinhasAtuais.charAt(0).toUpperCase() + rodinhasAtuais.slice(1)) : 'Nenhuma';
+
+      const nomeDescricao = `Shape: ${nomeShape}, Truck: ${nomeTruck}, Roda: ${nomeRodinha}`;
+      const nomeProduto = `Skate Customizado (${nomeShape})`;
+      const idProduto = `custom-${shapeAtual}-${nomeTruck.toLowerCase()}-${rodinhasAtuais || 'none'}`;
+
+      document.getElementById('cart-id').value = idProduto;
+      document.getElementById('cart-nome').value = nomeProduto;
+      document.getElementById('cart-preco').value = total.toFixed(2);
+      document.getElementById('cart-descricao').value = nomeDescricao;
     }
 
 
@@ -491,7 +499,7 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
       todas.forEach(n => {
         if (todasAsPecas[n]) todasAsPecas[n].visible = false;
       });
-      
+
       // Mostra o modelo selecionado
       const lista = trucksModelos[modelo] || [];
       lista.forEach(n => {
@@ -504,7 +512,7 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
         }
       });
       trucks = lista; // Atualiza o estado
-      
+
       // =============================================
       // ATUALIZA O PREÇO
       // =============================================
@@ -554,7 +562,7 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
         }
       });
       parafusos = lista;
-      
+
       // =============================================
       // ATUALIZA O PREÇO
       // =============================================
@@ -570,7 +578,7 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
         if (todasAsPecas[n]) todasAsPecas[n].visible = false;
       });
       rolamentos = [];
-      
+
       // =============================================
       // ATUALIZA O PREÇO
       // =============================================
@@ -585,7 +593,7 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
         if (todasAsPecas[n]) todasAsPecas[n].visible = false;
       });
       parafusos = [];
-      
+
       // =============================================
       // ATUALIZA O PREÇO
       // =============================================
@@ -647,7 +655,9 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
     function mostrarShape(tipo) {
       // Esconde apenas os shapes atuais
       const todosShapes = Object.values(shapes).flat();
-      todosShapes.forEach(n => { if (todasAsPecas[n]) todasAsPecas[n].visible = false; });
+      todosShapes.forEach(n => {
+        if (todasAsPecas[n]) todasAsPecas[n].visible = false;
+      });
 
       // Mostra o shape selecionado
       let pecasEncontradas = 0;
@@ -673,7 +683,7 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
       const botaoClicado = [...document.querySelectorAll('#shapeGrupo .pena')].find(b => b.getAttribute('onclick') === `mostrarShape('${tipo}')`);
       PRECOS.shape = parseFloat(botaoClicado?.dataset.price || 0);
       atualizarPrecoTotal();
-      
+
       // Atualiza UI dos botões
       document.querySelectorAll('#shapeGrupo .pena').forEach(btn => btn.classList.remove('ativo'));
       if (botaoClicado) botaoClicado.classList.add('ativo');
@@ -701,7 +711,7 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
       const botaoClicado = [...document.querySelectorAll('#rodinhaGrupo .pena')].find(b => b.getAttribute('onclick') === `mostrarRodinhas('${tipo}')`);
       PRECOS.rodinha = parseFloat(botaoClicado?.dataset.price || 0);
       atualizarPrecoTotal();
-      
+
       // Atualiza UI dos botões
       document.querySelectorAll('#rodinhaGrupo .pena').forEach(btn => btn.classList.remove('ativo'));
       if (botaoClicado) botaoClicado.classList.add('ativo');
@@ -720,7 +730,7 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
       camera.updateProjectionMatrix();
     }
 
-    function init() { 
+    function init() {
       scene = new THREE.Scene();
       scene.background = new THREE.Color(0xcccccc);
 
@@ -797,7 +807,7 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
 
         scene.add(skateBase);
         organizarTodasAsPecas(skateBase);
-        
+
         // Inicializa o estado padrão
         esconderTudo();
         removerRolamentos();
@@ -809,7 +819,7 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
           'Shape: White | Rodinhas: — | Truck: Padrão';
 
         atualizarStatus('✅ Modelo carregado com sucesso!', 'sucesso');
-        
+
         // Define o preço inicial
         atualizarPrecoTotal();
 
@@ -831,57 +841,122 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
   </script>
   <script>
     // Sobrescreve salvarConfiguracao para salvar no perfil (backend)
-    async function salvarConfiguracao() {
-      const tituloPadrao = `Minha Customização (${new Date().toLocaleDateString('pt-BR')})`;
-      const titulo = prompt('Dê um nome para sua customização:', tituloPadrao);
-      if (titulo === null) return;
-      const tituloFinal = (titulo || tituloPadrao).trim();
-
-      // Coleta estado atual
-      try { if (typeof atualizarPrecoTotal === 'function') atualizarPrecoTotal(); } catch(e) {}
-      const truckNome = (typeof trucksModelos !== 'undefined' && trucks)
-        ? (Object.keys(trucksModelos).find(key => trucksModelos[key] === trucks) || 'padrao')
-        : 'padrao';
-      const total = (typeof PRECOS !== 'undefined')
-        ? (PRECOS.shape + PRECOS.truck + PRECOS.rodinha + PRECOS.rolamento + PRECOS.parafuso)
-        : 0;
-      const previewImg = document.getElementById('cart-imagem')?.value || '../img/imgs-skateshop/image.png';
-
-      const config = {
-        shape: (typeof shapeAtual !== 'undefined') ? shapeAtual : null,
-        rodinhas: (typeof rodinhasAtuais !== 'undefined') ? (rodinhasAtuais || null) : null,
-        truck: truckNome,
-        corTrucks: (typeof corTrucksAtual !== 'undefined') ? (corTrucksAtual || '#ffffff') : '#ffffff',
-        precos: (typeof PRECOS !== 'undefined') ? {
-          shape: PRECOS.shape, truck: PRECOS.truck, rodinha: PRECOS.rodinha,
-          rolamento: PRECOS.rolamento, parafuso: PRECOS.parafuso, total
-        } : { total },
-        salvo_em: new Date().toISOString()
-      };
-
-      try { localStorage.setItem('skateConfig', JSON.stringify(config)); } catch (e) {}
-
-      try {
-        const resp = await fetch('salvar_customizacao.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ titulo: tituloFinal, config, preco_total: total, preview_img: previewImg })
-        });
-        if (resp.status === 401) {
-          window.location.href = '../home/index.php?error=auth_required';
-          return;
-        }
-        const data = await resp.json().catch(() => ({}));
-        if (resp.ok && data && data.sucesso) {
-          if (typeof atualizarStatus === 'function') { atualizarStatus('✅ Customização salva com sucesso!', 'sucesso'); }
-          setTimeout(() => { window.location.href = '../perfil/customizacoes.php'; }, 600);
-        } else {
-          if (typeof atualizarStatus === 'function') { atualizarStatus('⚠️ Não foi possível salvar agora. Tente novamente.', 'erro'); }
-        }
-      } catch (e) {
-        if (typeof atualizarStatus === 'function') { atualizarStatus('⚠️ Erro de rede ao salvar.', 'erro'); }
-      }
+    // 
+    function salvarConfiguracao() {
+        const overlay = document.getElementById('salvar-overlay');
+        const input = document.getElementById('salvar-nome-input');
+        
+        const tituloPadrao = `Minha Customização (${new Date().toLocaleDateString('pt-BR')})`;
+        input.value = tituloPadrao;
+        
+        overlay.style.display = 'flex';
+        setTimeout(() => overlay.classList.add('visivel'), 10);
+        
+        input.focus();
+        input.select();
     }
+
+    async function executarSalvamento() {
+        const overlay = document.getElementById('salvar-overlay');
+        const input = document.getElementById('salvar-nome-input');
+        const btnConfirmar = document.getElementById('salvar-btn-confirmar');
+        const tituloPadrao = `Minha Customização (${new Date().toLocaleDateString('pt-BR')})`;
+        
+        const titulo = input.value;
+        const tituloFinal = (titulo || tituloPadrao).trim();
+
+        if (!tituloFinal) {
+            input.focus();
+            input.style.borderColor = 'red'; 
+            return;
+        }
+        btnConfirmar.disabled = true;
+        btnConfirmar.textContent = 'Salvando...';
+
+        try { if (typeof atualizarPrecoTotal === 'function') atualizarPrecoTotal(); } catch(e) {}
+        const truckNome = (typeof trucksModelos !== 'undefined' && trucks)
+          ? (Object.keys(trucksModelos).find(key => trucksModelos[key] === trucks) || 'padrao')
+          : 'padrao';
+        const total = (typeof PRECOS !== 'undefined')
+          ? (PRECOS.shape + PRECOS.truck + PRECOS.rodinha + PRECOS.rolamento + PRECOS.parafuso)
+          : 0;
+        const previewImg = document.getElementById('cart-imagem')?.value || '../img/imgs-skateshop/image.png';
+
+        const config = {
+          shape: (typeof shapeAtual !== 'undefined') ? shapeAtual : null,
+          rodinhas: (typeof rodinhasAtuais !== 'undefined') ? (rodinhasAtuais || null) : null,
+          truck: truckNome,
+          corTrucks: (typeof corTrucksAtual !== 'undefined') ? (corTrucksAtual || '#ffffff') : '#ffffff',
+          precos: (typeof PRECOS !== 'undefined') ? {
+            shape: PRECOS.shape, truck: PRECOS.truck, rodinha: PRECOS.rodinha,
+            rolamento: PRECOS.rolamento, parafuso: PRECOS.parafuso, total
+          } : { total },
+          salvo_em: new Date().toISOString()
+        };
+
+        try { localStorage.setItem('skateConfig', JSON.stringify(config)); } catch (e) {}
+
+        try {
+        
+          const resp = await fetch('salvar_customizacao.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ titulo: tituloFinal, config, preco_total: total, preview_img: previewImg })
+          });
+          
+          if (resp.status === 401) {
+            window.location.href = '../home/index.php?error=auth_required';
+            return;
+          }
+          const data = await resp.json().catch(() => ({}));
+          if (resp.ok && data && data.sucesso) {
+            if (typeof atualizarStatus === 'function') { atualizarStatus('✅ Customização salva com sucesso!', 'sucesso'); }
+            setTimeout(() => { window.location.href = '../perfil/customizacoes.php'; }, 600);
+          } else {
+            if (typeof atualizarStatus === 'function') { atualizarStatus('⚠️ Não foi possível salvar agora. Tente novamente.', 'erro'); }
+          }
+        } catch (e) {
+          if (typeof atualizarStatus === 'function') { atualizarStatus('⚠️ Erro de rede ao salvar.', 'erro'); }
+        }
+        btnConfirmar.disabled = false;
+        btnConfirmar.textContent = 'Salvar';
+        
+        const inputNome = document.getElementById('salvar-nome-input');
+        inputNome.style.borderColor = '#ddd'; 
+
+        overlay.classList.remove('visivel');
+        setTimeout(() => overlay.style.display = 'none', 300); 
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const overlay = document.getElementById('salvar-overlay');
+        const btnCancelar = document.getElementById('salvar-btn-cancelar');
+        const btnConfirmar = document.getElementById('salvar-btn-confirmar');
+        const inputNome = document.getElementById('salvar-nome-input');
+
+        if (overlay) { 
+            function fecharModal() {
+                overlay.classList.remove('visivel');r
+                setTimeout(() => overlay.style.display = 'none', 300); 
+            }
+            btnCancelar.addEventListener('click', fecharModal);
+            btnConfirmar.addEventListener('click', executarSalvamento);
+            
+            inputNome.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    executarSalvamento();
+                }
+            });
+
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    fecharModal();
+                }
+            });
+        }
+    });
+     
+    
   </script>
   <script>
     function toggleGrupo(id, botao) {
