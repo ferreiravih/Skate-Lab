@@ -1,78 +1,98 @@
 <?php
-// 1. Inicia a sessão
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// 2. Inclui a conexão com o banco
 require_once __DIR__. '/../config/db.php';
+require_once __DIR__. '/../vendor/autoload.php'; 
 
-// 3. Verifica se o formulário foi enviado (POST)
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: ../home/index.php"); // Expulsa se não for POST
+    header("Location: ../home/index.php"); 
     exit;
 }
 
-// 4. Coleta dados do formulário
 $nome = trim($_POST['nome'] ?? '');
 $email = trim($_POST['email'] ?? '');
 $senha = trim($_POST['senha'] ?? '');
-$confirmar_senha = trim($_POST['confirmar_senha'] ?? ''); // <-- NOVO
+$confirmar_senha = trim($_POST['confirmar_senha'] ?? '');
 
-// 5. Validação básica
-if (empty($nome) || empty($email) || empty($senha) || empty($confirmar_senha)) { // <-- ATUALIZADO
+if (empty($nome) || empty($email) || empty($senha) || empty($confirmar_senha)) {
     header("Location: ../home/index.php?error=register_empty");
     exit;
 }
-
-// 6. VALIDAÇÃO DE CONFIRMAÇÃO DE SENHA (BACK-END) <-- NOVO
 if ($senha !== $confirmar_senha) {
     header("Location: ../home/index.php?error=password_mismatch");
     exit;
 }
 
-// 7. Criptografa a senha (IMPORTANTE!)
 $hash_senha = password_hash($senha, PASSWORD_DEFAULT);
 
+
+$codigo_verificacao = random_int(100000, 999999);
+$expira_em = date('Y-m-d H:i:s', strtotime('+10 minutes')); 
+
 try {
-    // 8. Verifica se o e-mail já existe
     $sql_check = "SELECT id_usu FROM public.usuario WHERE email = :email";
     $stmt_check = $pdo->prepare($sql_check);
     $stmt_check->execute([':email' => $email]);
     
     if ($stmt_check->fetch()) {
-        // Usuário já existe
         header("Location: ../home/index.php?error=email_exists");
         exit;
     }
 
-    // 9. Insere o novo usuário no banco
-    $sql_insert = "INSERT INTO public.usuario (nome, email, senha, tipo) VALUES (:nome, :email, :senha, 'comum')";
-    $stmt_insert = $pdo->prepare($sql_insert);
+    $sql_insert = "INSERT INTO public.usuario 
+        (nome, email, senha, tipo, codigo_verificacao, codigo_expira_em, verificado) 
+        VALUES 
+        (:nome, :email, :senha, 'comum', :codigo, :expira, false)";
     
+    $stmt_insert = $pdo->prepare($sql_insert);
     $stmt_insert->execute([
         ':nome' => $nome,
         ':email' => $email,
-        ':senha' => $hash_senha
+        ':senha' => $hash_senha,
+        ':codigo' => $codigo_verificacao,
+        ':expira' => $expira_em
     ]);
+    
+    $mail = new PHPMailer(true);
+    
+    $mail->isSMTP();
+    $mail->Host       = 'smtp.gmail.com';
+    $mail->SMTPAuth   = true;
+    
+    $mail->Username   = 'skatelab.tcc@gmail.com'; 
+    $mail->Password   = 'drti ujaa rsjg jdsm'; 
+    
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+    $mail->Port       = 465;
+    $mail->CharSet    = 'UTF-8';
 
-    // 10. Pega o ID do usuário que acabamos de criar
-    $id_novo_usuario = $pdo->lastInsertId('public.usuario_id_usu_seq'); // Sintaxe do PostgreSQL
+    //Destinatários
+    $mail->setFrom('seu-email@gmail.com', 'SkateLab'); 
+    $mail->addAddress($email, $nome);
 
-    // 11. FAZ O LOGIN AUTOMÁTICO: Cria a sessão para o usuário
-    session_regenerate_id(true);
-    $_SESSION['id_usu'] = $id_novo_usuario;
-    $_SESSION['nome_usu'] = $nome;
-    $_SESSION['email_usu'] = $email; // <-- AQUI TAMBÉM!
-    $_SESSION['tipo_usu'] = 'comum'; 
+    //Conteúdo
+    $mail->isHTML(true);
+    $mail->Subject = 'Seu Código de Verificação - SkateLab';
+    $mail->Body    = "Olá $nome! <br><br>Seu código de verificação é: <strong>$codigo_verificacao</strong>";
+    $mail->AltBody = "Olá $nome! Seu código de verificação é: $codigo_verificacao";
 
-    // 12. Redireciona para a página de perfil
-    header("Location: ../perfil/perfil.php?status=registered");
+    $mail->send();
+    
+    header("Location: ../verificar.php?email=" . urlencode($email));
     exit;
 
 } catch (PDOException $e) {
     error_log("Erro de registro: " . $e->getMessage());
     header("Location: ../home/index.php?error=db_register");
+    exit;
+} catch (Exception $e) {
+    error_log("Erro ao enviar email: " . $mail->ErrorInfo);
+    header("Location: ../verificar.php?email=" . urlencode($email) . "&error=email_failed");
     exit;
 }
 ?>
