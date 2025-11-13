@@ -1,4 +1,4 @@
-/* /perfil/favoritos/favoritos.css */
+/* Skate-Lab/favoritos/favoritos.css */
 
 .favoritos-header-card {
     grid-column: 1 / -1; /* Ocupa a linha inteira */
@@ -51,7 +51,8 @@
 }
 
 .empty-state-favoritos .btn-add-new {
-    background-color: #007bff;
+    /* Corrigido para o roxo do tema (ou pode ser #007bff se preferir) */
+    background-color: #400080; 
     color: white;
     padding: 10px 20px;
     border-radius: 5px;
@@ -61,7 +62,7 @@
 }
 
 .empty-state-favoritos .btn-add-new:hover {
-    background-color: #0056b3;
+    background-color: #3d0076;
 }
 
 
@@ -103,9 +104,16 @@
     object-fit: cover; /* Garante que a imagem cubra o espaço */
 }
 
+/* ================================== */
+/* MUDANÇAS APLICADAS AQUI      */
+/* ================================== */
+
 .fav-card-body {
     padding: 15px;
     flex-grow: 1; /* Faz o corpo crescer para preencher o espaço */
+    
+    /* NOVO: Centraliza todo o texto */
+    text-align: center; 
 }
 
 .fav-card-title {
@@ -113,6 +121,9 @@
     font-weight: 700;
     color: #333;
     margin: 0 0 8px 0;
+
+    /* NOVO: Garante que o título use a largura total */
+    width: 100%; 
 }
 
 .fav-card-desc {
@@ -127,15 +138,26 @@
 .fav-card-price {
     font-size: 1.2rem;
     font-weight: 700;
-    color: #007bff;
+    
+    /* NOVO: Cor roxa do tema */
+    color: #400080; 
+    
     margin: 0;
 }
+
+/* ================================== */
+/* FIM DAS MUDANÇAS               */
+/* ================================== */
+
 
 .fav-card-actions {
     padding: 15px;
     border-top: 1px solid #f0f0f0;
     display: flex;
     gap: 10px;
+    
+    /* NOVO: Centraliza o botão de remover */
+    justify-content: center;
 }
 
 .btn-remover-fav {
