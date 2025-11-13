@@ -85,47 +85,7 @@ body {
   margin: 0;
 }
 
-.quantidadecard {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 15px;
-}
-
-.quantidade {
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  overflow: hidden;
-  width: 100px;
-  justify-content: space-between;
-  background-color: white;
-}
-
-.quantidade button {
-  background: none;
-  border: none;
-  color: #555;
-  font-size: 20px;
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.quantidade button:hover {
-  background-color: #f5f5f5;
-}
-
-.quantidade .num {
-  font-size: 16px;
-  font-weight: 500;
-  width: 30px;
-  text-align: center;
-  color: #333;
-}
-
+/* Botões de Ação */
 .botaocomprar1,
 .botaoadcarrinho {
   display: inline-block;
@@ -140,6 +100,8 @@ body {
   text-align: center;
   margin-top: 10px;
   box-sizing: border-box;
+  border: none; 
+  cursor: pointer; 
 }
 
 .botaocomprar1 {
@@ -432,10 +394,6 @@ body {
     text-align: center;
   }
 
-  .quantidadecard {
-    justify-content: center;
-  }
-
   .produtos .card img {
     width: 200px;
     height: 200px;
@@ -471,4 +429,95 @@ body {
     width: 180px;
     height: 180px;
   }
+}
+
+/* ============================================== */
+/* --- CÓDIGO ADICIONADO PARA OS FAVORITOS --- */
+/* ============================================== */
+
+/* 1. Botão de Favorito (Estilo Bloco) */
+.btn-favorito-bloco {
+    width: 100%;
+    max-width: 360px; /* Mesma largura dos botões de compra */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center; /* Centraliza o ícone/texto */
+    gap: 8px;
+    padding: 12px 24px; /* Mesmo padding dos botões de compra */
+    font-size: 1rem;
+    font-weight: 600;
+    border: 2px solid #ddd; /* Borda de botão "secundário" */
+    background-color: #f9f9f9;
+    color: #555;
+    border-radius: 10px; /* Mesmo radius dos botões de compra */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    
+    /* ESTA É A MUDANÇA PRINCIPAL */
+    margin-top: 20px; /* Espaçamento acima (abaixo do estoque) */
+    margin-bottom: 10px; /* Espaçamento abaixo (acima do laranja) */
+}
+
+.btn-favorito-bloco:hover {
+    border-color: #3d0076; /* Cor roxa no hover */
+    color: #3d0076;
+    background-color: #fff;
+}
+
+.btn-favorito-bloco i {
+    font-size: 1.3rem;
+    line-height: 1; /* Alinha o ícone */
+}
+
+/* 2. Lógica de mostrar/esconder ícones */
+.btn-favorito-bloco .icon-filled { display: none; }
+.btn-favorito-bloco .icon-outlined { display: block; }
+
+/* 3. Estilo ATIVO (quando já é favorito) */
+.btn-favorito-bloco.active {
+    background-color: #fceded; /* Um rosa/vermelho bem claro */
+    border-color: #ff4d4d;
+    color: #ff4d4d;
+}
+
+.btn-favorito-bloco.active .icon-filled { display: block; }
+.btn-favorito-bloco.active .icon-outlined { display: none; }
+
+
+/* 4. Container dos botões de ação (para agrupar Comprar/Adicionar) */
+.product-actions {
+    display: flex;
+    align-items: stretch; 
+    gap: 15px;
+    /* margin-top: 20px; -> Removido, o botão de favorito tem sua própria margem */
+    flex-wrap: wrap; 
+}
+
+/* 5. Formulário de compra (agrupa os 2 botões de compra) */
+.product-actions .form-carrinho {
+    flex: 1; /* Permite que o formulário cresça */
+    min-width: 100%; /* Faz ocupar 100% da largura */
+    display: flex;
+    flex-direction: column; /* Botões "Comprar" e "Adicionar" empilhados */
+    gap: 10px;
+    margin: 0; 
+    width: auto; 
+}
+
+
+/* 6. Ajuste de responsividade */
+@media (max-width: 600px) {
+    .product-actions {
+        flex-direction: column; 
+        gap: 10px;
+    }
+    .product-actions .form-carrinho {
+        width: 100%;
+        max-width: 100%;
+    }
+    .btn-favorito-bloco {
+        max-width: 100%; /* Ocupa 100% no mobile */
+    }
 }

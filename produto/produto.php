@@ -9,15 +9,33 @@ $produto = null;
 if ($id_peca > 0) {
     // 2. BUSCAR O PRODUTO ESPECÍFICO NO BANCO
     try {
-        $sql = "SELECT p.*, c.nome AS categoria_nome 
-                FROM pecas p
-                JOIN categorias c ON p.id_cat = c.id_cat
-                WHERE p.id_pecas = :id_peca AND p.status = 'ATIVO'";
+        // Pega o ID do usuário logado (ou null se não estiver logado)
+        $id_usuario_logado = $_SESSION['id_usu'] ?? null;
 
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':id_peca', $id_peca, PDO::PARAM_INT);
-        $stmt->execute();
+        if ($id_usuario_logado) {
+            // LOGADO: Busca o produto e checa se é favorito
+            $sql = "SELECT p.*, c.nome AS categoria_nome, f.id_favorito
+                    FROM pecas p
+                    JOIN categorias c ON p.id_cat = c.id_cat
+                    LEFT JOIN favoritos f ON p.id_pecas = f.id_pecas AND f.id_usu = :id_usu
+                    WHERE p.id_pecas = :id_peca AND p.status = 'ATIVO'";
+            
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':id_peca' => $id_peca, ':id_usu' => $id_usuario_logado]);
+
+        } else {
+            // DESLOGADO: Apenas busca o produto
+            $sql = "SELECT p.*, c.nome AS categoria_nome, NULL as id_favorito
+                    FROM pecas p
+                    JOIN categorias c ON p.id_cat = c.id_cat
+                    WHERE p.id_pecas = :id_peca AND p.status = 'ATIVO'";
+            
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':id_peca' => $id_peca]);
+        }
+
         $produto = $stmt->fetch(PDO::FETCH_ASSOC);
+
     } catch (PDOException $e) {
         echo "Erro ao buscar produto: " . $e->getMessage();
     }
@@ -34,6 +52,7 @@ $titulo_pagina = $produto ? htmlspecialchars($produto['nome']) : 'Produto não e
     <title><?php echo $titulo_pagina; ?> - Skate Lab</title>
     <link rel="stylesheet" href="produto.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 
 <body>
@@ -77,38 +96,42 @@ $titulo_pagina = $produto ? htmlspecialchars($produto['nome']) : 'Produto não e
                     <?php endif; ?>
                 </div>
 
-                <form action="../carrinho/contr/adicionar_carrinho.php" method="POST" style="width: 100%;">
-                    <input type="hidden" name="id" value="<?php echo $produto['id_pecas']; ?>">
-                    <input type="hidden" name="nome" value="<?php echo htmlspecialchars($produto['nome']); ?>">
-                    <input type="hidden" name="preco" value="<?php echo $produto['preco']; ?>">
-                    <input type="hidden" name="imagem" value="<?php echo htmlspecialchars($produto['url_img']); ?>">
-                    <input type="hidden" name="descricao" value="<?php echo htmlspecialchars($produto['desc_curta']); ?>">
-                    
-                    <input type="hidden" name="redirect_to" value="carrinho" class="redirect_to_input">
+                <?php
+                // $produto['id_favorito'] vem da nova consulta SQL
+                $activeClass = $produto['id_favorito'] ? 'active' : '';
+                $btnText = $produto['id_favorito'] ? 'Salvo nos Favoritos' : 'Salvar nos Favoritos';
+                ?>
+                <button type="button" class="btn-favorito-bloco <?php echo $activeClass; ?>" 
+                        data-id-peca="<?php echo $produto['id_pecas']; ?>">
+                    <i class="ri-heart-fill icon-filled"></i>
+                    <i class="ri-heart-line icon-outlined"></i>
+                    <span class="btn-fav-text"><?php echo $btnText; ?></span>
+                </button>
 
-                    <div class="quantidadecard">
-                        <span>Quantidade:</span>
-                        <div class="quantidade">
-                            <button type="button" class="qtd-btn" data-action="decrease">-</button>
-                            
-                            <input type="text" class="num" name="quantidade" value="1" readonly 
-                                   style="width: 30px; text-align: center; border: none; font-size: 16px; font-weight: 500; color: #333;">
-                                   
-                            <button type="button" class="qtd-btn" data-action="increase">+</button>
-                        </div>
-                    </div>
-                    
-                    <button type="submit" class="botaocomprar1 form-protegido"
-                        onclick="this.closest('form').querySelector('.redirect_to_input').value = 'checkout';">
-                        Comprar Agora
-                    </button>
-                    <button type="submit" class="botaoadcarrinho form-protegido"
-                        onclick="this.closest('form').querySelector('.redirect_to_input').value = 'carrinho';">
-                        <i class="fa-solid fa-cart-shopping"></i> Adicionar ao Carrinho
-                    </button>
-                </form>
+                <div class="product-actions">
 
-                </section>
+                    <form action="../carrinho/contr/adicionar_carrinho.php" method="POST" class="form-carrinho">
+                        <input type="hidden" name="id" value="<?php echo $produto['id_pecas']; ?>">
+                        <input type="hidden" name="nome" value="<?php echo htmlspecialchars($produto['nome']); ?>">
+                        <input type="hidden" name="preco" value="<?php echo $produto['preco']; ?>">
+                        <input type="hidden" name="imagem" value="<?php echo htmlspecialchars($produto['url_img']); ?>">
+                        <input type="hidden" name="descricao" value="<?php echo htmlspecialchars($produto['desc_curta']); ?>">
+                        
+                        <input type="hidden" name="quantidade" value="1"> 
+                        
+                        <input type="hidden" name="redirect_to" value="carrinho" class="redirect_to_input">
+                        
+                        <button type="submit" class="botaocomprar1 form-protegido"
+                            onclick="this.closest('form').querySelector('.redirect_to_input').value = 'checkout';">
+                            Comprar Agora
+                        </button>
+                        <button type="submit" class="botaoadcarrinho form-protegido"
+                            onclick="this.closest('form').querySelector('.redirect_to_input').value = 'carrinho';">
+                            <i class="fa-solid fa-cart-shopping"></i> Adicionar ao Carrinho
+                        </button>
+                    </form>
+                    
+                </div> </section>
         </main>
 
         <?php if (!empty($produto['dsc_longa'])): ?>
@@ -119,7 +142,14 @@ $titulo_pagina = $produto ? htmlspecialchars($produto['nome']) : 'Produto não e
         <?php endif; ?>
 
     <?php else: ?>
-        <?php endif; ?>
+         <main class="container">
+            <section class="info" style="text-align: center; width: 100%;">
+                <h1><i class="fa-solid fa-circle-exclamation"></i> Produto não encontrado</h1>
+                <p>O item que você está procurando não existe ou não está mais disponível.</p>
+                <a href="../skateshop/skateee.php" class="botaoadcarrinho" style="max-width: 300px; margin-top: 20px;">Voltar para a Loja</a>
+            </section>
+         </main>
+    <?php endif; ?>
 
     <?php include '../componentes/footer.php'; ?>
 

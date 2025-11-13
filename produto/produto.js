@@ -1,36 +1,68 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Seleciona os botões de quantidade
-    const decreaseBtn = document.querySelector(".qtd-btn[data-action='decrease']");
-    const increaseBtn = document.querySelector(".qtd-btn[data-action='increase']");
     
-    // Seleciona o INPUT de quantidade (que mudamos no passo 2)
-    const quantityInput = document.querySelector("input.num[name='quantidade']");
-
-    // Verifica se os elementos existem
-    if (!decreaseBtn || !increaseBtn || !quantityInput) {
-        console.warn("Controles de quantidade (+/-) ou input 'quantidade' não encontrados.");
-        return;
+    // A LÓGICA DE QUANTIDADE FOI REMOVIDA
+    
+    // ==================================
+    //  INÍCIO DA NOVA LÓGICA DE FAVORITOS
+    // ==================================
+    // Procura pela nova classe '.btn-favorito-bloco'
+    const favButton = document.querySelector('.btn-favorito-bloco');
+    
+    if (favButton) {
+        favButton.addEventListener('click', () => {
+            const idPeca = favButton.dataset.idPeca;
+            if (idPeca) {
+                // Passa o botão e o span de texto para a função
+                const textSpan = favButton.querySelector('.btn-fav-text');
+                toggleFavoritoProduto(idPeca, favButton, textSpan);
+            }
+        });
     }
-
-    // Adiciona evento ao botão de AUMENTAR
-    increaseBtn.addEventListener("click", () => {
-        let currentValue = parseInt(quantityInput.value, 10);
-        if (isNaN(currentValue)) {
-            currentValue = 1;
-        }
-        quantityInput.value = currentValue + 1;
-    });
-
-    // Adiciona evento ao botão de DIMINUIR
-    decreaseBtn.addEventListener("click", () => {
-        let currentValue = parseInt(quantityInput.value, 10);
-        if (isNaN(currentValue)) {
-            currentValue = 1;
-        }
-        
-        // Impede que a quantidade seja menor que 1
-        if (currentValue > 1) {
-            quantityInput.value = currentValue - 1;
-        }
-    });
 });
+
+
+/**
+ * Função assíncrona para a PÁGINA DE PRODUTO
+ * @param {string} idPeca - O ID da peça a ser favoritada
+ * @param {HTMLElement} buttonElement - O elemento do botão
+ * @param {HTMLElement} textElement - O span que contém o texto
+ */
+async function toggleFavoritoProduto(idPeca, buttonElement, textElement) {
+    try {
+        // Estamos em /produto/, a API está em /favoritos/
+        const response = await fetch('../favoritos/toggle_favorito.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_pecas: idPeca })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            // Sucesso! Alterna a classe e o texto
+            if (result.status === 'added') {
+                buttonElement.classList.add('active');
+                if (textElement) textElement.textContent = 'Salvo nos Favoritos'; // NOVO TEXTO
+            } else if (result.status === 'removed') {
+                buttonElement.classList.remove('active');
+                if (textElement) textElement.textContent = 'Salvar nos Favoritos'; // NOVO TEXTO
+            }
+        } else if (response.status === 403) {
+            // Erro 403 (Forbidden) = Login necessário
+            // Tenta achar o popup de login da navbar
+            const authPopup = document.getElementById('auth-modal-overlay');
+            if (authPopup) {
+                authPopup.style.display = 'flex';
+            } else {
+                alert('Você precisa estar logado para adicionar aos favoritos.');
+            }
+        } else {
+            // Outro erro
+            alert(result.message || 'Erro ao processar a solicitação.');
+        }
+
+    } catch (error) {
+        console.error('Erro no fetch:', error);
+        alert('Não foi possível conectar. Verifique sua conexão.');
+    }
+}
