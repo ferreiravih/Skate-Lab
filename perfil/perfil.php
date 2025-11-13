@@ -85,7 +85,7 @@ try {
                 <a href="../perfil/perfil.php" class="menu-item active">
                     <i class="ri-user-line"></i> Perfil
                 </a>
-                <a href="#" class="menu-item disabled">
+                <a href="../favoritos/favoritos.php" class="menu-item">
                     <i class="ri-heart-line"></i> Favoritos
                 </a>
                 

@@ -120,7 +120,7 @@ $baseUrl = $baseUrl === '' ? '' : $baseUrl;
             </div>
 
 
-            <a><i class="fa-regular fa-heart"></i></a>
+            <a href="../favoritos/favoritos.php"><i class="fa-regular fa-heart"></i></a>
             <div class="carrinho1">
                 <a href="<?php echo $baseUrl; ?>/carrinho/carrinho.php"><i class="fa-solid fa-cart-shopping"></i></a>
                 <span class="itenscarrinho1">

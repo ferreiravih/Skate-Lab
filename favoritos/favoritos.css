@@ -1,0 +1,158 @@
+/* /perfil/favoritos/favoritos.css */
+
+.favoritos-header-card {
+    grid-column: 1 / -1; /* Ocupa a linha inteira */
+    padding: 20px 25px;
+    background-color: #fff;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+}
+
+.favoritos-header-card h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #333;
+}
+
+.favoritos-header-card h3 i {
+    color: #ff4d4d; /* Cor do ícone de coração */
+}
+
+/* Estado Vazio */
+.empty-state-favoritos {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 2px dashed #ddd;
+    text-align: center;
+    min-height: 200px;
+}
+
+.empty-state-favoritos i {
+    font-size: 3rem;
+    color: #aaa;
+    margin-bottom: 15px;
+}
+
+.empty-state-favoritos p {
+    font-size: 1.1rem;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+.empty-state-favoritos .btn-add-new {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.empty-state-favoritos .btn-add-new:hover {
+    background-color: #0056b3;
+}
+
+
+/* Grid dos Favoritos */
+.favoritos-grid {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* Card de Item Favorito */
+.fav-card {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.fav-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-5px);
+}
+
+.fav-card-img-link {
+    display: block;
+    width: 100%;
+    height: 200px; /* Altura fixa para a imagem */
+    background-color: #f0f0f0;
+    overflow: hidden;
+}
+
+.fav-card-img-link img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Garante que a imagem cubra o espaço */
+}
+
+.fav-card-body {
+    padding: 15px;
+    flex-grow: 1; /* Faz o corpo crescer para preencher o espaço */
+}
+
+.fav-card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #333;
+    margin: 0 0 8px 0;
+}
+
+.fav-card-desc {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0 0 12px 0;
+    line-height: 1.4;
+    height: 40px; /* Limita a altura */
+    overflow: hidden;
+}
+
+.fav-card-price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #007bff;
+    margin: 0;
+}
+
+.fav-card-actions {
+    padding: 15px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-remover-fav {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-remover-fav:hover {
+    background-color: #d93636;
+}
