@@ -74,6 +74,9 @@ try {
                     <div class="muted">Salvo em <?= htmlspecialchars(date('d/m/Y H:i', strtotime($c['criado_em']))) ?></div>
                     <div><strong>R$ <?= number_format((float)$c['preco_total'], 2, ',', '.') ?></strong></div>
                     <div class="acoes">
+                        <a class="btn" href="../../customizacao/custom.php?custom_id=<?= (int)$c['id_customizacao'] ?>">
+                            <i class="ri-cube-3-line"></i> Continuar no 3D
+                        </a>
                         <form action="../../carrinho/contr/adicionar_carrinho.php" method="POST">
                             <input type="hidden" name="id" value="custom-<?= (int)$c['id_customizacao'] ?>">
                             <input type="hidden" name="nome" value="<?= htmlspecialchars($c['titulo']) ?>">

@@ -51,15 +51,15 @@ try {
         <div class="main-container">
 
             <aside class="profile-sidebar">
-                <a href="../perfil.php" class="menu-item">
+                <a href="../perfil/perfil.php" class="menu-item">
                     <i class="ri-user-line"></i> Perfil
                 </a>
                 <a href="favoritos.php" class="menu-item active"> <i class="ri-heart-line"></i> Favoritos
                 </a>
-                <a href="../customizacoes/customizacoes.php" class="menu-item">
+                <a href="../perfil/funcoes/customizacoes.php" class="menu-item">
                     <i class="ri-equalizer-line"></i> Customizações
                 </a>
-                <a href="../../carrinho/carrinho.php" class="menu-item">
+                <a href="../carrinho/carrinho.php" class="menu-item">
                     <i class="ri-shopping-cart-line"></i> Carrinho
                 </a>
                 <a href="../../auth/logout.php" class="menu-item sair">

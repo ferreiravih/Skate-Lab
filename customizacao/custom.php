@@ -1,4 +1,7 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
 // 1. INCLUI O BD
 require_once __DIR__ . '/../config/db.php';
 
@@ -39,6 +42,38 @@ try {
 // Peças Padrão
 $shape_padrao = ['nome' => 'Shape Branco', 'preco' => 120.00, 'url_m3d' => 'white', 'url_img' => null];
 $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padrao', 'url_img' => null];
+
+$customizacaoInicial = null;
+$customId = isset($_GET['custom_id']) ? (int)$_GET['custom_id'] : null;
+
+if ($customId && $customId > 0) {
+  try {
+    $stmtCustomizacao = $pdo->prepare(
+      "SELECT id_customizacao, id_usu, titulo, config
+       FROM public.customizacoes
+       WHERE id_customizacao = :id
+       LIMIT 1"
+    );
+    $stmtCustomizacao->execute([':id' => $customId]);
+    $customizacaoRow = $stmtCustomizacao->fetch(PDO::FETCH_ASSOC);
+    if (
+      $customizacaoRow &&
+      isset($_SESSION['id_usu']) &&
+      (int)$customizacaoRow['id_usu'] === (int)$_SESSION['id_usu']
+    ) {
+      $configDecoded = json_decode($customizacaoRow['config'], true);
+      if (is_array($configDecoded)) {
+        $customizacaoInicial = [
+          'id' => (int)$customizacaoRow['id_customizacao'],
+          'titulo' => $customizacaoRow['titulo'],
+          'config' => $configDecoded,
+        ];
+      }
+    }
+  } catch (PDOException $e) {
+    error_log('Erro ao carregar customização inicial: ' . $e->getMessage());
+  }
+}
 
 ?>
 <!DOCTYPE html>
@@ -222,6 +257,12 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
   </div>
   </div>
 
+  <script>
+    window.CUSTOMIZACAO_SALVA = <?php echo json_encode(
+      $customizacaoInicial['config'] ?? null,
+      JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+    ); ?>;
+  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -240,6 +281,8 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
     let visRodinhas = true;
     let visRolamentos = true;
     let visParafusos = true;
+    const CONFIG_SALVA = (typeof window.CUSTOMIZACAO_SALVA !== 'undefined') ? window.CUSTOMIZACAO_SALVA : null;
+    let configInicialAplicada = false;
 
     // =============================================
     // NOVO: LÓGICA DE PREÇO
@@ -822,6 +865,9 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
 
         // Define o preço inicial
         atualizarPrecoTotal();
+        if (CONFIG_SALVA) {
+          aplicarConfiguracaoSalva(CONFIG_SALVA);
+        }
 
       }, undefined, (error) => {
         console.error('❌ Erro ao carregar modelo:', error);
@@ -855,7 +901,7 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
         input.focus();
         input.select();
     }
-
+    const baseUrl = '<?php echo $baseUrl; ?>';
     async function executarSalvamento() {
         const overlay = document.getElementById('salvar-overlay');
         const input = document.getElementById('salvar-nome-input');
@@ -898,7 +944,7 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
 
         try {
         
-          const resp = await fetch('salvar_customizacao.php', {
+          const resp = await fetch('../funcoes/salvar_customizacao.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ titulo: tituloFinal, config, preco_total: total, preview_img: previewImg })
@@ -926,6 +972,40 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
 
         overlay.classList.remove('visivel');
         setTimeout(() => overlay.style.display = 'none', 300); 
+    }
+
+    function aplicarConfiguracaoSalva(config) {
+        if (!config || typeof config !== 'object' || configInicialAplicada) {
+            return;
+        }
+        try {
+            if (config.corTrucks) {
+                corTrucksAtual = config.corTrucks;
+            }
+            if (config.shape && shapes[config.shape]) {
+                mostrarShape(config.shape);
+            }
+            if (config.truck && trucksModelos[config.truck]) {
+                selecionarTrucks(config.truck);
+            }
+            if (config.rodinhas && rodinhasModelos[config.rodinhas]) {
+                mostrarRodinhas(config.rodinhas);
+            }
+
+            const truckAtual = Object.keys(trucksModelos).find(key => trucksModelos[key] === trucks) || 'padrao';
+            const statusTexto = `Shape: ${shapeAtual} | Rodinhas: ${rodinhasAtuais || 'Nenhuma'} | Truck: ${truckAtual}`;
+            const statusElemento = document.getElementById('configAtual');
+            if (statusElemento) {
+                statusElemento.textContent = statusTexto;
+            }
+
+            atualizarPrecoTotal();
+            configInicialAplicada = true;
+            atualizarStatus('✨ Customização carregada do salvamento.', 'sucesso');
+        } catch (error) {
+            console.error('Erro ao aplicar customização salva:', error);
+            atualizarStatus('⚠️ Não foi possível carregar a customização salva.', 'erro');
+        }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
