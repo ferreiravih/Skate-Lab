@@ -911,7 +911,7 @@ $truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padra
           const data = await resp.json().catch(() => ({}));
           if (resp.ok && data && data.sucesso) {
             if (typeof atualizarStatus === 'function') { atualizarStatus('✅ Customização salva com sucesso!', 'sucesso'); }
-            setTimeout(() => { window.location.href = '../perfil/customizacoes.php'; }, 600);
+            setTimeout(() => { window.location.href = '../perfil/funcoes/customizacoes.php'; }, 600);
           } else {
             if (typeof atualizarStatus === 'function') { atualizarStatus('⚠️ Não foi possível salvar agora. Tente novamente.', 'erro'); }
           }

@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Buscar Detalhes com AJAX
             try {
-                const response = await fetch(`obter_detalhes_pedido.php?id=${idPedidoSelecionado}`);
+                const response = await fetch(`../../perfil/funcoes/obter_detalhes_pedido.php?id=${idPedidoSelecionado}`);
                 console.log('Resposta Fetch recebida:', response); // Log para debug
 
                 if (!response.ok) { // Verifica se a requisição HTTP foi bem-sucedida (status 200-299)

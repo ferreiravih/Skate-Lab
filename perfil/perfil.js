@@ -58,8 +58,8 @@ document.addEventListener('DOMContentLoaded', function() {
             saveBtn.textContent = 'Salvando...';
             const formData = new FormData(profileForm);
             try {
-                // Envia para 'atualizar_perfil.php'
-                const response = await fetch('atualizar_perfil.php', { method: 'POST', body: formData });
+                // Envia para 'funcoes/atualizar_perfil.php'
+                const response = await fetch('funcoes/atualizar_perfil.php', { method: 'POST', body: formData });
                 const result = await response.json();
                 
                 if (result.sucesso) {
@@ -158,8 +158,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const formData = new FormData(passwordForm);
 
             try {
-                // Envia para 'atualizar_senha.php'
-                const response = await fetch('atualizar_senha.php', {
+                // Envia para 'funcoes/atualizar_senha.php'
+                const response = await fetch('funcoes/atualizar_senha.php', {
                     method: 'POST',
                     body: formData
                 });
@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>`;
 
                 try {
-                    const response = await fetch(`obter_detalhes_pedido.php?id=${pedidoId}`);
+                    const response = await fetch(`funcoes/obter_detalhes_pedido.php?id=${pedidoId}`);
                     const result = await response.json();
 
                     if (result.sucesso) {

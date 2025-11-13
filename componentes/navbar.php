@@ -3,6 +3,17 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+// Calcula o caminho base do projeto para gerar links absolutos
+$projectRoot = str_replace('\\', '/', realpath(__DIR__ . '/..'));
+$docRoot = isset($_SERVER['DOCUMENT_ROOT']) ? str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])) : '';
+$baseUrl = '';
+if ($projectRoot !== false) {
+    if ($docRoot && strpos($projectRoot, $docRoot) === 0) {
+        $baseUrl = rtrim(substr($projectRoot, strlen($docRoot)), '/');
+    }
+}
+$baseUrl = $baseUrl === '' ? '' : $baseUrl;
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -12,7 +23,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skatelab</title>
 
-    <link rel="stylesheet" href="../componentes/nav.css">
+    <link rel="stylesheet" href="<?php echo $baseUrl; ?>/componentes/nav.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -21,13 +32,13 @@ if (session_status() === PHP_SESSION_NONE) {
 <body>
     <header class="header">
         <div class="logo">
-            <a href="../../Skate-Lab/home/index.php">
+            <a href="<?php echo $baseUrl; ?>/home/index.php">
                 <h1>SKATELAB</h1>
             </a>
         </div>
         <nav class="menu">
-            <a href="../skateshop/skateee.php">SkateShop</a>
-            <a href="../select/select.php">Customizar</a>
+            <a href="<?php echo $baseUrl; ?>/skateshop/skateee.php">SkateShop</a>
+            <a href="<?php echo $baseUrl; ?>/select/select.php">Customizar</a>
         </nav>
         <div class="icones1">
             <a><i class="fa-regular fa-user user-icon" id="userIcon"></i></a>
@@ -39,7 +50,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 <div id="sidebarLogin" class="sidebar">
                     <h2>Login</h2>
                     <div id="login-error-message" class="auth-error-message"></div>
-                    <form action="../auth/login.php" method="POST">
+                    <form action="<?php echo $baseUrl; ?>/auth/login.php" method="POST">
                         <label>Email</label>
                         <input type="email" name="email" placeholder="Digite seu email" required />
 
@@ -58,7 +69,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     <h2>Cadastro</h2>
                     
                     <div id="register-error-message" class="auth-error-message"></div>
-                    <form action="../auth/registrar.php" method="POST" id="formCadastro">
+                    <form action="<?php echo $baseUrl; ?>/auth/registrar.php" method="POST" id="formCadastro">
                         <label>Nome completo</label>
                         <input type="text" name="nome" placeholder="Digite seu nome" required />
 
@@ -91,8 +102,8 @@ if (session_status() === PHP_SESSION_NONE) {
                     <p class="sidebar-email"><?php echo htmlspecialchars($_SESSION['email_usu']); ?></p>
 
                     <div class="sidebar-actions">
-                        <a href="../perfil/perfil.php" id="editarPerfil">Editar Perfil</a>
-                        <a href="../auth/logout.php" id="sair">Sair</a>
+                        <a href="<?php echo $baseUrl; ?>/perfil/perfil.php" id="editarPerfil">Editar Perfil</a>
+                        <a href="<?php echo $baseUrl; ?>/auth/logout.php" id="sair">Sair</a>
                     </div>
                 </div>
 
@@ -111,7 +122,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
             <a><i class="fa-regular fa-heart"></i></a>
             <div class="carrinho1">
-                <a href="../carrinho/carrinho.php"><i class="fa-solid fa-cart-shopping"></i></a>
+                <a href="<?php echo $baseUrl; ?>/carrinho/carrinho.php"><i class="fa-solid fa-cart-shopping"></i></a>
                 <span class="itenscarrinho1">
                     <?= isset($_SESSION['carrinho']) ? count($_SESSION['carrinho']) : 0 ?>
                 </span>
@@ -122,8 +133,8 @@ if (session_status() === PHP_SESSION_NONE) {
         const isUserLoggedIn = <?php echo isset($_SESSION['id_usu']) ? 'true' : 'false'; ?>;
     </script>
 
-    <script src="../componentes/nav.js"></script>
-    <script src="../componentes/auth_popup.js"></script>
+    <script src="<?php echo $baseUrl; ?>/componentes/nav.js"></script>
+    <script src="<?php echo $baseUrl; ?>/componentes/auth_popup.js"></script>
 </body>
 
 </html>

@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 }
 
 // 3. Inclui o BD
-require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../../config/db.php';
 
 // Define o cabeçalho como JSON
 header('Content-Type: application/json');

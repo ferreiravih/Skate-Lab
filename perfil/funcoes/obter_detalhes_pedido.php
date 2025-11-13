@@ -9,7 +9,7 @@ if (!isset($_SESSION['id_usu'])) {
 }
 
 // 2. Inclui o BD
-require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../../config/db.php';
 header('Content-Type: application/json');
 
 $id_usuario_logado = $_SESSION['id_usu'];

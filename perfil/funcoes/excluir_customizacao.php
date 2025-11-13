@@ -4,11 +4,11 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 if (!isset($_SESSION['id_usu'])) {
-    header('Location: ../home/index.php?error=auth_required');
+    header('Location: ../../home/index.php?error=auth_required');
     exit;
 }
 
-require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../../config/db.php';
 
 $id_usuario = (int)$_SESSION['id_usu'];
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
