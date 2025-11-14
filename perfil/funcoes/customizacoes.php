@@ -36,83 +36,106 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minhas Customizações - SkateLab</title>
-    <link rel="stylesheet" href="../../global/global.css">
+
+    <link rel="stylesheet" href="../../global/global.css?v=1.0.9">
+    <link rel="stylesheet" href="../../componentes/nav.css?v=1.0.9">
+    <link rel="stylesheet" href="../../componentes/footer.css?v=1.0.9">
+    <link rel="stylesheet" href="../perfil.css?v=1.0.9">
+    <link rel="stylesheet" href="customizacoes.css?v=1.0.9">
+    
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="../perfil.css">
-    <link rel="stylesheet" href="../../perfil/funcoes/customizacoes.css">
-    <link rel="stylesheet" href="../../componentes/nav.css">
-    <link rel="stylesheet" href="../../componentes/footer.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <?php include '../../componentes/navbar.php'; ?>
-        </nav>
-    </header>
+    <div class="page-container">
+        <header>
+            <nav>
+                <?php include '../../componentes/navbar.php'; ?>
+            </nav>
+        </header>
 
-    <main class="page">
-        <div class="titulo">
-            <i class="ri-equalizer-line"></i>
-            <h1>Minhas Customização</h1>
-        </div>
+        <div class="main-container">
+            
+            <aside class="profile-sidebar"> 
+                <a href="../perfil.php" class="menu-item">
+                    <i class="ri-user-line"></i> Perfil
+                </a>
+                <a href="../favoritos/favoritos.php" class="menu-item">
+                    <i class="ri-heart-line"></i> Favoritos
+                </a>
+                <a href="customizacoes.php" class="menu-item active">
+                    <i class="ri-equalizer-line"></i> Customizações
+                </a>
+                <a href="../../carrinho/carrinho.php" class="menu-item">
+                    <i class="ri-shopping-cart-line"></i> Carrinho
+                </a>
+                <a href="../../auth/logout.php" class="menu-item sair">
+                    <i class="ri-logout-box-r-line"></i> Sair
+                </a>
+            </aside>
 
-        <?php if ($erro_db): ?>
-            <div class="vazio"><?= htmlspecialchars($erro_db) ?></div>
-        <?php elseif (empty($customizacoes)): ?>
-            <div class="vazio">
-                Você ainda não salvou nenhuma customização.
-                <div style="margin-top:10px;">
-                    <a href="../../select/select.php" class="btn primary"><i class="ri-magic-line"></i> Criar uma customização</a>
-                </div>
-            </div>
-        <?php else: ?>
-            <div class="grid">
-            <?php foreach ($customizacoes as $c): ?>
-                <div class="card">
-                    <img src="<?= htmlspecialchars($c['preview_img'] ?: '../../img/imgs-skateshop/image.png') ?>" alt="Preview da customização">
-                    <h3><?= htmlspecialchars($c['titulo']) ?></h3>
-                    <div class="muted">Salvo em <?= htmlspecialchars(date('d/m/Y H:i', strtotime($c['criado_em']))) ?></div>
-                    <div><strong>R$ <?= number_format((float)$c['preco_total'], 2, ',', '.') ?></strong></div>
-                    <div class="acoes">
-                        <a class="btn" href="../../customizacao/custom.php?custom_id=<?= (int)$c['id_customizacao'] ?>">
-                            <i class="ri-cube-3-line"></i> Continuar no 3D
-                        </a>
-                        <form action="../../carrinho/contr/adicionar_carrinho.php" method="POST">
-                            <input type="hidden" name="id" value="custom-<?= (int)$c['id_customizacao'] ?>">
-                            <input type="hidden" name="nome" value="<?= htmlspecialchars($c['titulo']) ?>">
-                            <input type="hidden" name="preco" value="<?= htmlspecialchars((float)$c['preco_total']) ?>">
-                            <input type="hidden" name="quantidade" value="1">
-                            <input type="hidden" name="imagem" value="<?= htmlspecialchars($c['preview_img'] ?: '../../img/imgs-skateshop/image.png') ?>">
-                            <input type="hidden" name="descricao" value="Skate customizado salvo">
-                            <input type="hidden" name="redirect_to" value="carrinho">
-                            <button type="submit" class="btn primary"><i class="ri-shopping-cart-2-line"></i> Adicionar ao carrinho</button>
-                        </form>
-                        <button type="button" class="btn btn-excluir" data-id="<?= (int)$c['id_customizacao'] ?>" data-titulo="<?= htmlspecialchars($c['titulo']) ?>">
-                            <i class="ri-delete-bin-line"></i> Excluir
-                        </button>
+            <main class="profile-content">
+
+                <div class="content-wrapper"> <div class="card favoritos-header-card">
+                        <h3><i class="ri-equalizer-line"></i> Minhas Customizações</h3>
                     </div>
-                </div>
-            <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-    </main>
 
-    <div id="excluir-overlay" class="salvar-modal-overlay">
-        <div class="salvar-modal-box">
-            <h2>Excluir customização</h2>
-            <p id="excluir-modal-descricao">Tem certeza que deseja excluir esta customização?</p>
-            <div class="salvar-modal-botoes">
-                <button type="button" class="modal-btn-cancelar" id="excluir-btn-cancelar">Cancelar</button>
-                <button type="button" class="modal-btn-confirmar" id="excluir-btn-confirmar">Excluir</button>
+                    <?php if ($erro_db): ?>
+                        <div class="vazio"><?= htmlspecialchars($erro_db) ?></div>
+                    <?php elseif (empty($customizacoes)): ?>
+                        <div class="vazio"> 
+                            <i class="ri-equalizer-add-line"></i>
+                            <p>Você ainda não salvou nenhuma customização.</p>
+                            <a href="../../select/select.php" class="btn primary"><i class="ri-magic-line"></i> Criar uma agora</a>
+                        </div>
+                    <?php else: ?>
+                        <div class="grid">
+                        <?php foreach ($customizacoes as $c): ?>
+                            <div class="card">
+                                <img src="<?= htmlspecialchars($c['preview_img'] ?: '../../img/imgs-skateshop/image.png') ?>" alt="Preview da customização">
+                                <h3><?= htmlspecialchars($c['titulo']) ?></h3>
+                                <div class="muted">Salvo em <?= htmlspecialchars(date('d/m/Y H:i', strtotime($c['criado_em']))) ?></div>
+                                <div><strong>R$ <?= number_format((float)$c['preco_total'], 2, ',', '.') ?></strong></div>
+                                
+                                <div class="acoes">
+                                    <a class="btn" href="../../customizacao/custom.php?custom_id=<?= (int)$c['id_customizacao'] ?>">
+                                        <i class="ri-cube-3-line"></i> Ver
+                                    </a>
+                                    <form action="../../carrinho/contr/adicionar_carrinho.php" method="POST">
+                                        <input type="hidden" name="id" value="custom-<?= (int)$c['id_customizacao'] ?>">
+                                        <input type="hidden" name="nome" value="<?= htmlspecialchars($c['titulo']) ?>">
+                                        <input type="hidden" name="preco" value="<?= htmlspecialchars((float)$c['preco_total']) ?>">
+                                        <input type="hidden" name="quantidade" value="1">
+                                        <input type="hidden" name="imagem" value="<?= htmlspecialchars($c['preview_img'] ?: '../../img/imgs-skateshop/image.png') ?>">
+                                        <input type="hidden" name="descricao" value="Skate customizado salvo">
+                                        <input type="hidden" name="redirect_to" value="carrinho">
+                                        <button type="submit" class="btn primary"><i class="ri-shopping-cart-2-line"></i> Carrinho</button>
+                                    </form>
+                                    <button type="button" class="btn btn-excluir" data-id="<?= (int)$c['id_customizacao'] ?>" data-titulo="<?= htmlspecialchars($c['titulo']) ?>">
+                                        <i class="ri-delete-bin-line"></i> Excluir
+                                    </button>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </div> </main>
+        </div>
+
+        <div id="excluir-overlay" class="salvar-modal-overlay">
+            <div class="salvar-modal-box">
+                <h2>Excluir customização</h2>
+                <p id="excluir-modal-descricao">Tem certeza que deseja excluir esta customização?</p>
+                <div class="salvar-modal-botoes">
+                    <button type="button" class="modal-btn-cancelar" id="excluir-btn-cancelar">Cancelar</button>
+                    <button type="button" class="modal-btn-confirmar" id="excluir-btn-confirmar">Excluir</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <footer>
-        <?php include '../../componentes/footer.php'; ?>
-    </footer>
-
-    <script>
+        <footer>
+            <?php include '../../componentes/footer.php'; ?>
+        </footer>
+    </div> <script>
         document.addEventListener('DOMContentLoaded', () => {
             const overlay = document.getElementById('excluir-overlay');
             if (!overlay) {
