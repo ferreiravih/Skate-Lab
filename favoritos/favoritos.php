@@ -108,6 +108,18 @@ try {
             <?php include '../componentes/footer.php'; ?>
         </footer>
     </div>
+    <div id="confirm-remove-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button type="button" class="modal-close-btn" id="confirm-modal-close-btn">&times;</button>
+            <h3><i class="ri-delete-bin-line"></i> Confirmar Remoção</h3>
+            <p>Tem certeza que deseja remover este item dos seus favoritos?</p>
+            
+            <div class="form-actions-modal">
+                <button type="button" class="btn-cancel" id="confirm-modal-cancel-btn">Cancelar</button>
+                <button type="button" class="btn-save btn-danger" id="confirm-modal-remove-btn">Remover</button>
+            </div>
+        </div>
+    </div>
     <script src="favoritos.js"></script>
 </body>
 
