@@ -9,7 +9,10 @@ use RuntimeException;
 
 class FreteService
 {
-    private const VIA_CEP_URL = 'https://viacep.com.br/ws/%s/json/';
+    private const VIA_CEP_ENDPOINTS = [
+        'https://viacep.com.br/ws/%s/json/',
+        'http://viacep.com.br/ws/%s/json/',
+    ];
     private const ORIGIN_CEP = '01001000';
     private const ORIGIN_LABEL = 'Skate-Lab - Sao Paulo/SP';
     private const DEFAULT_ITEM_WEIGHT = 1.8;
@@ -132,25 +135,29 @@ class FreteService
 
     private function buscarCep(string $cep): array
     {
-        try {
-            $response = $this->httpClient->request('GET', sprintf(self::VIA_CEP_URL, $cep), [
-                'http_errors' => false,
-                'headers' => ['Accept' => 'application/json'],
-            ]);
-        } catch (GuzzleException) {
-            throw new RuntimeException('Nao foi possivel consultar o CEP no momento. Tente novamente em instantes.');
+        foreach (self::VIA_CEP_ENDPOINTS as $endpoint) {
+            try {
+                $response = $this->httpClient->request('GET', sprintf($endpoint, $cep), [
+                    'http_errors' => false,
+                    'headers' => ['Accept' => 'application/json'],
+                ]);
+            } catch (GuzzleException) {
+                continue;
+            }
+
+            if ($response->getStatusCode() >= 400) {
+                throw new InvalidArgumentException('CEP invalido ou indisponivel.');
+            }
+
+            $payload = json_decode((string)$response->getBody(), true);
+            if (!is_array($payload) || isset($payload['erro'])) {
+                throw new InvalidArgumentException('CEP nao encontrado.');
+            }
+
+            return $payload;
         }
 
-        if ($response->getStatusCode() >= 400) {
-            throw new InvalidArgumentException('CEP invalido ou indisponivel.');
-        }
-
-        $payload = json_decode((string)$response->getBody(), true);
-        if (!is_array($payload) || isset($payload['erro'])) {
-            throw new InvalidArgumentException('CEP nao encontrado.');
-        }
-
-        return $payload;
+        throw new RuntimeException('Nao foi possivel consultar o CEP no momento. Tente novamente em instantes.');
     }
 
     private function montaOpcao(
