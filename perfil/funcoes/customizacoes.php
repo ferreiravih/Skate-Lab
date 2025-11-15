@@ -85,7 +85,7 @@ try {
     <link rel="stylesheet" href="../../componentes/nav.css?v=1.0.9">
     <link rel="stylesheet" href="../../componentes/footer.css?v=1.0.9">
     <link rel="stylesheet" href="../perfil.css?v=1.0.9">
-    <link rel="stylesheet" href="customizacoes.css?v=1.0.9">
+    <link rel="stylesheet" href="customizacoes.css?v=1.1.1">
     
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
 </head>
@@ -103,7 +103,7 @@ try {
                 <a href="../perfil.php" class="menu-item">
                     <i class="ri-user-line"></i> Perfil
                 </a>
-                <a href="../favoritos/favoritos.php" class="menu-item">
+                <a href="../../favoritos/favoritos.php" class="menu-item">
                     <i class="ri-heart-line"></i> Favoritos
                 </a>
                 <a href="customizacoes.php" class="menu-item active">

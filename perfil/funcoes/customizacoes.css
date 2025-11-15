@@ -72,36 +72,51 @@
     font-weight: 700;
 }
 
-/* ESTILIZAÇÃO DOS BOTÕES
-*/
+/* =================================== */
+/* 4. ESTILIZAÇÃO DOS BOTÕES (REFEITO) */
+/* =================================== */
+
+/* O container principal dos botões */
 .grid .acoes { 
     display: flex; 
-    /* align-items: center; REMOVIDO */
     gap: 10px; 
-    margin-top: 16px;
-    flex-wrap: nowrap;
+    margin-top: auto; /* Empurra para o final do card */
+   
     padding: 16px;
     border-top: 1px solid #f0f0f0;
     background-color: #fafafa;
 }
 
-/* Regra para os filhos (a, form, button) terem a mesma proporção */
+/* * A REGRA MAIS IMPORTANTE:
+ * Diz aos 3 filhos DIRETOS (<a>, <form>, <button>) 
+ * para dividirem o espaço igualmente.
+*/
 .grid .acoes > * {
-    flex: 1;
+    flex:  1 1 0;
 }
 
+/* * A SEGUNDA REGRA IMPORTANTE:
+ * O <form> é um dos filhos, então ele precisa:
+ * 1. Ter altura total (para se igualar aos irmãos)
+ * 2. Ser um container flex (para o botão dentro dele esticar)
+*/
 .grid .acoes form {
     margin: 0;
     padding: 0;
-    display: flex; /* Faz o form ser um container flex */
+    display: flex;
+    height: 100%;
 }
 
+/* * A TERCEIRA REGRA IMPORTANTE:
+ * O estilo base do botão, que será usado por TODOS os botões.
+ * (O <a>, o <button> dentro do form, e o <button> de excluir)
+*/
 .grid .acoes .btn { 
     display: inline-flex; 
-    align-items: center;    /* Centraliza o ÍCONE e o TEXTO verticalmente */
-    justify-content: center; /* Centraliza o ÍCONE e o TEXTO horizontalmente */
+    align-items: center;
+    justify-content: center;
     gap: 6px; 
-    padding: 8px 12px;
+    padding: 8px 8px;
     border-radius: 6px;
     border: 1px solid #ddd; 
     background: #fff;
@@ -113,24 +128,28 @@
     transition: all 0.2s ease;
     box-sizing: border-box;
     width: 100%;
-    
-    /* Adicionado height: 100% para centralizar verticalmente */
     height: 100%; 
 }
+.grid .acoes form .btn {
+    width: 100%;
+}
+
 .grid .acoes .btn:hover {
     background-color: #f5f5f5;
     border-color: #ccc;
 }
 
+/* --- Cores dos Botões --- */
+
 /* Botão "Carrinho" (Roxo) */
 .grid .acoes .btn.primary { 
-    background: #6f42c1; /* Roxo */
+    background: #6f42c1;
     color: #fff; 
-    border-color: #6f42c1; /* Roxo */
+    border-color: #6f42c1;
 }
 .grid .acoes .btn.primary:hover { 
-    background: #5a359a; /* Roxo Escuro */
-    border-color: #5a359a; /* Roxo Escuro */
+    background: #5a359a;
+    border-color: #5a359a;
 }
 
 /* Botão Excluir (Vermelho) */
@@ -148,12 +167,12 @@
 /* Botão "Ver" (Laranja) */
 .grid .acoes .btn:not(.primary):not(.btn-excluir) {
     background-color: transparent;
-    color: #fd7e14; /* Laranja */
+    color: #fd7e14;
     border-color: transparent;
 }
 .grid .acoes .btn:not(.primary):not(.btn-excluir):hover {
-    background-color: #fff8f0; /* Laranja Claro */
-    color: #d96d11; /* Laranja Escuro */
+    background-color: #fff8f0;
+    color: #d96d11;
     border-color: transparent;
 }
 

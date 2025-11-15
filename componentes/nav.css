@@ -606,3 +606,8 @@
   /* Começa escondido. O JS vai mostrar se houver texto */
   display: none; 
 }
+.sidebar p.sidebar-email {
+    text-align: center;
+    color: #555; 
+    /* ...etc */
+}
