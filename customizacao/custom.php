@@ -681,6 +681,19 @@ if ($customId && $customId > 0) {
       atualizarStatus('📸 Imagem exportada com sucesso!', 'sucesso');
     }
 
+    function capturarPreviewSkate() {
+      try {
+        if (!renderer || !renderer.domElement) {
+          return null;
+        }
+        renderer.render(scene, camera);
+        return renderer.domElement.toDataURL('image/png');
+      } catch (error) {
+        console.error('Erro ao capturar a imagem do skate:', error);
+        return null;
+      }
+    }
+
     function salvarConfiguracao() {
       const config = {
         shape: shapeAtual,
@@ -902,6 +915,11 @@ if ($customId && $customId > 0) {
         input.select();
     }
     const baseUrl = '<?php echo $baseUrl; ?>';
+    const defaultPreviewImg = `${baseUrl || ''}/img/imgs-skateshop/image.png`;
+    const cartImagemInput = document.getElementById('cart-imagem');
+    if (cartImagemInput && (!cartImagemInput.value || cartImagemInput.value.startsWith('..'))) {
+        cartImagemInput.value = defaultPreviewImg;
+    }
     async function executarSalvamento() {
         const overlay = document.getElementById('salvar-overlay');
         const input = document.getElementById('salvar-nome-input');
@@ -926,7 +944,11 @@ if ($customId && $customId > 0) {
         const total = (typeof PRECOS !== 'undefined')
           ? (PRECOS.shape + PRECOS.truck + PRECOS.rodinha + PRECOS.rolamento + PRECOS.parafuso)
           : 0;
-        const previewImg = document.getElementById('cart-imagem')?.value || '../img/imgs-skateshop/image.png';
+        const previewCapturado = capturarPreviewSkate();
+        const previewImg = previewCapturado || defaultPreviewImg;
+        if (cartImagemInput) {
+            cartImagemInput.value = previewImg;
+        }
 
         const config = {
           shape: (typeof shapeAtual !== 'undefined') ? shapeAtual : null,
@@ -943,8 +965,7 @@ if ($customId && $customId > 0) {
         try { localStorage.setItem('skateConfig', JSON.stringify(config)); } catch (e) {}
 
         try {
-        
-          const resp = await fetch('../funcoes/salvar_customizacao.php', {
+          const resp = await fetch(`${baseUrl}/customizacao/funcoes/salvar_customizacao.php`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ titulo: tituloFinal, config, preco_total: total, preview_img: previewImg })
@@ -1016,7 +1037,7 @@ if ($customId && $customId > 0) {
 
         if (overlay) { 
             function fecharModal() {
-                overlay.classList.remove('visivel');r
+                overlay.classList.remove('visivel');
                 setTimeout(() => overlay.style.display = 'none', 300); 
             }
             btnCancelar.addEventListener('click', fecharModal);

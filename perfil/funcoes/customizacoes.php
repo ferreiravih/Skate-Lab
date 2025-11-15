@@ -12,6 +12,50 @@ if (!isset($_SESSION['id_usu'])) {
 
 require_once __DIR__ . '/../../config/db.php';
 
+function obterBasePublicPath(): string {
+    $projectRoot = realpath(__DIR__ . '/../../');
+    $docRoot = isset($_SERVER['DOCUMENT_ROOT']) ? realpath($_SERVER['DOCUMENT_ROOT']) : false;
+
+    $project = $projectRoot ? str_replace('\\', '/', $projectRoot) : '';
+    $doc = $docRoot ? str_replace('\\', '/', $docRoot) : '';
+
+    if ($project && $doc && strpos($project, $doc) === 0) {
+        $relative = trim(substr($project, strlen($doc)), '/');
+        return $relative === '' ? '' : '/' . $relative;
+    }
+    return '';
+}
+
+function resolverPreview(?string $path, string $basePublic, string $default): string {
+    if (!is_string($path) || trim($path) === '') {
+        return $default;
+    }
+    $normalizado = str_replace('\\', '/', trim($path));
+
+    if (preg_match('#^https?://#i', $normalizado)) {
+        return $normalizado;
+    }
+    if (strpos($normalizado, 'data:image') === 0) {
+        return $default;
+    }
+    if ($normalizado !== '' && $normalizado[0] === '/') {
+        return $normalizado;
+    }
+
+    while (strpos($normalizado, '../') === 0) {
+        $normalizado = substr($normalizado, 3);
+    }
+    $normalizado = ltrim($normalizado, './');
+
+    $prefixo = $basePublic ?: '';
+    $caminho = ($prefixo ?: '') . '/' . ltrim($normalizado, '/');
+
+    return $caminho ?: $default;
+}
+
+$basePublicPath = obterBasePublicPath();
+$defaultPreview = ($basePublicPath ?: '') . '/img/imgs-skateshop/image.png';
+
 $id_usuario = (int)$_SESSION['id_usu'];
 $customizacoes = [];
 $erro_db = null;
@@ -90,8 +134,9 @@ try {
                     <?php else: ?>
                         <div class="grid">
                         <?php foreach ($customizacoes as $c): ?>
+                            <?php $previewSrc = resolverPreview($c['preview_img'] ?? null, $basePublicPath, $defaultPreview); ?>
                             <div class="card">
-                                <img src="<?= htmlspecialchars($c['preview_img'] ?: '../../img/imgs-skateshop/image.png') ?>" alt="Preview da customização">
+                                <img src="<?= htmlspecialchars($previewSrc) ?>" alt="Preview da customização">
                                 <h3><?= htmlspecialchars($c['titulo']) ?></h3>
                                 <div class="muted">Salvo em <?= htmlspecialchars(date('d/m/Y H:i', strtotime($c['criado_em']))) ?></div>
                                 <div><strong>R$ <?= number_format((float)$c['preco_total'], 2, ',', '.') ?></strong></div>
@@ -105,7 +150,7 @@ try {
                                         <input type="hidden" name="nome" value="<?= htmlspecialchars($c['titulo']) ?>">
                                         <input type="hidden" name="preco" value="<?= htmlspecialchars((float)$c['preco_total']) ?>">
                                         <input type="hidden" name="quantidade" value="1">
-                                        <input type="hidden" name="imagem" value="<?= htmlspecialchars($c['preview_img'] ?: '../../img/imgs-skateshop/image.png') ?>">
+                                        <input type="hidden" name="imagem" value="<?= htmlspecialchars($previewSrc) ?>">
                                         <input type="hidden" name="descricao" value="Skate customizado salvo">
                                         <input type="hidden" name="redirect_to" value="carrinho">
                                         <button type="submit" class="btn primary"><i class="ri-shopping-cart-2-line"></i> Carrinho</button>
@@ -196,3 +241,4 @@ try {
     </script>
 </body>
 </html>
+
