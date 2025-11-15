@@ -1055,6 +1055,18 @@ if ($customId && $customId > 0) {
                 }
             });
         }
+
+        const formCarrinho = document.getElementById('form-carrinho');
+        if (formCarrinho) {
+            formCarrinho.addEventListener('submit', () => {
+                const preview = capturarPreviewSkate();
+                if (preview && cartImagemInput) {
+                    cartImagemInput.value = preview;
+                } else if (cartImagemInput && !cartImagemInput.value) {
+                    cartImagemInput.value = defaultPreviewImg;
+                }
+            });
+        }
     });
      
     
