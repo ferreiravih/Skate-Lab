@@ -24,6 +24,9 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 // 1. Coletar dados
 $id_usu = $_SESSION['id_usu'];
 $carrinho = $_SESSION['carrinho'];
+$freteCotacao = $_SESSION['frete_cotacao'] ?? null;
+$freteSelecionado = $freteCotacao['selecionado'] ?? null;
+$freteValor = isset($freteSelecionado['valor']) ? (float)$freteSelecionado['valor'] : 0.0;
 
 // Coleta o endereço do formulário de pagamento.php
 // (Os 'name' dos inputs devem bater com o que está aqui)
@@ -40,6 +43,7 @@ $valor_total = 0;
 foreach ($carrinho as $item) {
     $valor_total += $item['preco'] * $item['quantidade'];
 }
+$valor_total += $freteValor;
 
 // 3. Iniciar a TRANSAÇÃO (Boa prática!)
 // Isso garante que ou TUDO é salvo (pedido + itens), ou NADA é salvo.
@@ -91,7 +95,7 @@ try {
     $pdo->commit();
 
     // 8. Limpar o carrinho e redirecionar
-    unset($_SESSION['carrinho']);
+    unset($_SESSION['carrinho'], $_SESSION['frete_cotacao']);
     
     // (O ideal é ter uma página "pedido_concluido.php")
     header("Location: pedido_sucesso.php");

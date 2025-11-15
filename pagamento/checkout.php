@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 require_once __DIR__ . '/../config/db.php';
 
@@ -19,6 +19,22 @@ $total = 0;
 foreach ($_SESSION['carrinho'] as $item) {
     $total += $item['preco'] * $item['quantidade'];
 }
+
+$freteCotacao = $_SESSION['frete_cotacao'] ?? null;
+$freteSelecionado = $freteCotacao['selecionado'] ?? null;
+$freteValor = isset($freteSelecionado['valor']) ? (float)$freteSelecionado['valor'] : 0.0;
+$totalComFrete = $total + $freteValor;
+
+$destino = $freteCotacao['destino'] ?? [];
+$cepDestino = preg_replace('/\D/', '', (string)($freteCotacao['cep'] ?? ''));
+if (strlen($cepDestino) === 8) {
+    $cepDestino = substr($cepDestino, 0, 5) . '-' . substr($cepDestino, 5);
+}
+
+$logradouroDestino = $destino['logradouro'] ?? '';
+$bairroDestino = $destino['bairro'] ?? '';
+$cidadeDestino = $destino['cidade'] ?? '';
+$estadoDestino = $destino['uf'] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -39,14 +55,23 @@ foreach ($_SESSION['carrinho'] as $item) {
             <form action="pagamento.php" method="POST">
                 <h2>Informações de Entrega</h2>
                 <p>Preencha seus dados para a entrega.</p>
+                <?php if (!$freteSelecionado): ?>
+                    <div style="background: #fff4e5; border: 1px solid #f6c89f; color: #8f4a10; padding: 10px 12px; border-radius: 8px; margin-bottom: 16px;">
+                        Ainda nǜo identificamos um frete selecionado. Volte ao carrinho para calcular e garantir prazo e valor exatos.
+                    </div>
+                <?php else: ?>
+                    <div style="background: #e7f7ef; border: 1px solid #88d1b2; color: #10633f; padding: 10px 12px; border-radius: 8px; margin-bottom: 16px;">
+                        Frete escolhido: <strong><?= htmlspecialchars($freteSelecionado['label']) ?></strong>, <?= (int)$freteSelecionado['prazo'] ?> dias úteis.
+                    </div>
+                <?php endif; ?>
 
                 <div class="cardcheckbox">
                     <label for="cep">CEP *</label>
-                    <input type="text" id="cep" name="cep" placeholder="00000-000" required>
+                    <input type="text" id="cep" name="cep" placeholder="00000-000" value="<?= htmlspecialchars($cepDestino) ?>" required>
                 </div>
                 <div class="cardcheckbox">
                     <label for="address">Rua *</label>
-                    <input type="text" id="address" name="address" placeholder="Rua das Flores" required>
+                    <input type="text" id="address" name="address" placeholder="Rua das Flores" value="<?= htmlspecialchars($logradouroDestino) ?>" required>
                 </div>
                 <div class="separarcheckbox">
                     <div class="cardcheckbox">
@@ -60,16 +85,16 @@ foreach ($_SESSION['carrinho'] as $item) {
                 </div>
                 <div class="cardcheckbox">
                     <label for="bairro">Bairro *</label>
-                    <input type="text" id="bairro" name="bairro" placeholder="Centro" required>
+                    <input type="text" id="bairro" name="bairro" placeholder="Centro" value="<?= htmlspecialchars($bairroDestino) ?>" required>
                 </div>
                 <div class="separarcheckbox">
                     <div class="cardcheckbox">
                         <label for="city">Cidade *</label>
-                        <input type="text" id="city" name="city" placeholder="São Paulo" required>
+                        <input type="text" id="city" name="city" placeholder="S�o Paulo" value="<?= htmlspecialchars($cidadeDestino) ?>" required>
                     </div>
                     <div class="cardcheckbox">
                         <label for="state">Estado *</label>
-                        <input type="text" id="state" name="state" placeholder="SP" required>
+                        <input type="text" id="state" name="state" placeholder="SP" value="<?= htmlspecialchars($estadoDestino) ?>" required>
                     </div>
                 </div>
 
@@ -121,8 +146,25 @@ foreach ($_SESSION['carrinho'] as $item) {
             <hr>
             <div class="totalcard">
                 <p>Subtotal <span>R$ <?= number_format($total, 2, ',', '.') ?></span></p>
-                <p>Frete <span style="color: green;">Grátis</span></p>
-                <p class="total">Total <span>R$ <?= number_format($total, 2, ',', '.') ?></span></p>
+                <p>
+                    Frete
+                    <span>
+                        <?php if ($freteSelecionado): ?>
+                            R$ <?= number_format($freteValor, 2, ',', '.') ?> (<?= htmlspecialchars($freteSelecionado['label']) ?>)
+                        <?php else: ?>
+                            Calcule no carrinho
+                        <?php endif; ?>
+                    </span>
+                </p>
+                <?php if ($freteSelecionado): ?>
+                    <small style="display: block; margin-bottom: 8px; color: #555;">
+                        Prazo estimado: <?= (int)$freteSelecionado['prazo'] ?> dias úteis
+                        <?php if (!empty($destino['cidade']) && !empty($destino['uf'])): ?>
+                            – <?= htmlspecialchars($destino['cidade']) ?>/<?= htmlspecialchars($destino['uf']) ?>
+                        <?php endif; ?>
+                    </small>
+                <?php endif; ?>
+                <p class="total">Total <span>R$ <?= number_format($totalComFrete, 2, ',', '.') ?></span></p>
             </div>
         </div>
     </div>
