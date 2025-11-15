@@ -1,19 +1,19 @@
-<?php
-// 1. INICIA A SESSÃO (DEVE SER A PRIMEIRA COISA)
+﻿<?php
+// 1. INICIA A SESSÃƒO (DEVE SER A PRIMEIRA COISA)
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// 2. VERIFICAÇÃO DE LOGIN
-// Se 'id_usu' NÃO EXISTE na sessão, o usuário não está logado.
+// 2. VERIFICAÃ‡ÃƒO DE LOGIN
+// Se 'id_usu' NÃƒO EXISTE na sessÃ£o, o usuÃ¡rio nÃ£o estÃ¡ logado.
 if (!isset($_SESSION['id_usu'])) {
     
-    // 3. Redireciona para a home (onde está o login) com um erro
+    // 3. Redireciona para a home (onde estÃ¡ o login) com um erro
     header("Location: ../home/index.php?error=auth_required");
-    exit; // Para a execução do script
+    exit; // Para a execuÃ§Ã£o do script
 }
 
-// O restante do seu código original começa aqui
+// O restante do seu cÃ³digo original comeÃ§a aqui
 // Garante que o carrinho exista
 if (!isset($_SESSION['carrinho'])) {
     $_SESSION['carrinho'] = [];
@@ -46,7 +46,7 @@ if (!isset($_SESSION['carrinho'])) {
         <div class="carrinhoitens">
 
             <?php if (empty($_SESSION['carrinho'])): ?>
-                <p style="padding: 20px;">Seu carrinho está vazio.</p>
+                <p style="padding: 20px;">Seu carrinho estÃ¡ vazio.</p>
             <?php else: ?>
                 <?php foreach ($_SESSION['carrinho'] as $item): ?>
                     <div class="itens">
@@ -94,18 +94,70 @@ if (!isset($_SESSION['carrinho'])) {
         </div>
 
         <?php
-        $total = 0;
+        $subtotal = 0;
         foreach ($_SESSION['carrinho'] as $item) {
-            $total += $item['preco'] * $item['quantidade'];
+            $subtotal += $item['preco'] * $item['quantidade'];
+        }
+        $freteCotacao = $_SESSION['frete_cotacao'] ?? null;
+        $freteSelecionado = $freteCotacao['selecionado'] ?? null;
+        $valorFrete = $freteSelecionado['valor'] ?? 0.0;
+        $totalComFrete = $subtotal + $valorFrete;
+        $destinoCep = $freteCotacao['cep'] ?? '';
+        $destinoCep = preg_replace('/\D/', '', (string)$destinoCep);
+        if (strlen($destinoCep) === 8) {
+            $destinoCep = substr($destinoCep, 0, 5) . '-' . substr($destinoCep, 5);
         }
         ?>
-        <div class="cardtotal">
+        <div class="cardtotal" data-subtotal="<?= number_format($subtotal, 2, '.', '') ?>">
             <h3>Resumo do Pedido</h3>
-            <p>Subtotal <span>R$ <?= number_format($total, 2, ',', '.') ?></span></p>
-            <p>Frete <span class="frete">Grátis</span></p>
-            <p class="total">Total <span>R$ <?= number_format($total, 2, ',', '.') ?></span></p>
+            <p>
+                Subtotal
+                <span id="subtotal-valor" data-value="<?= number_format($subtotal, 2, '.', '') ?>">
+                    R$ <?= number_format($subtotal, 2, ',', '.') ?>
+                </span>
+            </p>
+            <p>
+                Frete
+                <span class="frete" id="frete-valor" data-value="<?= number_format($valorFrete, 2, '.', '') ?>">
+                    <?= $valorFrete > 0 ? 'R$ ' . number_format($valorFrete, 2, ',', '.') : 'Calcule' ?>
+                </span>
+            </p>
+            <div class="frete-selected" id="frete-selected-text">
+                <?php if ($freteSelecionado): ?>
+                    <?= htmlspecialchars($freteSelecionado['label']) ?> · <?= $freteSelecionado['prazo'] ?> dias úteis
+                <?php else: ?>
+                    Informe seu CEP para estimar prazo e valor de entrega.
+                <?php endif; ?>
+            </div>
+            <p class="total">
+                Total
+                <span id="total-valor" data-value="<?= number_format($totalComFrete, 2, '.', '') ?>">
+                    R$ <?= number_format($totalComFrete, 2, ',', '.') ?>
+                </span>
+            </p>
 
-            <?php if (!empty($_SESSION['carrinho'])): ?>
+            <div class="frete-box">
+                <span class="frete-box__title">Calcular frete e prazo</span>
+                <form id="frete-form">
+                    <label for="cep-frete" class="sr-only">CEP</label>
+                    <input
+                        type="text"
+                        id="cep-frete"
+                        name="cep"
+                        inputmode="numeric"
+                        maxlength="9"
+                        placeholder="00000-000"
+                        value="<?= htmlspecialchars($destinoCep ?? '') ?>">
+                    <button type="submit" id="btn-calcular-frete">Calcular</button>
+                </form>
+                <small class="frete-feedback" id="frete-feedback"></small>
+                <div
+                    id="frete-opcoes"
+                    class="frete-opcoes"
+                    data-frete='<?= htmlspecialchars(json_encode($freteCotacao ?? null, JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8') ?>'>
+                </div>
+            </div>
+<?php if (!empty($_SESSION['carrinho'])): ?>
                 <a href="../pagamento/checkout.php" class="botaofinalizar" 
                    style="text-decoration: none; display: inline-block; text-align: center; box-sizing: border-box;">
                    Finalizar Compra
@@ -119,5 +171,9 @@ if (!isset($_SESSION['carrinho'])) {
     </div>
 
     <?php include '../componentes/footer.php'; ?>
+    <script src='frete.js'></script>
 </body>
 </html>
+
+
+

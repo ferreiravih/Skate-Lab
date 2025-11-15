@@ -175,6 +175,133 @@
   background: #ecddf7;
 }
 
+.frete-selected {
+  font-size: 13px;
+  color: #6c6c6c;
+  margin: 4px 0 12px;
+  min-height: 18px;
+}
+
+.frete-box {
+  margin-top: 10px;
+  background: #fff;
+  border: 1px solid #e7dbff;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.frete-box__title {
+  font-weight: 600;
+  color: #3d0076;
+}
+
+.frete-box form {
+  display: flex;
+  gap: 10px;
+}
+
+.frete-box input {
+  flex: 1;
+  border: 1px solid #cfcfcf;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.frete-box button {
+  background: #4B0082;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.frete-box button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.frete-feedback {
+  min-height: 18px;
+  font-size: 13px;
+  color: #555;
+}
+
+.frete-feedback.success {
+  color: #1c8c4b;
+}
+
+.frete-feedback.error {
+  color: #d64545;
+}
+
+.frete-opcoes {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.frete-opcoes.is-visible {
+  display: flex;
+}
+
+.frete-destino {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 2px;
+}
+
+.frete-option {
+  display: flex;
+  gap: 12px;
+  border: 1px solid #e1d0ff;
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  background: #fff;
+}
+
+.frete-option input {
+  margin-top: 4px;
+  accent-color: #4B0082;
+}
+
+.frete-option__info strong {
+  font-size: 14px;
+  color: #2d114c;
+  display: block;
+}
+
+.frete-option__info span {
+  display: block;
+  font-size: 13px;
+  color: #555;
+}
+
+.frete-option__info small {
+  display: block;
+  font-size: 12px;
+  color: #777;
+  margin-top: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  white-space: nowrap;
+}
+
 /* ======== RESPONSIVIDADE ======== */
 
 /* Tablets (até 1024px) */
@@ -271,5 +398,13 @@
   .botaofinalizar, .additens {
     font-size: 14px;
     padding: 10px;
+  }
+
+  .frete-box form {
+    flex-direction: column;
+  }
+
+  .frete-box button {
+    width: 100%;
   }
 }
