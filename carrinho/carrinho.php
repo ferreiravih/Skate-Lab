@@ -43,7 +43,7 @@ $freteRequired = isset($_GET['error']) && $_GET['error'] === 'frete_required';
 
     <?php if ($freteRequired): ?>
         <div style="background: #fff4e5; border: 1px solid #f6c89f; color: #8f4a10; padding: 12px 16px; border-radius: 10px; margin: 0 24px 16px;">
-            Selecione um CEP e escolha uma op��o de frete antes de finalizar o pedido.
+            Selecione um CEP e escolha uma opçãoo de frete antes de finalizar o pedido.
         </div>
     <?php endif; ?>
 
@@ -51,7 +51,7 @@ $freteRequired = isset($_GET['error']) && $_GET['error'] === 'frete_required';
         <div class="carrinhoitens">
 
             <?php if (empty($_SESSION['carrinho'])): ?>
-                <p style="padding: 20px;">Seu carrinho estÃ¡ vazio.</p>
+                <p style="padding: 20px;">Seu carrinho esta vazio.</p>
             <?php else: ?>
                 <?php foreach ($_SESSION['carrinho'] as $item): ?>
                     <div class="itens">
