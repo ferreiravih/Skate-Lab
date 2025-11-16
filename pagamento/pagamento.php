@@ -28,6 +28,11 @@ $freteCotacao = $_SESSION['frete_cotacao'] ?? null;
 $freteSelecionado = $freteCotacao['selecionado'] ?? null;
 $freteValor = isset($freteSelecionado['valor']) ? (float)$freteSelecionado['valor'] : 0.0;
 
+if (!$freteSelecionado) {
+    header("Location: ../carrinho/carrinho.php?error=frete_required");
+    exit;
+}
+
 // Coleta o endereço do formulário de pagamento.php
 // (Os 'name' dos inputs devem bater com o que está aqui)
 $cep = trim($_POST['cep'] ?? '');

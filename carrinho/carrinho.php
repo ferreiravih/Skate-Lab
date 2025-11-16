@@ -4,8 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// 2. VERIFICAÃ‡ÃƒO DE LOGIN
-// Se 'id_usu' NÃƒO EXISTE na sessÃ£o, o usuÃ¡rio nÃ£o estÃ¡ logado.
+
 if (!isset($_SESSION['id_usu'])) {
     
     // 3. Redireciona para a home (onde estÃ¡ o login) com um erro
@@ -13,11 +12,11 @@ if (!isset($_SESSION['id_usu'])) {
     exit; // Para a execuÃ§Ã£o do script
 }
 
-// O restante do seu cÃ³digo original comeÃ§a aqui
-// Garante que o carrinho exista
+
 if (!isset($_SESSION['carrinho'])) {
     $_SESSION['carrinho'] = [];
 }
+$freteRequired = isset($_GET['error']) && $_GET['error'] === 'frete_required';
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -41,6 +40,12 @@ if (!isset($_SESSION['carrinho'])) {
             <?= count($_SESSION['carrinho']) ?> itens
         </span>
     </div>
+
+    <?php if ($freteRequired): ?>
+        <div style="background: #fff4e5; border: 1px solid #f6c89f; color: #8f4a10; padding: 12px 16px; border-radius: 10px; margin: 0 24px 16px;">
+            Selecione um CEP e escolha uma op��o de frete antes de finalizar o pedido.
+        </div>
+    <?php endif; ?>
 
     <div class="carrinhocontainer">
         <div class="carrinhoitens">

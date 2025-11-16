@@ -13,7 +13,17 @@ if ($projectRoot !== false) {
         $baseUrl = rtrim(substr($projectRoot, strlen($docRoot)), '/');
     }
 }
-$baseUrl = $baseUrl === '' ? '' : $baseUrl;
+
+if ($baseUrl === '' && isset($_SERVER['PHP_SELF'])) {
+    $segments = explode('/', trim($_SERVER['PHP_SELF'], '/'));
+    if (count($segments) > 1) {
+        $baseUrl = '/' . $segments[0];
+    }
+}
+
+if ($baseUrl !== '' && $baseUrl[0] !== '/') {
+    $baseUrl = '/' . $baseUrl;
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -120,7 +130,7 @@ $baseUrl = $baseUrl === '' ? '' : $baseUrl;
             </div>
 
 
-            <a href="../favoritos/favoritos.php"><i class="fa-regular fa-heart"></i></a>
+            <a href="<?php echo $baseUrl; ?>/favoritos/favoritos.php"><i class="fa-regular fa-heart"></i></a>
             <div class="carrinho1">
                 <a href="<?php echo $baseUrl; ?>/carrinho/carrinho.php"><i class="fa-solid fa-cart-shopping"></i></a>
                 <span class="itenscarrinho1">

@@ -24,6 +24,7 @@ $freteCotacao = $_SESSION['frete_cotacao'] ?? null;
 $freteSelecionado = $freteCotacao['selecionado'] ?? null;
 $freteValor = isset($freteSelecionado['valor']) ? (float)$freteSelecionado['valor'] : 0.0;
 $totalComFrete = $total + $freteValor;
+$freteDisponivel = $freteSelecionado !== null;
 
 $destino = $freteCotacao['destino'] ?? [];
 $cepDestino = preg_replace('/\D/', '', (string)($freteCotacao['cep'] ?? ''));
@@ -126,9 +127,17 @@ $estadoDestino = $destino['uf'] ?? '';
                     </div>
                 </div>
 
-                <button type="submit" class="botaopagar">
+                <button
+                    type="submit"
+                    class="botaopagar"
+                    <?= $freteDisponivel ? '' : 'disabled aria-disabled="true" style="opacity: 0.6; cursor: not-allowed;"' ?>>
                     <i class="fa-solid fa-lock"></i> Finalizar Pedido
                 </button>
+                <?php if (!$freteDisponivel): ?>
+                    <small style="display: block; margin-top: 8px; color: #8f4a10;">
+                        Calcule e selecione um frete no <a href="../carrinho/carrinho.php" style="color: inherit; text-decoration: underline;">carrinho</a> para liberar o pagamento.
+                    </small>
+                <?php endif; ?>
             </form>
         </div>
 
@@ -160,7 +169,10 @@ $estadoDestino = $destino['uf'] ?? '';
                     <small style="display: block; margin-bottom: 8px; color: #555;">
                         Prazo estimado: <?= (int)$freteSelecionado['prazo'] ?> dias úteis
                         <?php if (!empty($destino['cidade']) && !empty($destino['uf'])): ?>
-                            – <?= htmlspecialchars($destino['cidade']) ?>/<?= htmlspecialchars($destino['uf']) ?>
+                            - <?= htmlspecialchars($destino['cidade']) ?>/<?= htmlspecialchars($destino['uf']) ?>
+                        <?php endif; ?>
+                        <?php if ($cepDestino): ?>
+                            - CEP <?= htmlspecialchars($cepDestino) ?>
                         <?php endif; ?>
                     </small>
                 <?php endif; ?>
