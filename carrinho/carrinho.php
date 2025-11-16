@@ -18,6 +18,9 @@ if (!isset($_SESSION['id_usu'])) {
 if (!isset($_SESSION['carrinho'])) {
     $_SESSION['carrinho'] = [];
 }
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    unset($_SESSION['frete_cotacao']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
