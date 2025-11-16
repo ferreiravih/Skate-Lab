@@ -19,6 +19,7 @@ try {
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="categoria.css">
+    <link rel="icon" type="image/png" href="../../Skate-Lab/img/imgs-icon/icon.png">
     <title>Categorias - SkateLab</title>
 </head>
     <body>

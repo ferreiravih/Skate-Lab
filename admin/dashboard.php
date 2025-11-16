@@ -95,6 +95,7 @@ function getStatusClass($status) {
     <link rel="stylesheet" href="dash.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../../Skate-Lab/img/imgs-icon/icon.png">
   </head>
   <body>
   <?php include __DIR__ . '/../admin/partials/headeradmin.php'; ?>

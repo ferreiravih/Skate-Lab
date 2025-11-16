@@ -51,6 +51,7 @@ $titulo_pagina = $produto ? htmlspecialchars($produto['nome']) : 'Produto não e
     <link rel="stylesheet" href="produto.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../../Skate-Lab/img/imgs-icon/icon.png">
 </head>
 
 <body>

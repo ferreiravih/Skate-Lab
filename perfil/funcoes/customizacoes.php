@@ -86,7 +86,7 @@ try {
     <link rel="stylesheet" href="../../componentes/footer.css?v=1.0.9">
     <link rel="stylesheet" href="../perfil.css?v=1.0.9">
     <link rel="stylesheet" href="customizacoes.css?v=1.1.1">
-    
+    <link rel="icon" type="image/png" href="../../../Skate-Lab/img/imgs-icon/icon.png">    
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 <body>

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Estilos de Skate</title>
   <link rel="stylesheet" href="../../Skate-Lab/select/select.css">
+  <link rel="icon" type="image/png" href="../../Skate-Lab/img/imgs-icon/icon.png">
 </head>
 <body>
     <?php include '../componentes/navbar.php'; ?>

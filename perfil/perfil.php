@@ -68,6 +68,7 @@ try {
     <link rel="stylesheet" href="../global/global.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <title>Meu Perfil - SkateLab</title>
+    <link rel="icon" type="image/png" href="../../Skate-Lab/img/imgs-icon/icon.png">
 </head>
 <body>
 

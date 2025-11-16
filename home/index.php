@@ -32,6 +32,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../home/home.css">
     <link rel="stylesheet" href="../global/global.css">
+    <link rel="icon" type="image/png" href="../../Skate-Lab/img/imgs-icon/icon.png">
     <title>Home_SkateLab</title>
 </head>
 
