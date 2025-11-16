@@ -4,7 +4,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-
+// 2. VERIFICAÃ‡ÃƒO DE LOGIN
+// Se 'id_usu' NÃƒO EXISTE na sessÃ£o, o usuÃ¡rio nÃ£o estÃ¡ logado.
 if (!isset($_SESSION['id_usu'])) {
     
     // 3. Redireciona para a home (onde estÃ¡ o login) com um erro
@@ -12,11 +13,11 @@ if (!isset($_SESSION['id_usu'])) {
     exit; // Para a execuÃ§Ã£o do script
 }
 
-
+// O restante do seu cÃ³digo original comeÃ§a aqui
+// Garante que o carrinho exista
 if (!isset($_SESSION['carrinho'])) {
     $_SESSION['carrinho'] = [];
 }
-$freteRequired = isset($_GET['error']) && $_GET['error'] === 'frete_required';
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -24,8 +25,8 @@ $freteRequired = isset($_GET['error']) && $_GET['error'] === 'frete_required';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MeuCarrinhoSkateLab</title>
-    <link rel="stylesheet" href="../carrinho/carrinho.css">
+    <title>Meu Carrinho</title>
+    <link rel="stylesheet" href="../carrinho/carrinho.css?v=1.0.2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
 </head>
@@ -41,17 +42,11 @@ $freteRequired = isset($_GET['error']) && $_GET['error'] === 'frete_required';
         </span>
     </div>
 
-    <?php if ($freteRequired): ?>
-        <div style="background: #fff4e5; border: 1px solid #f6c89f; color: #8f4a10; padding: 12px 16px; border-radius: 10px; margin: 0 24px 16px;">
-            Selecione um CEP e escolha uma opçãoo de frete antes de finalizar o pedido.
-        </div>
-    <?php endif; ?>
-
     <div class="carrinhocontainer">
         <div class="carrinhoitens">
 
             <?php if (empty($_SESSION['carrinho'])): ?>
-                <p style="padding: 20px;">Seu carrinho esta vazio.</p>
+                <p style="padding: 20px;">Seu carrinho está vazio.</p>
             <?php else: ?>
                 <?php foreach ($_SESSION['carrinho'] as $item): ?>
                     <div class="itens">
@@ -162,23 +157,23 @@ $freteRequired = isset($_GET['error']) && $_GET['error'] === 'frete_required';
                     data-frete='<?= htmlspecialchars(json_encode($freteCotacao ?? null, JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8') ?>'>
                 </div>
             </div>
-<?php if (!empty($_SESSION['carrinho'])): ?>
-                <a href="../pagamento/checkout.php" class="botaofinalizar" 
-                   style="text-decoration: none; display: inline-block; text-align: center; box-sizing: border-box;">
-                   Finalizar Compra
-                </a>
-            <?php else: ?>
-                <button class="botaofinalizar" disabled style="background-color: #999;">Carrinho Vazio</button>
-            <?php endif; ?>
 
-            <button class="additens" onclick="window.location.href='../skateshop/skateee.php'">Adicionar Mais Itens</button>
-        </div>
+            <div class="cardtotal-botoes">
+                <?php if (!empty($_SESSION['carrinho'])): ?>
+                    <a href="../pagamento/checkout.php" class="botaofinalizar" 
+                       style="text-decoration: none; display: inline-block; text-align: center; box-sizing: border-box;">
+                       Finalizar Compra
+                    </a>
+                <?php else: ?>
+                    <button class="botaofinalizar" disabled style="background-color: #999;">Carrinho Vazio</button>
+                <?php endif; ?>
+
+                <button class="additens" onclick="window.location.href='../skateshop/skateee.php'">Adicionar Mais Itens</button>
+            </div>
+            </div>
     </div>
 
     <?php include '../componentes/footer.php'; ?>
-    <script src='frete.js'></script>
+    <script src='frete.js?v=1.0.1'></script>
 </body>
 </html>
-
-
-
