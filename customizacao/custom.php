@@ -225,7 +225,7 @@ if ($customId && $customId > 0) {
 
           <div class="grupo-botoes">
             <h3>CONTROLES</h3>
-            <button type="button" id="salvarBtn" onclick="salvarConfiguracao()">SALVAR CONFIGURAÇÃO</button>
+            <button type="button" id="salvarBtn" class="form-protegido" onclick="salvarConfiguracao()">SALVAR CONFIGURAÇÃO</button>
             <button type="button" id="exportarBtn" onclick="exportarImagem()">EXPORTAR IMAGEM</button>
             <button type="button" onclick="resetCamera()">Resetar Câmera</button>
           </div>
@@ -1055,6 +1055,12 @@ if ($customId && $customId > 0) {
                 }
             });
         }
+        const btnSalvar = document.getElementById('salvarBtn');
+        if (btnSalvar && typeof isUserLoggedIn !== 'undefined' && isUserLoggedIn) {
+    
+            btnSalvar.addEventListener('click', salvarConfiguracao);
+
+        } 
 
         const formCarrinho = document.getElementById('form-carrinho');
         if (formCarrinho) {
