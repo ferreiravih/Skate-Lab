@@ -4,7 +4,17 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Calcula o caminho base do projeto para gerar links absolutos
+$qtdFavoritos = 0;
+
+if (isset($_SESSION['id_usu']) && isset($pdo)) {
+    try {
+        $stmtFav = $pdo->prepare("SELECT COUNT(*) FROM public.favoritos WHERE id_usu = :id_usu");
+        $stmtFav->execute([':id_usu' => $_SESSION['id_usu']]);
+        $qtdFavoritos = $stmtFav->fetchColumn();
+    } catch (Exception $e) {
+    }
+}
+
 $projectRoot = str_replace('\\', '/', realpath(__DIR__ . '/..'));
 $docRoot = isset($_SERVER['DOCUMENT_ROOT']) ? str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])) : '';
 $baseUrl = '';
@@ -37,6 +47,7 @@ if ($baseUrl !== '' && $baseUrl[0] !== '/') {
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="../../Skate-Lab/img/imgs-icon/icon.png">
 </head>
 
 <body>
@@ -77,7 +88,7 @@ if ($baseUrl !== '' && $baseUrl[0] !== '/') {
 
                 <div id="sidebarCadastro" class="sidebar">
                     <h2>Cadastro</h2>
-                    
+
                     <div id="register-error-message" class="auth-error-message"></div>
                     <form action="<?php echo $baseUrl; ?>/auth/registrar.php" method="POST" id="formCadastro">
                         <label>Nome completo</label>
@@ -130,11 +141,20 @@ if ($baseUrl !== '' && $baseUrl[0] !== '/') {
             </div>
 
 
-            <a href="<?php echo $baseUrl; ?>/favoritos/favoritos.php"><i class="fa-regular fa-heart"></i></a>
+            <a href="<?php echo $baseUrl; ?>/favoritos/favoritos.php" class="form-protegido"><i class="fa-regular fa-heart"></i></a>
+
             <div class="carrinho1">
-                <a href="<?php echo $baseUrl; ?>/carrinho/carrinho.php"><i class="fa-solid fa-cart-shopping"></i></a>
-                <span class="itenscarrinho1">
-                    <?= isset($_SESSION['carrinho']) ? count($_SESSION['carrinho']) : 0 ?>
+                <a href="<?php echo $baseUrl; ?>/carrinho/carrinho.php" class="form-protegido"><i class="fa-solid fa-cart-shopping"></i></a>
+
+                <?php
+
+                $qtdCarrinho = isset($_SESSION['carrinho']) ? count($_SESSION['carrinho']) : 0;
+
+                $ocultar = ($qtdCarrinho === 0) ? 'style="display: none;"' : '';
+                ?>
+
+                <span class="itenscarrinho1" <?php echo $ocultar; ?>>
+                    <?= $qtdCarrinho ?>
                 </span>
             </div>
         </div>

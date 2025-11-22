@@ -47,6 +47,7 @@ $erroPagamento = $_SESSION['pagamento_error'] ?? null;
     <title>Finalizar Pagamento - SkateLab</title>
     <link rel="stylesheet" href="pagamento.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="../../Skate-Lab/img/imgs-icon/icon.png">
 </head>
 
 <body>

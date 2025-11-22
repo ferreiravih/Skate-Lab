@@ -85,6 +85,7 @@ if ($customId && $customId > 0) {
   <link rel="stylesheet" href="custom.css?v=1.11">
   <link rel="stylesheet" href="../componentes/nav.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="../../Skate-Lab/img/imgs-icon/icon.png">
 </head>
 
 <body>
@@ -225,7 +226,7 @@ if ($customId && $customId > 0) {
 
           <div class="grupo-botoes">
             <h3>CONTROLES</h3>
-            <button type="button" id="salvarBtn" onclick="salvarConfiguracao()">SALVAR CONFIGURAÇÃO</button>
+            <button type="button" id="salvarBtn" class="form-protegido" onclick="salvarConfiguracao()">SALVAR CONFIGURAÇÃO</button>
             <button type="button" id="exportarBtn" onclick="exportarImagem()">EXPORTAR IMAGEM</button>
             <button type="button" onclick="resetCamera()">Resetar Câmera</button>
           </div>
@@ -1055,6 +1056,12 @@ if ($customId && $customId > 0) {
                 }
             });
         }
+        const btnSalvar = document.getElementById('salvarBtn');
+        if (btnSalvar && typeof isUserLoggedIn !== 'undefined' && isUserLoggedIn) {
+    
+            btnSalvar.addEventListener('click', salvarConfiguracao);
+
+        } 
 
         const formCarrinho = document.getElementById('form-carrinho');
         if (formCarrinho) {

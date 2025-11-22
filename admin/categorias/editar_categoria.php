@@ -27,6 +27,7 @@ try {
     <title>Editar Categoria</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
     <link rel="stylesheet" href="../add_produto/add_prod.css">
+    <link rel="icon" type="image/png" href="../../Skate-Lab/img/imgs-icon/icon.png">
 </head>
 <body>
     <?php include __DIR__ . '/../partials/headeradmin.php'; ?>

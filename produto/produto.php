@@ -19,23 +19,21 @@ if ($id_peca > 0) {
                     JOIN categorias c ON p.id_cat = c.id_cat
                     LEFT JOIN favoritos f ON p.id_pecas = f.id_pecas AND f.id_usu = :id_usu
                     WHERE p.id_pecas = :id_peca AND p.status = 'ATIVO'";
-            
+
             $stmt = $pdo->prepare($sql);
             $stmt->execute([':id_peca' => $id_peca, ':id_usu' => $id_usuario_logado]);
-
         } else {
             // DESLOGADO: Apenas busca o produto
             $sql = "SELECT p.*, c.nome AS categoria_nome, NULL as id_favorito
                     FROM pecas p
                     JOIN categorias c ON p.id_cat = c.id_cat
                     WHERE p.id_pecas = :id_peca AND p.status = 'ATIVO'";
-            
+
             $stmt = $pdo->prepare($sql);
             $stmt->execute([':id_peca' => $id_peca]);
         }
 
         $produto = $stmt->fetch(PDO::FETCH_ASSOC);
-
     } catch (PDOException $e) {
         echo "Erro ao buscar produto: " . $e->getMessage();
     }
@@ -53,6 +51,7 @@ $titulo_pagina = $produto ? htmlspecialchars($produto['nome']) : 'Produto não e
     <link rel="stylesheet" href="produto.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../../Skate-Lab/img/imgs-icon/icon.png">
 </head>
 
 <body>
@@ -101,8 +100,8 @@ $titulo_pagina = $produto ? htmlspecialchars($produto['nome']) : 'Produto não e
                 $activeClass = $produto['id_favorito'] ? 'active' : '';
                 $btnText = $produto['id_favorito'] ? 'Salvo nos Favoritos' : 'Salvar nos Favoritos';
                 ?>
-                <button type="button" class="btn-favorito-bloco <?php echo $activeClass; ?>" 
-                        data-id-peca="<?php echo $produto['id_pecas']; ?>">
+                <button type="button" class="btn-favorito-bloco <?php echo $activeClass; ?> form-protegido"
+                    data-id-peca="<?php echo $produto['id_pecas']; ?>">
                     <i class="ri-heart-fill icon-filled"></i>
                     <i class="ri-heart-line icon-outlined"></i>
                     <span class="btn-fav-text"><?php echo $btnText; ?></span>
@@ -116,11 +115,11 @@ $titulo_pagina = $produto ? htmlspecialchars($produto['nome']) : 'Produto não e
                         <input type="hidden" name="preco" value="<?php echo $produto['preco']; ?>">
                         <input type="hidden" name="imagem" value="<?php echo htmlspecialchars($produto['url_img']); ?>">
                         <input type="hidden" name="descricao" value="<?php echo htmlspecialchars($produto['desc_curta']); ?>">
-                        
-                        <input type="hidden" name="quantidade" value="1"> 
-                        
+
+                        <input type="hidden" name="quantidade" value="1">
+
                         <input type="hidden" name="redirect_to" value="carrinho" class="redirect_to_input">
-                        
+
                         <button type="submit" class="botaocomprar1 form-protegido"
                             onclick="this.closest('form').querySelector('.redirect_to_input').value = 'checkout';">
                             Comprar Agora
@@ -130,8 +129,9 @@ $titulo_pagina = $produto ? htmlspecialchars($produto['nome']) : 'Produto não e
                             <i class="fa-solid fa-cart-shopping"></i> Adicionar ao Carrinho
                         </button>
                     </form>
-                    
-                </div> </section>
+
+                </div>
+            </section>
         </main>
 
         <?php if (!empty($produto['dsc_longa'])): ?>
@@ -142,13 +142,13 @@ $titulo_pagina = $produto ? htmlspecialchars($produto['nome']) : 'Produto não e
         <?php endif; ?>
 
     <?php else: ?>
-         <main class="container">
+        <main class="container">
             <section class="info" style="text-align: center; width: 100%;">
                 <h1><i class="fa-solid fa-circle-exclamation"></i> Produto não encontrado</h1>
                 <p>O item que você está procurando não existe ou não está mais disponível.</p>
                 <a href="../skateshop/skateee.php" class="botaoadcarrinho" style="max-width: 300px; margin-top: 20px;">Voltar para a Loja</a>
             </section>
-         </main>
+        </main>
     <?php endif; ?>
 
     <?php include '../componentes/footer.php'; ?>
