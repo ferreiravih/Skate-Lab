@@ -25,8 +25,8 @@ if (empty($descricao)) {
 }
 
 // INSERIR NO BANCO
-// CUIDADO: O schema usa 'descrição' com acento!
-$sql = "INSERT INTO public.categorias (nome, descrição) VALUES (:nome, :descricao)";
+// Insere utilizando o campo padrao 'descricao'
+$sql = "INSERT INTO public.categorias (nome, descricao) VALUES (:nome, :descricao)";
 
 try {
     $stmt = $pdo->prepare($sql);

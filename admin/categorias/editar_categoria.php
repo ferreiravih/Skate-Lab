@@ -49,7 +49,7 @@ try {
                     <input type="text" id="nome" name="nome" value="<?= htmlspecialchars($categoria['nome']) ?>" required>
 
                     <label for="descricao">Descrição</label>
-                    <textarea id="descricao" name="descricao" rows="5" required><?= htmlspecialchars($categoria['descrição']) ?></textarea>
+                    <textarea id="descricao" name="descricao" rows="5" required><?= htmlspecialchars($categoria['descricao']) ?></textarea>
                 </div>
                 
                 <div class="painel-direito">

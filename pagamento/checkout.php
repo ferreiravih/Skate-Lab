@@ -36,6 +36,7 @@ $logradouroDestino = $destino['logradouro'] ?? '';
 $bairroDestino = $destino['bairro'] ?? '';
 $cidadeDestino = $destino['cidade'] ?? '';
 $estadoDestino = $destino['uf'] ?? '';
+$erroPagamento = $_SESSION['pagamento_error'] ?? null;
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -56,9 +57,14 @@ $estadoDestino = $destino['uf'] ?? '';
             <form action="pagamento.php" method="POST">
                 <h2>Informações de Entrega</h2>
                 <p>Preencha seus dados para a entrega.</p>
+                <?php if ($erroPagamento): ?>
+                    <div style="background: #fdeaea; border: 1px solid #f5a6a0; color: #851d1a; padding: 10px 12px; border-radius: 8px; margin-bottom: 16px;">
+                        <?= htmlspecialchars($erroPagamento) ?>
+                    </div>
+                <?php $_SESSION['pagamento_error'] = null; endif; ?>
                 <?php if (!$freteSelecionado): ?>
                     <div style="background: #fff4e5; border: 1px solid #f6c89f; color: #8f4a10; padding: 10px 12px; border-radius: 8px; margin-bottom: 16px;">
-                        Ainda nǜo identificamos um frete selecionado. Volte ao carrinho para calcular e garantir prazo e valor exatos.
+                        Ainda não identificamos um frete selecionado. Volte ao carrinho para calcular e garantir prazo e valor exatos.
                     </div>
                 <?php else: ?>
                     <div style="background: #e7f7ef; border: 1px solid #88d1b2; color: #10633f; padding: 10px 12px; border-radius: 8px; margin-bottom: 16px;">

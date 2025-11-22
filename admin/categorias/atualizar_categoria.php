@@ -15,10 +15,10 @@ if (!$id_cat || empty($nome) || empty($descricao)) {
     die("Erro: Todos os campos são obrigatórios.");
 }
 
-// CUIDADO: Coluna 'descrição' (com acento) no banco!
+// Atualiza utilizando o campo padrao 'descricao'
 $sql = "UPDATE public.categorias SET 
             nome = :nome, 
-            descrição = :descricao 
+            descricao = :descricao 
         WHERE id_cat = :id_cat";
 
 try {

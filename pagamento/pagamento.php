@@ -17,7 +17,7 @@ if (empty($_SESSION['carrinho'])) {
 
 // Proteção: Verifica se é um POST
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: pagamento.php");
+    header("Location: checkout.php");
     exit;
 }
 
@@ -31,6 +31,86 @@ $freteValor = isset($freteSelecionado['valor']) ? (float)$freteSelecionado['valo
 if (!$freteSelecionado) {
     header("Location: ../carrinho/carrinho.php?error=frete_required");
     exit;
+}
+
+function obterOuCriarCategoriaCustom(PDO $pdo): int
+{
+    static $cachedId = null;
+    if ($cachedId !== null) {
+        return $cachedId;
+    }
+
+    $buscar = $pdo->prepare("SELECT id_cat FROM public.categorias WHERE LOWER(nome) = LOWER(:nome) LIMIT 1");
+    $buscar->execute([':nome' => 'Custom']);
+    $existente = $buscar->fetchColumn();
+    if ($existente) {
+        $cachedId = (int)$existente;
+        return $cachedId;
+    }
+
+    $inserir = $pdo->prepare("INSERT INTO public.categorias (nome, descricao) VALUES (:nome, :descricao) RETURNING id_cat");
+    $inserir->execute([
+        ':nome' => 'Custom',
+        ':descricao' => 'Itens personalizados gerados automaticamente',
+    ]);
+    $novoId = (int)$inserir->fetchColumn();
+    $cachedId = $novoId;
+
+    return $cachedId;
+}
+
+function criarProdutoCustomizado(PDO $pdo, array $item): int
+{
+    $nome = trim((string)($item['nome'] ?? 'Skate Customizado'));
+    if ($nome === '') {
+        $nome = 'Skate Customizado';
+    }
+
+    $descricaoCurta = trim((string)($item['descricao'] ?? 'Customização exclusiva'));
+    if ($descricaoCurta === '') {
+        $descricaoCurta = 'Customização exclusiva';
+    }
+
+    $descricaoLonga = $descricaoCurta;
+    $imagem = isset($item['imagem']) ? trim((string)$item['imagem']) : null;
+    if ($imagem === '') {
+        $imagem = null;
+    }
+
+    $categoriaId = obterOuCriarCategoriaCustom($pdo);
+    $stmt = $pdo->prepare("
+        INSERT INTO public.pecas
+            (id_cat, nome, url_img, url_m3d, preco, estoque, desc_curta, dsc_longa, status)
+        VALUES
+            (:id_cat, :nome, :url_img, NULL, :preco, 0, :desc_curta, :dsc_longa, 'INATIVO')
+        RETURNING id_pecas
+    ");
+
+    $stmt->execute([
+        ':id_cat' => $categoriaId,
+        ':nome' => $nome,
+        ':url_img' => $imagem,
+        ':preco' => isset($item['preco']) ? (float)$item['preco'] : 0.0,
+        ':desc_curta' => $descricaoCurta,
+        ':dsc_longa' => $descricaoLonga,
+    ]);
+
+    return (int)$stmt->fetchColumn();
+}
+
+function resolveIdPecaParaPedido(PDO $pdo, $chave, array $item): int
+{
+    if (isset($item['id_peca']) && $item['id_peca'] !== null && $item['id_peca'] !== '') {
+        return (int)$item['id_peca'];
+    }
+
+    $candidato = $item['id'] ?? $chave;
+    $candidatoString = (string)$candidato;
+    if ($candidatoString !== '' && ctype_digit($candidatoString)) {
+        return (int)$candidato;
+    }
+
+    return criarProdutoCustomizado($pdo, $item);
 }
 
 // Coleta o endereço do formulário de pagamento.php
@@ -87,12 +167,12 @@ try {
     
     $stmt_item = $pdo->prepare($sql_item);
 
-    foreach ($carrinho as $id_peca => $item) {
+    foreach ($carrinho as $chave => $item) {
         $stmt_item->execute([
             ':id_pedido' => $id_pedido_criado,
-            ':id_pecas' => $id_peca,
-            ':quantidade' => $item['quantidade'],
-            ':preco_unitario' => $item['preco'] // Salva o preço daquele momento
+            ':id_pecas' => resolveIdPecaParaPedido($pdo, $chave, $item),
+            ':quantidade' => max(1, (int)($item['quantidade'] ?? 1)),
+            ':preco_unitario' => isset($item['preco']) ? (float)$item['preco'] : 0.0
         ]);
     }
 
@@ -100,9 +180,8 @@ try {
     $pdo->commit();
 
     // 8. Limpar o carrinho e redirecionar
-    unset($_SESSION['carrinho'], $_SESSION['frete_cotacao']);
-    
-    // (O ideal é ter uma página "pedido_concluido.php")
+    unset($_SESSION['carrinho'], $_SESSION['frete_cotacao'], $_SESSION['pagamento_error']);
+
     header("Location: pedido_sucesso.php");
     exit;
 
@@ -110,7 +189,8 @@ try {
     // 9. Desfazer a transação (Algo deu errado!)
     $pdo->rollBack();
     error_log("Erro ao processar pedido: " . $e->getMessage());
-    header("Location: pagamento.php?error=processing_failed");
+    $_SESSION['pagamento_error'] = $e->getMessage();
+    header("Location: checkout.php?error=processing_failed");
     exit;
 }
 ?>

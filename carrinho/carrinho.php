@@ -20,6 +20,12 @@ if (!isset($_SESSION['carrinho'])) {
 }
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     unset($_SESSION['frete_cotacao']);
+    foreach ($_SESSION['carrinho'] as $key => $item) {
+        if (!isset($item['id_peca']) && isset($item['id']) && is_numeric($item['id'])) {
+            $item['id_peca'] = (int)$item['id'];
+            $_SESSION['carrinho'][$key] = $item;
+        }
+    }
 }
 ?>
 <!DOCTYPE html>

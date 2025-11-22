@@ -56,7 +56,7 @@ try {
                             <?php foreach ($categorias as $cat): ?>
                                 <tr>
                                     <td><strong><?= htmlspecialchars($cat['nome']) ?></strong></td>
-                                    <td><?= htmlspecialchars($cat['descrição']) ?></td>
+                                    <td><?= htmlspecialchars($cat['descricao']) ?></td>
                                     <td class="coluna-acoes">
                                         <a href="editar_categoria.php?id=<?= $cat['id_cat'] ?>" class="botao-acao editar">
                                             <i class="ri-pencil-line"></i>

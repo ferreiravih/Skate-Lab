@@ -26,6 +26,7 @@ $preco = floatval($_POST['preco']);
 $quantidade = max(1, intval($_POST['quantidade'])); // garante no mínimo 1
 $descricao = $_POST['descricao'] ?? 'Sem descrição';
 $imagem = $_POST['imagem'] ?? '../img/imgs-skateshop/image.png';
+$idPecaRelacional = is_numeric($id) ? (int)$id : null;
 
 // Garante que o carrinho exista
 if (!isset($_SESSION['carrinho'])) {
@@ -43,6 +44,7 @@ if (isset($_SESSION['carrinho'][$id])) {
 } else {
     $_SESSION['carrinho'][$id] = [
         'id' => $id,
+        'id_peca' => $idPecaRelacional,
         'nome' => $nome,
         'preco' => $preco,
         'quantidade' => $quantidade,
