@@ -197,3 +197,4 @@ try {
         <?php include '../componentes/footer.php'; ?>
     </footer>
 </body>
+</html>

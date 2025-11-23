@@ -15,6 +15,9 @@
   height: auto;
   flex-wrap: wrap;
   gap: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 999;
 }
 
 .logo {
@@ -26,7 +29,7 @@
 }
 
 
-/* MENU */
+/* menu */
 .menu {
   display: flex;
   gap: 20px;
@@ -44,7 +47,7 @@
 }
 
 
-/* ICONES */
+/* icones */
 .icones1 {
   display: flex !important;
   align-items: center;
@@ -63,7 +66,6 @@
   color: #e96b3f;
 }
 
-/* Carrinho com o contador */
 .carrinho1 {
   position: relative;
 }
@@ -83,11 +85,11 @@
 
 
 
-/* Estilo da barra lateral */
+/* barra lateral */
 .sidebar {
   position: fixed;
   top: 0;
-  right: -300px; /* começa fora da tela */
+  right: -300px; 
   width: 300px;
   height: 100%;
   background: #fff;
@@ -97,12 +99,12 @@
   z-index: 1000;
 }
 
-/* Quando estiver ativa */
+/* barra ativa */
 .sidebar.active {
   right: 0;
 }
 
-/* Ícone do usuário */
+/* icone do usuário */
 .user-icon {
   cursor: pointer;
   font-size: 24px;
@@ -113,7 +115,7 @@
   transform: scale(1.1);
 }
 
-/* Fundo da sidebar */
+/* fundo da barra lateral */
 .sidebar {
   background: linear-gradient(135deg, white,white); /* tons de roxo */
   color: #fff;
@@ -130,29 +132,29 @@
   z-index: 1000;
 }
 
-/* Sidebar visível */
+
 .sidebar.active {
   right: 0;
 }
 
-/* Título */
+
 .sidebar h2 {
   text-align: center;
   margin-bottom: 20px;
   font-size: 24px;
   letter-spacing: 1px;
-  color: #ff9800; /* laranja */
+  color: #ff9800; 
 }
 
-/* Labels */
+
 .sidebar label {
   display: block;
   margin-top: 15px;
   font-weight: 500;
-  color: black; /* laranja claro */
+  color: black; 
 }
 
-/* Inputs */
+
 .sidebar input {
   width: 100%;
   padding: 10px;
