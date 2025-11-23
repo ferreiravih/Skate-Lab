@@ -1,11 +1,10 @@
 <?php
-// 1. Autenticação e Conexão com o BD
+
 require_once __DIR__ . '/admin_auth.php';
 require_once __DIR__ . '/../config/db.php';
 
-// 2. Buscar Dados para os Cards e Visão Geral
+
 try {
-    // Cards Superiores (Produtos e Categorias)
     $stmt_total_prod = $pdo->query("SELECT COUNT(*) FROM public.pecas");
     $total_produtos = $stmt_total_prod->fetchColumn();
 
@@ -18,19 +17,16 @@ try {
     $stmt_categorias = $pdo->query("SELECT COUNT(*) FROM public.categorias");
     $total_categorias = $stmt_categorias->fetchColumn();
 
-    // Cards de Visão Geral (Vendas, Pedidos, Usuários)
-    // Considera pedidos pagos (não pendentes ou cancelados) para o total de vendas
     $stmt_vendas_totais = $pdo->query("SELECT SUM(valor_total) FROM public.pedidos WHERE status NOT IN ('PENDENTE', 'CANCELADO')");
-    $vendas_totais = $stmt_vendas_totais->fetchColumn() ?? 0; // Usa ?? 0 se não houver vendas
+    $vendas_totais = $stmt_vendas_totais->fetchColumn() ?? 0;
 
     $stmt_total_pedidos = $pdo->query("SELECT COUNT(*) FROM public.pedidos");
     $total_pedidos = $stmt_total_pedidos->fetchColumn();
 
-    // Contando apenas usuários 'comum'
+
     $stmt_total_usuarios = $pdo->query("SELECT COUNT(*) FROM public.usuario WHERE tipo = 'comum'");
     $total_usuarios = $stmt_total_usuarios->fetchColumn();
 
-    // Pedidos Recentes (LIMIT 5)
     $stmt_recentes = $pdo->query("
         SELECT p.id_pedido, p.valor_total, p.status, u.nome AS cliente_nome
         FROM public.pedidos p
@@ -40,8 +36,6 @@ try {
     ");
     $pedidos_recentes = $stmt_recentes->fetchAll();
 
-    // Produtos Mais Vendidos (LIMIT 4)
-    // Soma a quantidade vendida de cada peça em pedidos não cancelados/pendentes
     $stmt_mais_vendidos = $pdo->query("
         SELECT p.nome AS produto_nome, SUM(pi.quantidade) AS total_vendido, SUM(pi.quantidade * pi.preco_unitario) AS valor_vendido
         FROM public.pedido_itens pi
@@ -54,7 +48,6 @@ try {
     ");
     $mais_vendidos = $stmt_mais_vendidos->fetchAll();
 
-    // Produtos Recentes na Tabela Inferior (LIMIT 3, como no seu HTML original)
     $stmt_prod_recentes_tabela = $pdo->query("
         SELECT p.*, c.nome AS categoria_nome
         FROM public.pecas p
@@ -66,7 +59,7 @@ try {
 
 
 } catch (PDOException $e) {
-    // Em caso de erro, define valores padrão para evitar que a página quebre
+
     error_log("Erro no Dashboard: " . $e->getMessage());
     $total_produtos = $produtos_ativos = $baixo_estoque = $total_categorias = 0;
     $vendas_totais = $total_pedidos = $total_usuarios = 0;
@@ -74,7 +67,6 @@ try {
     $erro_db = "Erro ao carregar dados do dashboard.";
 }
 
-// Função auxiliar para classes CSS de status do pedido
 function getStatusClass($status) {
     switch (strtoupper($status)) {
         case 'CONCLUIDO': return 'concluido';
@@ -226,7 +218,7 @@ function getStatusClass($status) {
       </section>
      </div>
 
-     <section class="recent-products">
+    <section class="recent-products">
       <div class="header-section">
         <h2>Produtos Adicionados Recentemente</h2>
       </div>
@@ -239,13 +231,12 @@ function getStatusClass($status) {
             <th>Preço</th>
             <th>Estoque</th>
             <th>Categoria</th>
-            <th>Status</th>
-            <th>Ações</th>
+            <th style="text-align: center;">Status</th> 
           </tr>
         </thead>
         <tbody>
           <?php if (empty($produtos_recentes_tabela)): ?>
-              <tr><td colspan="7" style="text-align:center;">Nenhum produto cadastrado.</td></tr>
+              <tr><td colspan="6" style="text-align:center;">Nenhum produto cadastrado.</td></tr>
           <?php else: ?>
               <?php foreach ($produtos_recentes_tabela as $produto): ?>
                   <tr>
@@ -254,11 +245,13 @@ function getStatusClass($status) {
                     <td>R$ <?= number_format($produto['preco'], 2, ',', '.') ?></td>
                     <td><?= htmlspecialchars($produto['estoque']) ?></td>
                     <td><?= htmlspecialchars($produto['categoria_nome'] ?? 'Sem Categoria') ?></td>
-                    <td><span class="status <?= strtolower($produto['status']) ?>"><?= htmlspecialchars($produto['status']) ?></span></td>
-                    <td>
-                        <a href="../produtos/editar_produto.php?id=<?= $produto['id_pecas'] ?>" class="btn editar">Editar</a>
-                       <a href="../produtos/excluir_produto.php?id=<?= $produto['id_pecas'] ?>" class="btn excluir" onclick="return confirm('Tem certeza?');">Excluir</a>
-                       </td>
+                    
+                    <td style="text-align: center;">
+                        <span class="status <?= strtolower($produto['status']) ?>">
+                            <?= htmlspecialchars($produto['status']) ?>
+                        </span>
+                    </td>
+                    
                   </tr>
               <?php endforeach; ?>
           <?php endif; ?>
