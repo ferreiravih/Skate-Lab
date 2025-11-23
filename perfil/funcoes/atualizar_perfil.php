@@ -22,7 +22,7 @@ $apelido = trim($_POST['apelido'] ?? '');
 $tell = trim($_POST['tell'] ?? ''); 
 $data_nascimento = trim($_POST['data_nascimento'] ?? ''); 
 
-// --- Validações de Texto ---
+// --- Validações ---
 if (empty($nome)) {
     echo json_encode(['sucesso' => false, 'mensagem' => 'O campo "Nome completo" é obrigatório.']);
     exit;
@@ -47,14 +47,13 @@ if (!empty($data_nascimento)) {
 }
 $apelido_db = empty($apelido) ? null : $apelido;
 
-// --- LÓGICA DE UPLOAD DA FOTO ---
-$caminho_foto_db = null; // Variável para o SQL
-$novaUrlFotoFrontend = null; // Para devolver ao JS
+// --- Upload da Foto ---
+$caminho_foto_db = null; 
+$novaUrlFotoFrontend = null; 
 
 if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] === UPLOAD_ERR_OK) {
     $arquivo = $_FILES['foto_perfil'];
     
-    // Valida extensão
     $extensoesPermitidas = ['jpg', 'jpeg', 'png', 'webp'];
     $extensao = strtolower(pathinfo($arquivo['name'], PATHINFO_EXTENSION));
     
@@ -69,13 +68,11 @@ if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] === UPLOAD_
         mkdir($diretorioDestino, 0777, true);
     }
 
-    // Gera nome único: id_usuario_timestamp.extensao
     $novoNomeArquivo = $id_usu . '_' . time() . '.' . $extensao;
     $caminhoCompleto = $diretorioDestino . $novoNomeArquivo;
 
     if (move_uploaded_file($arquivo['tmp_name'], $caminhoCompleto)) {
-        // Caminho para salvar no banco (relativo às páginas perfil.php e produto.php)
-        // Como ambos estão em pastas de nível 1 (perfil/ e produto/), o caminho ../img/usuarios funciona.
+        // Caminho relativo para salvar no banco
         $caminho_foto_db = "../img/usuarios/" . $novoNomeArquivo;
         $novaUrlFotoFrontend = $caminho_foto_db;
     } else {
@@ -84,9 +81,8 @@ if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] === UPLOAD_
     }
 }
 
-// --- Atualiza o Banco de Dados ---
+// --- Atualização no Banco ---
 try {
-    // Monta a query dinamicamente dependendo se tem foto nova ou não
     if ($caminho_foto_db) {
         $sql = "UPDATE public.usuario SET 
                     nome = :nome, 
@@ -122,16 +118,20 @@ try {
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
 
-    // Atualiza sessão
+    // Atualiza nome na sessão
     $nome_display = !empty($apelido_db) ? $apelido_db : $nome;
     $_SESSION['nome_usu'] = $nome_display;
 
-    // Retorna
+    // --- IMPORTANTE: Atualiza a foto na sessão se houve upload ---
+    if ($caminho_foto_db) {
+        $_SESSION['url_perfil'] = $caminho_foto_db;
+    }
+
     echo json_encode([
         'sucesso' => true, 
         'mensagem' => 'Perfil atualizado com sucesso!',
         'novoNomeDisplay' => $nome_display,
-        'novaUrlFoto' => $novaUrlFotoFrontend // JS usa isso pra atualizar a img na hora
+        'novaUrlFoto' => $novaUrlFotoFrontend 
     ]);
     exit;
 

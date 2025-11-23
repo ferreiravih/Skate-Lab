@@ -6,7 +6,7 @@
 
 .header {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
   padding: 5px 30px;
   border-bottom: 1px solid #ddd;
@@ -18,13 +18,12 @@
 }
 
 .logo {
-  font-weight: bold;   
+  font-weight: bold;
   font-family: 'nosifer', cursive;
-  background: linear-gradient(90deg, #5a2472,  #f08644); 
+  background: linear-gradient(90deg, #5a2472, #f08644);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
 
 /* MENU */
 .menu {
@@ -42,7 +41,6 @@
 .menu a:hover {
   color: #e96b3f;
 }
-
 
 /* ICONES */
 .icones1 {
@@ -80,92 +78,66 @@
   font-weight: bold;
 }
 
-
-
-
-/* Estilo da barra lateral */
-.sidebar {
-  position: fixed;
-  top: 0;
-  right: -300px; /* começa fora da tela */
-  width: 300px;
-  height: 100%;
-  background: #fff;
-  box-shadow: -2px 0 8px rgba(0,0,0,0.2);
-  padding: 20px;
-  transition: right 0.3s ease;
-  z-index: 1000;
-}
-
-/* Quando estiver ativa */
-.sidebar.active {
-  right: 0;
-}
-
-/* Ícone do usuário */
-.user-icon {
-  cursor: pointer;
-  font-size: 24px;
-  transition: transform 0.2s;
-}
-
-.user-icon:hover {
-  transform: scale(1.1);
-}
-
-/* Fundo da sidebar */
-.sidebar {
-  background: linear-gradient(135deg, white,white); /* tons de roxo */
-  color: #fff;
-  padding: 30px 25px;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-  box-shadow: -4px 0 10px rgba(0, 0, 0, 0.3);
-  width: 300px;
-  height: 100%;
+/* SIDEBAR */
+.sidebar,
+.user-popup {
   position: fixed;
   top: 0;
   right: -300px;
+  width: 300px;
+  height: 100%;
+  background: #fff;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
   transition: right 0.3s ease;
   z-index: 1000;
+
+  /* Fundo gradiente (roxo/lilás bem claro ou branco) */
+  background: linear-gradient(135deg, #ffffff, #f8f4ff);
+  color: #333;
+  /* Texto escuro para contraste */
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
 }
 
-/* Sidebar visível */
-.sidebar.active {
+.sidebar.active,
+.user-popup.active {
   right: 0;
 }
 
-/* Título */
-.sidebar h2 {
+.sidebar h2,
+.user-popup h2 {
   text-align: center;
   margin-bottom: 20px;
   font-size: 24px;
   letter-spacing: 1px;
-  color: #ff9800; /* laranja */
+  color: #ff9800;
 }
 
-/* Labels */
-.sidebar label {
+.sidebar label,
+.user-popup label {
   display: block;
   margin-top: 15px;
-  font-weight: 500;
-  color: black; /* laranja claro */
+  font-weight: 600;
+  color: #333;
 }
 
-/* Inputs */
-.sidebar input {
+.sidebar input,
+.user-popup input {
   width: 100%;
   padding: 10px;
   margin-top: 5px;
-  border: none;
+  border: 1px solid #ccc;
+  /* Borda leve */
   border-radius: 5px;
   outline: none;
   font-size: 14px;
   color: #333;
+  background: #fff;
 }
 
-/* Botão principal (Entrar) */
-.sidebar button[type="submit"] {
+.sidebar button[type="submit"],
+.user-popup button[type="submit"] {
   width: 100%;
   padding: 12px;
   background-color: #ff9800;
@@ -182,8 +154,6 @@
   background-color: #e68900;
 }
 
-/* Botões adicionais */
-#continuarcomemail,
 #abrirCadastro,
 #voltarLogin {
   width: 100%;
@@ -193,313 +163,106 @@
   margin-top: 10px;
   font-size: 15px;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
-}
-
-/* "Continuar com e-mail" – botão secundário */
-#editarPerfil {
   background: #fff;
   color: #6a0dad;
   font-weight: 600;
+  border: 1px solid #e0e0e0;
 }
 
-#editarPerfil:hover {
-  background: #f2f2f2;
-  transform: scale(1.03);
+/* --- ESTILOS DA SIDEBAR LOGADA --- */
+#sidebarUsuario {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 40px 25px 30px 25px;
+  text-align: center;
 }
 
-/* "Sair" – botão de destaque negativo */
+.sidebar-greeting {
+  font-size: 22px;
+  font-weight: 600;
+  color: #5a2472;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  word-wrap: break-word;
+}
+
+.sidebar-email {
+  text-align: center;
+  color: #666;
+  margin-top: 0;
+  margin-bottom: 30px;
+  font-size: 14px;
+  word-wrap: break-word;
+}
+
+.sidebar-actions {
+  width: 100%;
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+#editarPerfil,
+#sair {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+#editarPerfil {
+  background: #f0f0f0;
+  color: #5a2472;
+  border: 1px solid #ddd;
+}
+
 #sair {
   background: transparent;
   color: #ff9800;
   border: 2px solid #ff9800;
-  font-weight: 600;
 }
 
 #sair:hover {
   background: #ff9800;
   color: #fff;
-  transform: scale(1.03);
 }
 
-/* Estilo da barra lateral (AGORA USANDO .user-popup) */
-.user-popup {
-  position: fixed;
-  top: 0;
-  right: -300px; /* começa fora da tela */
-  width: 300px;
-  height: 100%;
-  background: #fff;
-  box-shadow: -2px 0 8px rgba(0,0,0,0.2);
-  padding: 20px;
-  transition: right 0.3s ease;
-  z-index: 1000;
-  
-  /* Fundo gradiente */
-  background: linear-gradient(135deg, white,white);
-  color: #fff;
-  padding: 30px 25px;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-  box-shadow: -4px 0 10px rgba(0, 0, 0, 0.3);
-}
-
-/* Quando estiver ativa */
-.user-popup.active {
-  right: 0;
-}
-
-/* Ícone do usuário */
-.user-icon {
-  cursor: pointer;
-  font-size: 24px;
-  transition: transform 0.2s;
-}
-
-.user-icon:hover {
-  transform: scale(1.1);
-}
-
-/* Título (Login/Cadastro) */
-.user-popup h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 24px;
-  letter-spacing: 1px;
-  color: #ff9800; /* laranja */
-}
-
-/* Labels */
-.user-popup label {
-  display: block;
-  margin-top: 15px;
-  font-weight: 500;
-  color: black; 
-}
-
-/* Inputs */
-.user-popup input {
+/* --- SENHA (OLHO) --- */
+.password-wrapper {
+  position: relative;
   width: 100%;
-  padding: 10px;
   margin-top: 5px;
-  border: none;
-  border-radius: 5px;
-  outline: none;
-  font-size: 14px;
-  color: #333;
 }
 
-/* Botão principal (Entrar / Cadastrar) */
-.user-popup button[type="submit"] {
+.password-wrapper input {
   width: 100%;
-  padding: 12px;
-  background-color: #ff9800;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-top: 20px;
-  font-size: 15px;
-  transition: background 0.3s ease;
-}
-
-.user-popup button[type="submit"]:hover {
-  background-color: #e68900;
-}
-
-/* Botões secundários (Voltar / Abrir Cadastro) */
-#abrirCadastro,
-#voltarLogin {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 6px;
-  margin-top: 10px;
-  font-size: 15px;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
-  background: #fff;
-  color: #6a0dad;
-  font-weight: 600;
-}
-
-#abrirCadastro:hover,
-#voltarLogin:hover {
-  background: #f2f2f2;
-  transform: scale(1.03);
-}
-
-
-/* --- NOVOS ESTILOS PARA SIDEBAR LOGADO (Ajustes de Centralização) --- */
-
-/* Aplica flexbox na sidebar de usuário */
-#sidebarUsuario {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; /* Alinha no topo por padrão */
-    align-items: center; /* Centraliza horizontalmente */
-    padding: 40px 25px 30px 25px; /* Mais padding no topo */
-    text-align: center; /* Garante que o texto quebre centralizado */
-}
-
-/* NOVA SAUDAÇÃO (H3) */
-.sidebar-greeting {
-    font-size: 22px;
-    font-weight: 600;
-    color: #5a2472; /* Roxo do tema */
-    margin-top: 20px; /* Espaço do topo */
-    margin-bottom: 10px;
-    word-wrap: break-word; /* Quebra nomes longos */
-}
-
-/* AJUSTE NO EMAIL */
-.user-popup p.sidebar-email {
-    text-align: center;
-    color: #555; /* Cor mais escura para legibilidade */
-    margin-top: 0;
-    margin-bottom: 30px; /* Mais espaço antes dos botões */
-    font-size: 14px;
-    word-wrap: break-word; /* Garante que emails longos quebrem */
-}
-
-/* NOVO: Div dos botões */
-.sidebar-actions {
-    width: 100%; /* Ocupa toda a largura */
-    margin-top: auto; /* <-- ESTA É A MÁGICA! Empurra para baixo */
-    padding-top: 20px; /* Espaço para separar do conteúdo de cima */
-    border-top: 1px solid #eee; /* Linha sutil de separação */
-}
-
-/* Estilo base para os links de Ação do Usuário (Editar Perfil / Sair) */
-#editarPerfil,
-#sair {
-    display: block; /* Faz o link ocupar a largura toda */
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 6px;
-    margin-top: 10px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    text-align: center; /* Centraliza o texto */
-    text-decoration: none; /* Remove sublinhado do link */
-    transition: background 0.3s ease, transform 0.2s ease, color 0.3s ease, border-color 0.3s ease;
-    box-sizing: border-box; /* Garante que o padding não estoure a largura */
-}
-
-/* "Editar Perfil" – botão secundário */
-#editarPerfil {
-  background: #f0f0f0; /* Fundo cinza claro */
-  color: #5a2472; /* Roxo do tema */
-  border: 2px solid #f0f0f0;
-}
-
-#editarPerfil:hover {
-  background: #e0e0e0; /* Escurece um pouco */
-  transform: scale(1.02);
-}
-
-/* "Sair" – botão de destaque negativo */
-#sair {
-  background: transparent;
-  color: #ff9800; /* Laranja do tema */
-  border: 2px solid #ff9800;
-}
-
-#sair:hover {
-  background: #ff9800;
-  color: #fff;
-  transform: scale(1.02);
-}
-
-
-@media (max-width: 900px) {
-  .header {
-    flex-direction: column; /* empilha os itens */
-    align-items: center;
-    text-align: center;
-    gap: 10px;
-    padding: 20px;
-  }
-
-  .menu {
-    justify-content: center;
-    gap: 20px;
-  }
-
-  .logo h1 {
-    font-size: 22px;
-  }
-}
-
-@media (max-width: 500px) {
-  .menu a {
-    font-size: 15px;
-  }
-
-  .icones1 a {
-    font-size: 20px;
-  }
-
-  .logo h1 {
-    font-size: 20px;
-  }
-}
-
-/* ======== NOVOS ESTILOS PARA VER SENHA (CORREÇÃO DE POSICIONAMENTO) ======== */
-
-/* 1. O Container (Wrapper) */
-/* Usamos .sidebar (que está no seu HTML) e não .user-popup */
-.sidebar .password-wrapper {
-  position: relative; /* Essencial! Permite o posicionamento absoluto do ícone */
-  width: 100%;
-  margin-top: 5px; /* Mantém o espaçamento original do <input> */
-}
-
-/* 2. O Input de Senha */
-/* Precisamos ser mais específicos para sobrescrever o .sidebar input original */
-.sidebar .password-wrapper input {
-  /* O input deve ocupar 100% da largura do wrapper */
-  width: 100%; 
-  
-  /* Adiciona espaço à DIREITA para o ícone não tampar o texto digitado */
-  padding-right: 45px !important; 
-  
-  /* Remove margens que podem atrapalhar o wrapper */
+  padding-right: 45px !important;
   margin-top: 0;
   margin-bottom: 0;
-  
-  /* Garante que o padding não estoure a largura de 100% */
-  box-sizing: border-box; 
 }
 
-/* 3. O Ícone de "Olho" */
-/* Usamos .sidebar (que está no seu HTML) e não .user-popup */
-.sidebar .toggle-password {
-  position: absolute; /* Posição absoluta EM RELAÇÃO AO WRAPPER */
-  
-  /* Estas 3 linhas centralizam o ícone verticalmente */
+.toggle-password {
+  position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  
-  right: 15px; /* Distância da borda direita (dentro do padding do input) */
-  
+  right: 15px;
   cursor: pointer;
   color: #777;
   font-size: 16px;
-  transition: color 0.2s;
 }
 
-.sidebar .toggle-password:hover {
-  color: #000;
-}
-
-/* ==== ESTILOS DO NOVO MODAL DE LOGIN ==== */
-
-/* O fundo escuro (overlay) */
+/* --- MODAL LOGIN --- */
 .auth-modal-overlay {
-  display: none; /* Começa escondido */
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -507,20 +270,18 @@
   height: 100vh;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(5px);
-  z-index: 1049; /* Mais alto que a navbar (1000) */
+  z-index: 1049;
   justify-content: center;
   align-items: center;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
-/* Classe 'show' que o JS vai adicionar */
 .auth-modal-overlay.show {
   display: flex;
   opacity: 1;
 }
 
-/* O conteúdo (caixa branca) */
 .auth-modal-content {
   background: #fff;
   padding: 25px 30px;
@@ -538,28 +299,20 @@
   transform: scale(1);
 }
 
-/* O ícone de cadeado */
 .auth-modal-icon {
   font-size: 3rem;
-  color: #ff6a1f; /* Laranja do seu tema */
+  color: #ff6a1f;
   margin-bottom: 15px;
 }
 
 .auth-modal-content h2 {
-  color: #4B0082; /* Roxo do seu tema */
+  color: #4B0082;
   margin: 10px 0 5px 0;
   font-size: 1.5rem;
 }
 
-.auth-modal-content p {
-  font-size: 1rem;
-  color: #333;
-  margin-bottom: 25px;
-}
-
-/* Botão "Fazer Login" */
 .auth-modal-button {
-  background: #4B0082; /* Roxo */
+  background: #4B0082;
   color: white;
   border: none;
   padding: 12px 20px;
@@ -567,16 +320,9 @@
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
-  font-family: 'Poppins', sans-serif;
   cursor: pointer;
-  transition: background 0.3s ease;
 }
 
-.auth-modal-button:hover {
-  background: #3a0063;
-}
-
-/* Botão de fechar (X) */
 .auth-modal-close {
   position: absolute;
   top: 5px;
@@ -586,11 +332,6 @@
   background: none;
   border: none;
   cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.auth-modal-close:hover {
-  color: #333;
 }
 
 .auth-error-message {
@@ -603,49 +344,106 @@
   font-size: 0.9rem;
   font-weight: 500;
   text-align: center;
-  display: none; 
-}
-.sidebar p.sidebar-email {
-    text-align: center;
-    color: #555; 
+  display: none;
 }
 
 .toast-notification {
-    position: fixed;
-    bottom: 30px; 
-    right: 30px; 
-    background-color: #fff;
-    color: #020101;
-    
-    padding: 20px 30px; 
-    font-size: 16px;    
-    border-radius: 10px;
-    
-    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    z-index: 9999;
-    
-    animation: slideUp 0.5s ease forwards, fadeOut 0.5s ease 2.5s forwards;
-    opacity: 0;
-    font-family: 'Poppins', sans-serif;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #fff;
+  color: #020101;
+  padding: 20px 30px;
+  font-size: 16px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  z-index: 9999;
+  animation: slideUp 0.5s ease forwards, fadeOut 0.5s ease 2.5s forwards;
+  opacity: 0;
+  font-family: 'Poppins', sans-serif;
 }
 
-.toast-notification.success { border-left: 6px solid #6a0dad; }
-.toast-notification.removed { border-left: 6px solid #ff6a1f; }
+.toast-notification.success {
+  border-left: 6px solid #6a0dad;
+}
 
-.toast-notification i {
-    font-size: 20px;
-} 
-
+.toast-notification.removed {
+  border-left: 6px solid #ff6a1f;
+}
 
 @keyframes slideUp {
-    from { transform: translateY(100%); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; pointer-events: none; }
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+/* =========================================== */
+/* --- FOTO DE PERFIL (SOMENTE NA SIDEBAR) --- */
+/* =========================================== */
+
+.sidebar-profile-container {
+  margin-top: 10px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar-profile-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #5a2472;
+  padding: 3px;
+  background: #fff;
+}
+
+.sidebar-default-icon-bg {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #ddd;
+  color: #aaa;
+  font-size: 40px;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 900px) {
+  .header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    padding: 20px;
+  }
+
+  .menu {
+    justify-content: center;
+    gap: 20px;
+  }
 }

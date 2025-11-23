@@ -1,18 +1,26 @@
 <?php
-// Inicia a sessão em todas as páginas que incluem a navbar
+// Inicia a sessão
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$qtdFavoritos = 0;
+// --- CORREÇÃO AUTOMÁTICA DE SESSÃO (Mantida para garantir que a foto carregue) ---
+if (isset($_SESSION['id_usu']) && !isset($_SESSION['url_perfil']) && isset($pdo)) {
+    try {
+        $stmtFoto = $pdo->prepare("SELECT url_perfil FROM public.usuario WHERE id_usu = :id");
+        $stmtFoto->execute([':id' => $_SESSION['id_usu']]);
+        $dadosUsuario = $stmtFoto->fetch(PDO::FETCH_ASSOC);
+        $_SESSION['url_perfil'] = $dadosUsuario['url_perfil'] ?? null;
+    } catch (Exception $e) {}
+}
 
+$qtdFavoritos = 0;
 if (isset($_SESSION['id_usu']) && isset($pdo)) {
     try {
         $stmtFav = $pdo->prepare("SELECT COUNT(*) FROM public.favoritos WHERE id_usu = :id_usu");
         $stmtFav->execute([':id_usu' => $_SESSION['id_usu']]);
         $qtdFavoritos = $stmtFav->fetchColumn();
-    } catch (Exception $e) {
-    }
+    } catch (Exception $e) {}
 }
 
 $projectRoot = str_replace('\\', '/', realpath(__DIR__ . '/..'));
@@ -23,14 +31,12 @@ if ($projectRoot !== false) {
         $baseUrl = rtrim(substr($projectRoot, strlen($docRoot)), '/');
     }
 }
-
 if ($baseUrl === '' && isset($_SERVER['PHP_SELF'])) {
     $segments = explode('/', trim($_SERVER['PHP_SELF'], '/'));
     if (count($segments) > 1) {
         $baseUrl = '/' . $segments[0];
     }
 }
-
 if ($baseUrl !== '' && $baseUrl[0] !== '/') {
     $baseUrl = '/' . $baseUrl;
 }
@@ -42,8 +48,7 @@ if ($baseUrl !== '' && $baseUrl[0] !== '/') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skatelab</title>
-
-    <link rel="stylesheet" href="<?php echo $baseUrl; ?>/componentes/nav.css">
+    <link rel="stylesheet" href="<?php echo $baseUrl; ?>/componentes/nav.css?v=1.2">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -62,10 +67,9 @@ if ($baseUrl !== '' && $baseUrl[0] !== '/') {
             <a href="<?php echo $baseUrl; ?>/select/select.php">Customizar</a>
         </nav>
         <div class="icones1">
+            
             <a><i class="fa-regular fa-user user-icon" id="userIcon"></i></a>
 
-            <?php // AQUI COMEÇA A MÁGICA: Verifica se o ID do usuário NÃO existe na sessão 
-            ?>
             <?php if (!isset($_SESSION['id_usu'])): ?>
 
                 <div id="sidebarLogin" class="sidebar">
@@ -88,7 +92,6 @@ if ($baseUrl !== '' && $baseUrl[0] !== '/') {
 
                 <div id="sidebarCadastro" class="sidebar">
                     <h2>Cadastro</h2>
-
                     <div id="register-error-message" class="auth-error-message"></div>
                     <form action="<?php echo $baseUrl; ?>/auth/registrar.php" method="POST" id="formCadastro">
                         <label>Nome completo</label>
@@ -117,8 +120,17 @@ if ($baseUrl !== '' && $baseUrl[0] !== '/') {
             <?php else: ?>
 
                 <div id="sidebarUsuario" class="sidebar">
-                    <?php // Puxa os dados da Sessão que o login.php e registrar.php criaram 
-                    ?>
+                    
+                    <div class="sidebar-profile-container">
+                        <?php if (!empty($_SESSION['url_perfil'])): ?>
+                            <img src="<?php echo $baseUrl . '/' . str_replace('../', '', $_SESSION['url_perfil']); ?>" alt="Foto de Perfil" class="sidebar-profile-img">
+                        <?php else: ?>
+                            <div class="sidebar-default-icon-bg">
+                                <i class="fa-regular fa-user"></i>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
                     <h3 class="sidebar-greeting"><?php echo htmlspecialchars($_SESSION['nome_usu']); ?></h3>
                     <p class="sidebar-email"><?php echo htmlspecialchars($_SESSION['email_usu']); ?></p>
 
@@ -128,8 +140,8 @@ if ($baseUrl !== '' && $baseUrl[0] !== '/') {
                     </div>
                 </div>
 
-            <?php endif; // Fim da verificação de login 
-            ?>
+            <?php endif; ?>
+            
             <div id="auth-modal-overlay" class="auth-modal-overlay">
                 <div class="auth-modal-content">
                     <button id="auth-modal-close" class="auth-modal-close">&times;</button>
@@ -140,19 +152,14 @@ if ($baseUrl !== '' && $baseUrl[0] !== '/') {
                 </div>
             </div>
 
-
             <a href="<?php echo $baseUrl; ?>/favoritos/favoritos.php" class="form-protegido"><i class="fa-regular fa-heart"></i></a>
 
             <div class="carrinho1">
                 <a href="<?php echo $baseUrl; ?>/carrinho/carrinho.php" class="form-protegido"><i class="fa-solid fa-cart-shopping"></i></a>
-
                 <?php
-
                 $qtdCarrinho = isset($_SESSION['carrinho']) ? count($_SESSION['carrinho']) : 0;
-
                 $ocultar = ($qtdCarrinho === 0) ? 'style="display: none;"' : '';
                 ?>
-
                 <span class="itenscarrinho1" <?php echo $ocultar; ?>>
                     <?= $qtdCarrinho ?>
                 </span>
@@ -162,9 +169,7 @@ if ($baseUrl !== '' && $baseUrl[0] !== '/') {
     <script>
         const isUserLoggedIn = <?php echo isset($_SESSION['id_usu']) ? 'true' : 'false'; ?>;
     </script>
-
     <script src="<?php echo $baseUrl; ?>/componentes/nav.js"></script>
     <script src="<?php echo $baseUrl; ?>/componentes/auth_popup.js"></script>
 </body>
-
 </html>

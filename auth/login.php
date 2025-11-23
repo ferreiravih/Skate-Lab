@@ -10,7 +10,6 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit;
 }
 
-
 $email = trim($_POST['email'] ?? '');
 $senha = trim($_POST['senha'] ?? '');
 
@@ -20,7 +19,8 @@ if (empty($email) || empty($senha)) {
 }
 
 try {
-    $sql = "SELECT id_usu, nome, email, senha, tipo, verificado 
+    // 1. MUDANÇA: Adicionei 'url_perfil' no SELECT
+    $sql = "SELECT id_usu, nome, email, senha, tipo, verificado, url_perfil 
             FROM public.usuario WHERE email = :email";
             
     $stmt = $pdo->prepare($sql);
@@ -30,9 +30,7 @@ try {
  
     if ($usuario && password_verify($senha, $usuario['senha'])) {
         
-       
         if ($usuario['verificado'] == false && $usuario['tipo'] != 'admin') {
-           
             header("Location: ../verificar.php?error=not_verified&email=" . urlencode($email));
             exit;
         }
@@ -42,6 +40,8 @@ try {
         $_SESSION['nome_usu'] = $usuario['nome'];
         $_SESSION['tipo_usu'] = $usuario['tipo']; 
         $_SESSION['email_usu'] = $usuario['email'];
+        
+        $_SESSION['url_perfil'] = $usuario['url_perfil']; 
         
         if ($usuario['tipo'] === 'admin') {
             header("Location: ../admin/dashboard.php?status=login_success"); 
