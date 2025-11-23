@@ -1,5 +1,4 @@
 <?php
-// 1. Inicia a sessão e verifica o login
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -9,26 +8,21 @@ if (!isset($_SESSION['id_usu'])) {
     exit;
 }
 
-// 2. Verifica se é um método POST
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     echo json_encode(['sucesso' => false, 'mensagem' => 'Método inválido.']);
     exit;
 }
 
-// 3. Inclui o BD
 require_once __DIR__ . '/../../config/db.php';
-
-// Define o cabeçalho como JSON
 header('Content-Type: application/json');
 
-// 4. Coleta e valida os dados (DO FORMULÁRIO DE PERFIL)
 $id_usu = $_SESSION['id_usu'];
 $nome = trim($_POST['nome'] ?? '');
 $apelido = trim($_POST['apelido'] ?? ''); 
 $tell = trim($_POST['tell'] ?? ''); 
 $data_nascimento = trim($_POST['data_nascimento'] ?? ''); 
 
-// Validação
+// --- Validações de Texto ---
 if (empty($nome)) {
     echo json_encode(['sucesso' => false, 'mensagem' => 'O campo "Nome completo" é obrigatório.']);
     exit;
@@ -38,60 +32,112 @@ if (strlen($apelido) > 50) {
     exit;
 }
 
-// Limpa a máscara do telefone
 $tell_limpo = preg_replace('/\D/', '', $tell);
-if (strlen($tell_limpo) > 11) {
-    $tell_limpo = substr($tell_limpo, 0, 11);
-}
+if (strlen($tell_limpo) > 11) $tell_limpo = substr($tell_limpo, 0, 11);
 
-// Valida e formata a Data de Nascimento (de DD/MM/AAAA para AAAA-MM-DD)
 $data_nascimento_db = null; 
 if (!empty($data_nascimento)) {
     $dataObj = DateTime::createFromFormat('d/m/Y', $data_nascimento);
     if ($dataObj && $dataObj->format('d/m/Y') === $data_nascimento) {
         $data_nascimento_db = $dataObj->format('Y-m-d'); 
     } else {
-        echo json_encode(['sucesso' => false, 'mensagem' => 'Data de nascimento inválida. Use o formato DD/MM/AAAA.']);
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Data de nascimento inválida.']);
+        exit;
+    }
+}
+$apelido_db = empty($apelido) ? null : $apelido;
+
+// --- LÓGICA DE UPLOAD DA FOTO ---
+$caminho_foto_db = null; // Variável para o SQL
+$novaUrlFotoFrontend = null; // Para devolver ao JS
+
+if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] === UPLOAD_ERR_OK) {
+    $arquivo = $_FILES['foto_perfil'];
+    
+    // Valida extensão
+    $extensoesPermitidas = ['jpg', 'jpeg', 'png', 'webp'];
+    $extensao = strtolower(pathinfo($arquivo['name'], PATHINFO_EXTENSION));
+    
+    if (!in_array($extensao, $extensoesPermitidas)) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Formato de imagem inválido (use JPG, PNG ou WEBP).']);
+        exit;
+    }
+
+    // Cria diretório se não existir
+    $diretorioDestino = __DIR__ . '/../../img/usuarios/';
+    if (!is_dir($diretorioDestino)) {
+        mkdir($diretorioDestino, 0777, true);
+    }
+
+    // Gera nome único: id_usuario_timestamp.extensao
+    $novoNomeArquivo = $id_usu . '_' . time() . '.' . $extensao;
+    $caminhoCompleto = $diretorioDestino . $novoNomeArquivo;
+
+    if (move_uploaded_file($arquivo['tmp_name'], $caminhoCompleto)) {
+        // Caminho para salvar no banco (relativo às páginas perfil.php e produto.php)
+        // Como ambos estão em pastas de nível 1 (perfil/ e produto/), o caminho ../img/usuarios funciona.
+        $caminho_foto_db = "../img/usuarios/" . $novoNomeArquivo;
+        $novaUrlFotoFrontend = $caminho_foto_db;
+    } else {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Erro ao salvar a imagem no servidor.']);
         exit;
     }
 }
 
-// Se o apelido for salvo como vazio, trata como NULL
-$apelido_db = empty($apelido) ? null : $apelido;
-
-// 5. Atualiza o banco de dados
+// --- Atualiza o Banco de Dados ---
 try {
-    $sql = "UPDATE public.usuario SET 
-                nome = :nome, 
-                apelido = :apelido,
-                tell = :tell,
-                data_nascimento = :data_nascimento
-            WHERE id_usu = :id_usu";
+    // Monta a query dinamicamente dependendo se tem foto nova ou não
+    if ($caminho_foto_db) {
+        $sql = "UPDATE public.usuario SET 
+                    nome = :nome, 
+                    apelido = :apelido,
+                    tell = :tell,
+                    data_nascimento = :data_nascimento,
+                    url_perfil = :url_perfil 
+                WHERE id_usu = :id_usu";
+        $params = [
+            ':nome' => $nome,
+            ':apelido' => $apelido_db, 
+            ':tell' => $tell_limpo,
+            ':data_nascimento' => $data_nascimento_db, 
+            ':url_perfil' => $caminho_foto_db,
+            ':id_usu' => $id_usu
+        ];
+    } else {
+        $sql = "UPDATE public.usuario SET 
+                    nome = :nome, 
+                    apelido = :apelido,
+                    tell = :tell,
+                    data_nascimento = :data_nascimento
+                WHERE id_usu = :id_usu";
+        $params = [
+            ':nome' => $nome,
+            ':apelido' => $apelido_db, 
+            ':tell' => $tell_limpo,
+            ':data_nascimento' => $data_nascimento_db, 
+            ':id_usu' => $id_usu
+        ];
+    }
     
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        ':nome' => $nome,
-        ':apelido' => $apelido_db, 
-        ':tell' => $tell_limpo,
-        ':data_nascimento' => $data_nascimento_db, 
-        ':id_usu' => $id_usu
-    ]);
+    $stmt->execute($params);
 
-    // 6. Atualiza o nome de exibição na SESSÃO
+    // Atualiza sessão
     $nome_display = !empty($apelido_db) ? $apelido_db : $nome;
     $_SESSION['nome_usu'] = $nome_display;
 
-    // 7. Retorna sucesso
+    // Retorna
     echo json_encode([
         'sucesso' => true, 
         'mensagem' => 'Perfil atualizado com sucesso!',
-        'novoNomeDisplay' => $nome_display 
+        'novoNomeDisplay' => $nome_display,
+        'novaUrlFoto' => $novaUrlFotoFrontend // JS usa isso pra atualizar a img na hora
     ]);
     exit;
 
 } catch (PDOException $e) {
     error_log("Erro ao atualizar perfil: " . $e->getMessage());
-    echo json_encode(['sucesso' => false, 'mensagem' => 'Erro no banco de dados. Tente novamente.']);
+    echo json_encode(['sucesso' => false, 'mensagem' => 'Erro no banco de dados.']);
     exit;
 }
 ?>

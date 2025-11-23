@@ -1,14 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-    // --- LÓGICA DO FORMULÁRIO DE PERFIL ---
+    // =================================================================
+    // 1. LÓGICA DO FORMULÁRIO DE PERFIL (COM UPLOAD DE FOTO)
+    // =================================================================
     const editBtn = document.getElementById('edit-btn');
     const cancelBtn = document.getElementById('cancel-btn');
     const saveBtn = document.getElementById('save-btn');
     const profileForm = document.getElementById('profile-form');
     const photoOverlayBtn = document.getElementById('photo-overlay-btn');
-    const photoInput = document.getElementById('photo-upload');
+    const photoInput = document.getElementById('photo-upload'); // O input de arquivo
     const profilePic = document.getElementById('profile-picture');
-    const feedbackMessage = document.getElementById('feedback-message'); // Feedback GLOBAL
+    const feedbackMessage = document.getElementById('feedback-message'); 
     const usernameDisplay = document.getElementById('username-display');
     const profileContainer = document.querySelector('.profile-grid'); 
 
@@ -51,14 +53,21 @@ document.addEventListener('DOMContentLoaded', function() {
         editBtn.addEventListener('click', enterEditMode);
         cancelBtn.addEventListener('click', () => exitEditMode(true));
 
-        // Listener para o formulário de PERFIL
+        // --- ENVIO DO FORMULÁRIO ---
         profileForm.addEventListener('submit', async (e) => {
             e.preventDefault(); 
             saveBtn.disabled = true;
             saveBtn.textContent = 'Salvando...';
+            
+            // 1. Cria o FormData com os dados de texto
             const formData = new FormData(profileForm);
+
+            // 2. Adiciona a foto manualmente se houver
+            if (photoInput && photoInput.files.length > 0) {
+                formData.append('foto_perfil', photoInput.files[0]);
+            }
+
             try {
-                // Envia para 'funcoes/atualizar_perfil.php'
                 const response = await fetch('funcoes/atualizar_perfil.php', { method: 'POST', body: formData });
                 const result = await response.json();
                 
@@ -67,24 +76,32 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (usernameDisplay && result.novoNomeDisplay) {
                         usernameDisplay.textContent = result.novoNomeDisplay;
                     }
+                    // Atualiza visualmente os campos
                     editableFields.forEach(field => {
                         const span = profileForm.querySelector(`.info-item label[for="${field.name}"] + .info-text`);
                         if (span) {
                             span.textContent = field.value ? field.value : `Não cadastrado`;
                         }
                     });
+                    
+                    // Atualiza a foto imediatamente
+                    if (result.novaUrlFoto && profilePic) {
+                        profilePic.src = result.novaUrlFoto + '?t=' + new Date().getTime();
+                    }
+
                     exitEditMode(false); 
                 } else {
                     showGlobalFeedback(result.mensagem || 'Ocorreu um erro.', 'error');
                 }
             } catch (error) {
+                console.error(error);
                 showGlobalFeedback('Erro de conexão. Tente novamente.', 'error');
             }
             saveBtn.disabled = false;
             saveBtn.textContent = 'Salvar Alterações';
         });
 
-        // Lógica de Upload de Foto
+        // Preview da foto antes de salvar
         if (photoOverlayBtn && photoInput && profilePic) {
             photoOverlayBtn.addEventListener('click', () => {
                 if (profileContainer && profileContainer.classList.contains('is-editing')) {
@@ -102,14 +119,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // --- LÓGICA DO MODAL DE SENHA ---
+    // =================================================================
+    // 2. LÓGICA DO MODAL DE SENHA
+    // =================================================================
     const passwordModal = document.getElementById('password-modal');
     const btnShowPasswordModal = document.getElementById('btn-show-password-modal');
     const passwordModalCloseBtn = document.getElementById('password-modal-close-btn');
     const passwordModalCancelBtn = document.getElementById('password-modal-cancel-btn');
     const passwordForm = document.getElementById('password-form');
     const passwordSaveBtn = document.getElementById('password-save-btn');
-    const passwordFeedbackMessage = document.getElementById('password-feedback-message'); // Feedback LOCAL
+    const passwordFeedbackMessage = document.getElementById('password-feedback-message'); 
 
     if (passwordModal && btnShowPasswordModal && passwordModalCloseBtn && passwordModalCancelBtn && passwordForm) {
 
@@ -118,7 +137,6 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.classList.add('modal-open'); 
         }
 
-        // Função para feedback DENTRO do modal
         function showPasswordFeedback(message, type = 'error') {
             if (!passwordFeedbackMessage) return;
             passwordFeedbackMessage.textContent = message;
@@ -148,17 +166,15 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Listener para o formulário de SENHA
         passwordForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             passwordSaveBtn.disabled = true;
             passwordSaveBtn.textContent = 'Salvando...';
-            hidePasswordFeedback(); // Limpa erros antigos
+            hidePasswordFeedback(); 
 
             const formData = new FormData(passwordForm);
 
             try {
-                // Envia para 'funcoes/atualizar_senha.php'
                 const response = await fetch('funcoes/atualizar_senha.php', {
                     method: 'POST',
                     body: formData
@@ -166,11 +182,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 const result = await response.json();
 
                 if (result.sucesso) {
-                    // SUCESSO: Mostra feedback GLOBAL e fecha o modal
                     showGlobalFeedback(result.mensagem, 'success'); 
                     closePasswordModal(); 
                 } else {
-                    // ERRO: Mostra feedback DENTRO do modal
                     showPasswordFeedback(result.mensagem || 'Ocorreu um erro.', 'error');
                 }
             } catch (error) {
@@ -182,8 +196,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    
-    // --- LÓGICA DO MODAL DE DETALHES DO PEDIDO ---
+    // =================================================================
+    // 3. LÓGICA DO MODAL DE DETALHES DO PEDIDO (CORRIGIDO)
+    // =================================================================
     const pedidoModal = document.getElementById('pedido-detalhes-modal');
     const pedidoModalContent = document.getElementById('pedido-modal-content');
     const pedidoModalCloseBtn = document.getElementById('pedido-modal-close-btn');
@@ -245,7 +260,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const statusClass = pedido.status ? pedido.status.toLowerCase().replace(' ', '') : 'pendente';
             
-            // Agora usa a coluna 'codigo_rastreio' que adicionámos
             const rastreioHtml = pedido.codigo_rastreio
                 ? `<p class="rastreio-code">${pedido.codigo_rastreio}</p>`
                 : `<p>Nenhum código disponível</p>`;
@@ -296,22 +310,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-
-    // --- FUNÇÕES GERAIS ---
+    // =================================================================
+    // 4. FUNÇÕES GERAIS (FEEDBACK E MÁSCARAS)
+    // =================================================================
+    const feedbackMessageEl = document.getElementById('feedback-message');
     
-    // Feedback na PÁGINA PRINCIPAL
     function showGlobalFeedback(message, type = 'success') {
-        if (!feedbackMessage) return;
-        feedbackMessage.textContent = message;
-        feedbackMessage.className = `feedback ${type}`;
-        feedbackMessage.style.display = 'block';
+        if (!feedbackMessageEl) return;
+        feedbackMessageEl.textContent = message;
+        feedbackMessageEl.className = `feedback ${type}`;
+        feedbackMessageEl.style.display = 'block';
         window.scrollTo(0, 0); 
         setTimeout(() => {
-            feedbackMessage.style.display = 'none';
+            feedbackMessageEl.style.display = 'none';
         }, 5000);
     }
 
-    // Máscaras de input
+    // Máscara de Telefone
     const telInput = document.getElementById('tell');
     if (telInput) {
         telInput.addEventListener('input', (e) => {
@@ -326,6 +341,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Máscara de Data
     const dateInput = document.getElementById('data_nascimento');
     if(dateInput) {
         dateInput.addEventListener('input', (e) => {
@@ -337,42 +353,13 @@ document.addEventListener('DOMContentLoaded', function() {
             e.target.value = value;
         });
     }
+    
+    // Feedback via URL (após login/cadastro)
     const urlParams = new URLSearchParams(window.location.search);
     const status = urlParams.get('status');
-
     if (status) {
-        if (status === 'login_success') {
-            // Usa a função 'showGlobalFeedback' que já existe neste arquivo
-            showGlobalFeedback("Login realizado com sucesso!", 'success');
-        }
-        if (status === 'registered') {
-            showGlobalFeedback("Cadastro realizado com sucesso! Bem-vindo.", 'success');
-        }
-        // Limpa a URL
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }
-
-}); // --- FIM DO DOMCONTENTLOADED ---
-
-const urlParams = new URLSearchParams(window.location.search);
-const status = urlParams.get('status');
-
-// 2. Espera a página carregar
-window.addEventListener("load", () => {
-    if (status) {
-        // Pega a função que já existe no perfil.js
-        const feedbackFunc = window.showGlobalFeedback; 
-        
-        if (feedbackFunc) {
-            if (status === 'login_success') {
-                feedbackFunc("Login realizado com sucesso!", 'success');
-            }
-            if (status === 'registered') {
-                feedbackFunc("Cadastro realizado com sucesso! Bem-vindo.", 'success');
-            }
-        }
-        
-        // 3. Limpa a URL
+        if (status === 'login_success') showGlobalFeedback("Login realizado com sucesso!", 'success');
+        if (status === 'registered') showGlobalFeedback("Cadastro realizado com sucesso!", 'success');
         window.history.replaceState({}, document.title, window.location.pathname);
     }
 });

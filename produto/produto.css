@@ -7,7 +7,6 @@ body {
   box-sizing: border-box;
 }
 
-/* container  */
 .container {
   display: flex;
   justify-content: center;
@@ -16,7 +15,6 @@ body {
   flex-wrap: wrap;
 }
 
-/* imagens ao lado */
 .galeria {
   flex: 1 1 50%;
   display: flex;
@@ -57,9 +55,8 @@ body {
   border: 1px solid #ddd;
 }
 
-/* INFORMAÇÕES DO PRODUTO */
+
 .info {
-  
   flex: 1 1 45%;
   max-width: 600px;
 }
@@ -85,7 +82,6 @@ body {
   margin: 0;
 }
 
-/* Botões de Ação */
 .botaocomprar1,
 .botaoadcarrinho {
   display: inline-block;
@@ -136,240 +132,246 @@ body {
   cursor: pointer;
 }
 
-/* DESCRIÇÃO */
-.descricaogeral {
-  color: #400080;
-  max-width: 900px;
-  margin: 40px auto;
-  line-height: 1.6;
+.descricaogeral,
+.avaliacoes-container {
+  max-width: 900px;      
+  width: 100%;            
+  margin: 40px auto;    
   padding: 0 20px;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;/
 }
 
-.descricaogeral h2 {
+
+.descricaogeral h2,
+.avaliacoes-container h2 {
   font-size: 1.6rem;
   font-weight: 700;
-  margin-bottom: 15px;
+  color: #400080;
+  margin-bottom: 20px;
 }
 
 .descricaogeral p {
   font-size: 1rem;
   color: #333;
   margin-bottom: 10px;
+  line-height: 1.6;
 }
 
-.skateespecificacoes {
-  background-color: #f8f4ff;
-  padding: 20px;
-  border-radius: 10px;
-  margin-top: 25px;
+.avaliacoes-container hr {
+  border: 0;
+  border-top: 1px solid #e6dbff;
+  margin-bottom: 30px;
 }
 
-.skateespecificacoes h3 {
-  font-size: 1.2rem;
-  color: #400080;
-  font-weight: 600;
-  margin-bottom: 10px;
-}
 
-.skateespecificacoes table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.skateespecificacoes td {
-  padding: 10px 5px;
-  border-bottom: 1px solid #e6dbff;
-  font-size: 0.95rem;
-}
-
-.skateespecificacoes td:first-child {
-  font-weight: 600;
-  color: #3d0076;
-}
-
-/* AVALIAÇÕES */
-.avaliacoes {
-  max-width: 900px;
-  margin: 50px auto;
-  padding: 0 20px;
-}
-
-.avaliacoes h2 {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: #3d0076;
-  margin-bottom: 20px;
-}
-
-.avaliacoescard {
-  border: 1px solid #e6dbff;
-  border-radius: 10px;
-  padding: 40px;
-  text-align: center;
-  background-color: #faf7ff;
-  color: #3d0076;
-}
-
-/* PRODUTOS EM DESTAQUE */
-.desta,
-.parag {
-  text-align: center;
-  margin: 10px auto;
-  max-width: 90%;
-}
-
-.desta {
-  font-weight: bold;
-  margin-top: 50px;
-}
-
-.parag {
-  margin-bottom: 10px;
-}
-
-.produtos {
-  margin-top: 50px;
-  margin-bottom: 60px;
-  margin-left: 20px !important;
-  margin-right: 20px !important;
-}
-
-.produtos .containershop {
-  display: flex;
-  justify-content: center;
-  gap: 17px;
-}
-
-/* Cards responsivos fluidos */
-.produtos .card {
-  background: #fff;
+.form-avaliacao {
+  background-color: #f8f4ff; 
+  padding: 25px;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.205);
-  overflow: hidden;
-  position: relative;
-  max-width: 350px;
-  min-width: 220px;
-  height: auto;
-  transition: transform 0.3s ease, width 0.3s ease;
+  margin-bottom: 40px;
+  border: 1px solid #e6dbff;
+  text-align: left; 
+}
+
+.form-avaliacao h3 {
+  margin-top: 0;
+  color: #3d0076;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+}
+
+.form-avaliacao p {
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #555;
+}
+
+.form-avaliacao textarea {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-family: inherit;
+  resize: vertical;
+  font-size: 0.95rem;
+  transition: 0.3s;
+}
+
+.form-avaliacao textarea:focus {
+  outline: none;
+  border-color: #400080;
+  box-shadow: 0 0 5px rgba(64, 0, 128, 0.2);
+}
+
+
+.btn-enviar-av {
+  background-color: #3d0076; 
+  color: #fff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: transform 0.2s, background-color 0.2s;
+  display: inline-block;
+}
+
+.btn-enviar-av:hover {
+  background-color: #2a0052;
+  transform: scale(1.02);
+}
+
+
+.rating-input {
+  display: flex;
+  flex-direction: row-reverse; 
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.rating-input input {
+  display: none;
+}
+
+.rating-input label {
+  font-size: 28px;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.rating-input label:hover,
+.rating-input label:hover ~ label,
+.rating-input input:checked ~ label {
+  color: #ffc107; 
+}
+
+
+.lista-avaliacoes {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  gap: 20px;
+  text-align: center; 
 }
 
-.produtos .card:hover {
-  transform: scale(1.05);
+.avaliacao-item {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 20px;
+  animation: fadeIn 0.5s ease;
+  text-align: left;
 }
 
-
-.produtos .card img {
-  display: block;
-  margin: 15px auto 0 auto;
-  width: 70%;
-  max-width: 220px;
-  height: auto;
-  object-fit: contain;
+.avaliacao-item:last-child {
+  border-bottom: none;
 }
 
-
-/* Selos */
-.produtos .selos {
-  position: absolute;
-  top: 10px;
-  left: 10px;
+.user-info {
   display: flex;
-  gap: 6px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
 }
 
-.produtos .novo,
-.produtos .oferta {
-  color: #fff;
-  font-size: 12px;
-  padding: 3px 8px;
-  border-radius: 8px;
+.user-info i {
+  color: #aaa;
 }
 
-.produtos .novo {
-  background: #ff6a1f;
+.user-info span {
+  font-weight: 700;
+  color: #3d0076; 
+  font-size: 1rem;
 }
 
-.produtos .oferta {
-  background: #400080;
+.data-avaliacao {
+  font-weight: 400 !important;
+  color: #888 !important;
+  font-size: 0.85rem !important;
 }
 
-/* Info */
-.produtos .info {
-  padding: 12px;
-  text-align: center;
+.estrelas-av {
+  color: #ffc107;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
 }
 
-.produtos .categoria {
-  font-size: 12px;
-  color: gray;
-  text-transform: uppercase;
+.texto-comentario {
+  color: #444;
+  line-height: 1.6;
+  font-size: 1rem;
 }
 
-.produtos h3 {
-  margin: 5px 0;
-  font-size: 15px;
-  color: #ff6a1f;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.produtos .rating {
-  color: #482770;
-  font-size: 13px;
+.btn-favorito-bloco {
+    width: 100%;
+    max-width: 360px; 
+    display: inline-flex;
+    align-items: center;
+    justify-content: center; 
+    gap: 8px;
+    padding: 12px 24px; 
+    font-size: 1rem;
+    font-weight: 600;
+    border: 2px solid #ddd; 
+    background-color: #f9f9f9;
+    color: #555;
+    border-radius: 10px; 
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    margin-top: 20px; 
+    margin-bottom: 10px; 
 }
 
-.produtos .preco {
-  font-size: 16px;
-  font-weight: bold;
-  margin: 8px 0;
-  color: #000;
+.btn-favorito-bloco:hover {
+    border-color: #3d0076;
+    color: #3d0076;
+    background-color: #fff;
 }
 
-.produtos .preco .antigo {
-  font-size: 13px;
-  color: #999;
-  text-decoration: line-through;
-  margin-left: 5px;
+.btn-favorito-bloco i {
+    font-size: 1.3rem;
+    line-height: 1; 
 }
 
-/* Botões de compra */
-.botaocomprar,
-.botaocarrinho {
-  background: #400080;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background 0.2s;
-  margin-top: 5px;
-  height: 43px;
-  font-weight: 600;
+.btn-favorito-bloco .icon-filled { display: none; }
+.btn-favorito-bloco .icon-outlined { display: block; }
+
+.btn-favorito-bloco.active {
+    background-color: #fceded; 
+    border-color: #ff4d4d;
+    color: #ff4d4d;
 }
 
-.botaocomprar {
-  width: 150px;
+.btn-favorito-bloco.active .icon-filled { display: block; }
+.btn-favorito-bloco.active .icon-outlined { display: none; }
+
+.product-actions {
+    display: flex;
+    align-items: stretch; 
+    gap: 15px;
+    flex-wrap: wrap; 
 }
 
-.botaocarrinho {
-  width: 50px;
+.product-actions .form-carrinho {
+    flex: 1; 
+    min-width: 100%; 
+    display: flex;
+    flex-direction: column; 
+    gap: 10px;
+    margin: 0; 
+    width: auto; 
 }
 
-.botaocomprar:hover,
-.botaocarrinho:hover {
-  background: #ff6a1f;
-}
 
-.produto-card-link {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-}
 
-/* --- RESPONSIVIDADE --- */
-
-/* Tablets */
 @media (max-width: 992px) {
   .container {
     flex-direction: column;
@@ -393,17 +395,16 @@ body {
     flex-basis: 100%;
     text-align: center;
   }
-
-  .produtos .card img {
-    width: 200px;
-    height: 200px;
-  }
 }
 
-/* Celulares */
 @media (max-width: 600px) {
   .container {
     padding: 20px;
+  }
+  
+  .descricaogeral,
+  .avaliacoes-container {
+    padding: 0 10px;
   }
 
   .imgprincipal img {
@@ -412,112 +413,18 @@ body {
   }
 
   .botaocomprar1,
-  .botaoadcarrinho {
+  .botaoadcarrinho,
+  .btn-favorito-bloco {
     max-width: 100%;
   }
 
-  .desta {
-    font-size: 1.2rem;
-    margin: 40px 0 20px;
-  }
-
-  .produtos .card {
-    max-width: 90%;
-  }
-
-  .produtos .card img {
-    width: 180px;
-    height: 180px;
-  }
-}
-
-/* ============================================== */
-/* --- CÓDIGO ADICIONADO PARA OS FAVORITOS --- */
-/* ============================================== */
-
-/* 1. Botão de Favorito (Estilo Bloco) */
-.btn-favorito-bloco {
-    width: 100%;
-    max-width: 360px; /* Mesma largura dos botões de compra */
-    display: inline-flex;
-    align-items: center;
-    justify-content: center; /* Centraliza o ícone/texto */
-    gap: 8px;
-    padding: 12px 24px; /* Mesmo padding dos botões de compra */
-    font-size: 1rem;
-    font-weight: 600;
-    border: 2px solid #ddd; /* Borda de botão "secundário" */
-    background-color: #f9f9f9;
-    color: #555;
-    border-radius: 10px; /* Mesmo radius dos botões de compra */
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
-    
-    /* ESTA É A MUDANÇA PRINCIPAL */
-    margin-top: 20px; /* Espaçamento acima (abaixo do estoque) */
-    margin-bottom: 10px; /* Espaçamento abaixo (acima do laranja) */
-}
-
-.btn-favorito-bloco:hover {
-    border-color: #3d0076; /* Cor roxa no hover */
-    color: #3d0076;
-    background-color: #fff;
-}
-
-.btn-favorito-bloco i {
-    font-size: 1.3rem;
-    line-height: 1; /* Alinha o ícone */
-}
-
-/* 2. Lógica de mostrar/esconder ícones */
-.btn-favorito-bloco .icon-filled { display: none; }
-.btn-favorito-bloco .icon-outlined { display: block; }
-
-/* 3. Estilo ATIVO (quando já é favorito) */
-.btn-favorito-bloco.active {
-    background-color: #fceded; /* Um rosa/vermelho bem claro */
-    border-color: #ff4d4d;
-    color: #ff4d4d;
-}
-
-.btn-favorito-bloco.active .icon-filled { display: block; }
-.btn-favorito-bloco.active .icon-outlined { display: none; }
-
-
-/* 4. Container dos botões de ação (para agrupar Comprar/Adicionar) */
-.product-actions {
-    display: flex;
-    align-items: stretch; 
-    gap: 15px;
-    /* margin-top: 20px; -> Removido, o botão de favorito tem sua própria margem */
-    flex-wrap: wrap; 
-}
-
-/* 5. Formulário de compra (agrupa os 2 botões de compra) */
-.product-actions .form-carrinho {
-    flex: 1; /* Permite que o formulário cresça */
-    min-width: 100%; /* Faz ocupar 100% da largura */
-    display: flex;
-    flex-direction: column; /* Botões "Comprar" e "Adicionar" empilhados */
+  .product-actions {
+    flex-direction: column; 
     gap: 10px;
-    margin: 0; 
-    width: auto; 
-}
-
-
-/* 6. Ajuste de responsividade */
-@media (max-width: 600px) {
-    .product-actions {
-        flex-direction: column; 
-        gap: 10px;
-    }
-    .product-actions .form-carrinho {
-        width: 100%;
-        max-width: 100%;
-    }
-    .btn-favorito-bloco {
-        max-width: 100%; /* Ocupa 100% no mobile */
-    }
+  }
+  
+  .product-actions .form-carrinho {
+    width: 100%;
+    max-width: 100%;
+  }
 }
