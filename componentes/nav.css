@@ -182,7 +182,25 @@
   background-color: #e68900;
 }
 
-/* Botões adicionais */
+.forgot-password-container {
+    text-align: center;
+    margin-top: 15px;
+    width: 100%;
+}
+
+.forgot-password-link {
+    font-size: 13px;
+    color: #5a2472; 
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.forgot-password-link:hover {
+    color: #ff9800; 
+    text-decoration: underline;
+}
+
 #continuarcomemail,
 #abrirCadastro,
 #voltarLogin {
@@ -196,7 +214,6 @@
   transition: background 0.3s ease, transform 0.2s ease;
 }
 
-/* "Continuar com e-mail" – botão secundário */
 #editarPerfil {
   background: #fff;
   color: #6a0dad;
@@ -208,7 +225,6 @@
   transform: scale(1.03);
 }
 
-/* "Sair" – botão de destaque negativo */
 #sair {
   background: transparent;
   color: #ff9800;
@@ -222,11 +238,10 @@
   transform: scale(1.03);
 }
 
-/* Estilo da barra lateral (AGORA USANDO .user-popup) */
 .user-popup {
   position: fixed;
   top: 0;
-  right: -300px; /* começa fora da tela */
+  right: -300px; 
   width: 300px;
   height: 100%;
   background: #fff;
@@ -235,7 +250,7 @@
   transition: right 0.3s ease;
   z-index: 1000;
   
-  /* Fundo gradiente */
+
   background: linear-gradient(135deg, white,white);
   color: #fff;
   padding: 30px 25px;
@@ -244,12 +259,10 @@
   box-shadow: -4px 0 10px rgba(0, 0, 0, 0.3);
 }
 
-/* Quando estiver ativa */
 .user-popup.active {
   right: 0;
 }
 
-/* Ícone do usuário */
 .user-icon {
   cursor: pointer;
   font-size: 24px;
@@ -260,16 +273,14 @@
   transform: scale(1.1);
 }
 
-/* Título (Login/Cadastro) */
 .user-popup h2 {
   text-align: center;
   margin-bottom: 20px;
   font-size: 24px;
   letter-spacing: 1px;
-  color: #ff9800; /* laranja */
+  color: #ff9800; 
 }
 
-/* Labels */
 .user-popup label {
   display: block;
   margin-top: 15px;
@@ -277,7 +288,6 @@
   color: black; 
 }
 
-/* Inputs */
 .user-popup input {
   width: 100%;
   padding: 10px;
@@ -289,7 +299,6 @@
   color: #333;
 }
 
-/* Botão principal (Entrar / Cadastrar) */
 .user-popup button[type="submit"] {
   width: 100%;
   padding: 12px;
@@ -307,7 +316,6 @@
   background-color: #e68900;
 }
 
-/* Botões secundários (Voltar / Abrir Cadastro) */
 #abrirCadastro,
 #voltarLogin {
   width: 100%;
@@ -330,50 +338,44 @@
 }
 
 
-/* --- NOVOS ESTILOS PARA SIDEBAR LOGADO (Ajustes de Centralização) --- */
-
-/* Aplica flexbox na sidebar de usuário */
 #sidebarUsuario {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Alinha no topo por padrão */
-    align-items: center; /* Centraliza horizontalmente */
-    padding: 40px 25px 30px 25px; /* Mais padding no topo */
-    text-align: center; /* Garante que o texto quebre centralizado */
+    justify-content: flex-start; 
+    align-items: center; 
+    padding: 40px 25px 30px 25px; 
+    text-align: center; 
 }
 
-/* NOVA SAUDAÇÃO (H3) */
+
 .sidebar-greeting {
     font-size: 22px;
     font-weight: 600;
-    color: #5a2472; /* Roxo do tema */
-    margin-top: 20px; /* Espaço do topo */
+    color: #5a2472; 
+    margin-top: 20px; 
     margin-bottom: 10px;
-    word-wrap: break-word; /* Quebra nomes longos */
+    word-wrap: break-word
 }
 
-/* AJUSTE NO EMAIL */
+
 .user-popup p.sidebar-email {
     text-align: center;
-    color: #555; /* Cor mais escura para legibilidade */
+    color: #555; 
     margin-top: 0;
-    margin-bottom: 30px; /* Mais espaço antes dos botões */
+    margin-bottom: 30px; 
     font-size: 14px;
-    word-wrap: break-word; /* Garante que emails longos quebrem */
+    word-wrap: break-word; 
 }
 
-/* NOVO: Div dos botões */
 .sidebar-actions {
-    width: 100%; /* Ocupa toda a largura */
-    margin-top: auto; /* <-- ESTA É A MÁGICA! Empurra para baixo */
-    padding-top: 20px; /* Espaço para separar do conteúdo de cima */
-    border-top: 1px solid #eee; /* Linha sutil de separação */
+    width: 100%;
+    margin-top: auto;
+    border-top: 1px solid #eee; 
 }
 
-/* Estilo base para os links de Ação do Usuário (Editar Perfil / Sair) */
 #editarPerfil,
 #sair {
-    display: block; /* Faz o link ocupar a largura toda */
+    display: block; 
     width: 100%;
     padding: 12px;
     border: none;
@@ -382,28 +384,26 @@
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    text-align: center; /* Centraliza o texto */
-    text-decoration: none; /* Remove sublinhado do link */
+    text-align: center; 
     transition: background 0.3s ease, transform 0.2s ease, color 0.3s ease, border-color 0.3s ease;
-    box-sizing: border-box; /* Garante que o padding não estoure a largura */
+    box-sizing: border-box; 
 }
 
-/* "Editar Perfil" – botão secundário */
 #editarPerfil {
-  background: #f0f0f0; /* Fundo cinza claro */
-  color: #5a2472; /* Roxo do tema */
+  background: #f0f0f0; 
+  color: #5a2472; 
   border: 2px solid #f0f0f0;
 }
 
 #editarPerfil:hover {
-  background: #e0e0e0; /* Escurece um pouco */
+  background: #e0e0e0; 
   transform: scale(1.02);
 }
 
-/* "Sair" – botão de destaque negativo */
+
 #sair {
   background: transparent;
-  color: #ff9800; /* Laranja do tema */
+  color: #ff9800; 
   border: 2px solid #ff9800;
 }
 
@@ -416,7 +416,7 @@
 
 @media (max-width: 900px) {
   .header {
-    flex-direction: column; /* empilha os itens */
+    flex-direction: column; 
     align-items: center;
     text-align: center;
     gap: 10px;
@@ -447,44 +447,25 @@
   }
 }
 
-/* ======== NOVOS ESTILOS PARA VER SENHA (CORREÇÃO DE POSICIONAMENTO) ======== */
-
-/* 1. O Container (Wrapper) */
-/* Usamos .sidebar (que está no seu HTML) e não .user-popup */
 .sidebar .password-wrapper {
-  position: relative; /* Essencial! Permite o posicionamento absoluto do ícone */
+  position: relative; 
   width: 100%;
-  margin-top: 5px; /* Mantém o espaçamento original do <input> */
+  margin-top: 5px; 
 }
 
-/* 2. O Input de Senha */
-/* Precisamos ser mais específicos para sobrescrever o .sidebar input original */
 .sidebar .password-wrapper input {
-  /* O input deve ocupar 100% da largura do wrapper */
   width: 100%; 
-  
-  /* Adiciona espaço à DIREITA para o ícone não tampar o texto digitado */
   padding-right: 45px !important; 
-  
-  /* Remove margens que podem atrapalhar o wrapper */
   margin-top: 0;
   margin-bottom: 0;
-  
-  /* Garante que o padding não estoure a largura de 100% */
   box-sizing: border-box; 
 }
 
-/* 3. O Ícone de "Olho" */
-/* Usamos .sidebar (que está no seu HTML) e não .user-popup */
 .sidebar .toggle-password {
-  position: absolute; /* Posição absoluta EM RELAÇÃO AO WRAPPER */
-  
-  /* Estas 3 linhas centralizam o ícone verticalmente */
+  position: absolute; 
   top: 50%;
   transform: translateY(-50%);
-  
-  right: 15px; /* Distância da borda direita (dentro do padding do input) */
-  
+  right: 15px; 
   cursor: pointer;
   color: #777;
   font-size: 16px;
@@ -495,11 +476,8 @@
   color: #000;
 }
 
-/* ==== ESTILOS DO NOVO MODAL DE LOGIN ==== */
-
-/* O fundo escuro (overlay) */
 .auth-modal-overlay {
-  display: none; /* Começa escondido */
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -507,20 +485,19 @@
   height: 100vh;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(5px);
-  z-index: 1049; /* Mais alto que a navbar (1000) */
+  z-index: 1049; 
   justify-content: center;
   align-items: center;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
-/* Classe 'show' que o JS vai adicionar */
 .auth-modal-overlay.show {
   display: flex;
   opacity: 1;
 }
 
-/* O conteúdo (caixa branca) */
+
 .auth-modal-content {
   background: #fff;
   padding: 25px 30px;
@@ -538,15 +515,14 @@
   transform: scale(1);
 }
 
-/* O ícone de cadeado */
 .auth-modal-icon {
   font-size: 3rem;
-  color: #ff6a1f; /* Laranja do seu tema */
+  color: #ff6a1f; 
   margin-bottom: 15px;
 }
 
 .auth-modal-content h2 {
-  color: #4B0082; /* Roxo do seu tema */
+  color: #4B0082; 
   margin: 10px 0 5px 0;
   font-size: 1.5rem;
 }
@@ -557,9 +533,8 @@
   margin-bottom: 25px;
 }
 
-/* Botão "Fazer Login" */
 .auth-modal-button {
-  background: #4B0082; /* Roxo */
+  background: #4B0082; 
   color: white;
   border: none;
   padding: 12px 20px;
@@ -576,7 +551,7 @@
   background: #3a0063;
 }
 
-/* Botão de fechar (X) */
+
 .auth-modal-close {
   position: absolute;
   top: 5px;
@@ -725,7 +700,7 @@
   font-size: 40px;
 }
 
-/* RESPONSIVIDADE */
+
 @media (max-width: 900px) {
   .header {
     flex-direction: column;

@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// --- CORREÇÃO AUTOMÁTICA DE SESSÃO (Mantida para garantir que a foto carregue) ---
+// --- CORREÇÃO AUTOMÁTICA DE SESSÃO ---
 if (isset($_SESSION['id_usu']) && !isset($_SESSION['url_perfil']) && isset($pdo)) {
     try {
         $stmtFoto = $pdo->prepare("SELECT url_perfil FROM public.usuario WHERE id_usu = :id");
@@ -48,7 +48,7 @@ if ($baseUrl !== '' && $baseUrl[0] !== '/') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skatelab</title>
-    <link rel="stylesheet" href="<?php echo $baseUrl; ?>/componentes/nav.css?v=1.2">
+    <link rel="stylesheet" href="<?php echo $baseUrl; ?>/componentes/nav.css?v=1.3">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -83,6 +83,10 @@ if ($baseUrl !== '' && $baseUrl[0] !== '/') {
                         <div class="password-wrapper">
                             <input type="password" name="senha" placeholder="Digite sua senha" required id="loginSenhaInput" />
                             <i class="fa-solid fa-eye-slash toggle-password" id="toggleLoginPassword"></i>
+                        </div>
+
+                        <div class="forgot-password-container">
+                            <a href="<?php echo $baseUrl; ?>/auth/recuperar_senha.php" class="forgot-password-link">Esqueceu a senha?</a>
                         </div>
 
                         <button type="submit">Entrar</button>
@@ -120,7 +124,6 @@ if ($baseUrl !== '' && $baseUrl[0] !== '/') {
             <?php else: ?>
 
                 <div id="sidebarUsuario" class="sidebar">
-                    
                     <div class="sidebar-profile-container">
                         <?php if (!empty($_SESSION['url_perfil'])): ?>
                             <img src="<?php echo $baseUrl . '/' . str_replace('../', '', $_SESSION['url_perfil']); ?>" alt="Foto de Perfil" class="sidebar-profile-img">
