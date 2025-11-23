@@ -52,6 +52,7 @@ try {
         SELECT p.*, c.nome AS categoria_nome
         FROM public.pecas p
         LEFT JOIN public.categorias c ON p.id_cat = c.id_cat
+        WHERE c.nome NOT IN ('Customização', 'Customizacao', 'Custom') -- Exclui categorias de usuários
         ORDER BY p.criado_em DESC
         LIMIT 3
     ");
@@ -271,7 +272,6 @@ function getStatusClass($status) {
             feedbackMessage.className = 'feedback success';
             feedbackMessage.style.display = 'block';
         }
-        // Limpa a URL
         window.history.replaceState({}, document.title, window.location.pathname);
     }
   });

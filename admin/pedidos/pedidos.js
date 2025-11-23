@@ -58,8 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalData = document.getElementById('modalData');
     const modalTotal = document.getElementById('modalTotal');
     const modalStatus = document.getElementById('modalStatus');
-    const modalEndereco = document.getElementById('modalEndereco'); // <- Verifique este ID no HTML
-    const modalProdutosDiv = document.getElementById('modalProdutos'); // <- Verifique este ID no HTML
+    const modalEndereco = document.getElementById('modalEndereco'); 
+    const modalProdutosDiv = document.getElementById('modalProdutos'); 
 
     let idPedidoSelecionado = null;
     let spanStatusSelecionado = null;
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Verifica se os elementos do modal foram encontrados
     if (!modal || !modalEndereco || !modalProdutosDiv) {
         console.error("ERRO: Elementos essenciais do modal não encontrados no HTML!");
-        return; // Impede a execução do resto do script
+        return; 
     }
 
     document.querySelectorAll('.btn-ver-detalhes').forEach((icone) => {
@@ -76,44 +76,40 @@ document.addEventListener('DOMContentLoaded', () => {
             idPedidoSelecionado = linha.dataset.idPedido;
             spanStatusSelecionado = linha.querySelector('.status');
 
-            // Pré-preenche o modal
+            // Pré-preenche o modal com dados da tabela
             modalNumero.textContent = linha.children[0].textContent;
             modalCliente.textContent = linha.children[1].textContent;
             modalData.textContent = linha.children[2].textContent;
-            modalTotal.textContent = linha.children[4].textContent;
             modalStatus.textContent = spanStatusSelecionado.textContent;
             modalStatus.className = spanStatusSelecionado.className;
+            modalTotal.textContent = linha.children[4].textContent;
 
             // --- LIMPA PLACEHOLDERS E MOSTRA CARREGANDO ---
-            modalEndereco.textContent = 'Carregando endereço...'; // Limpa texto antigo
-            modalProdutosDiv.innerHTML = '<p>Carregando itens...</p>'; // Limpa itens antigos
+            modalEndereco.textContent = 'Carregando endereço...'; 
+            modalProdutosDiv.innerHTML = '<p>Carregando itens...</p>'; 
             modal.style.display = 'flex';
-            console.log(`Buscando detalhes para pedido ID: ${idPedidoSelecionado}`); // Log para debug
-
+            
             // Buscar Detalhes com AJAX
             try {
-                const response = await fetch(`../../perfil/funcoes/obter_detalhes_pedido.php?id=${idPedidoSelecionado}`);
-                console.log('Resposta Fetch recebida:', response); // Log para debug
-
-                if (!response.ok) { // Verifica se a requisição HTTP foi bem-sucedida (status 200-299)
-                   throw new Error(`Erro HTTP: ${response.status} - ${response.statusText}`);
+                // --- CORREÇÃO AQUI: Apontando para o arquivo local do ADMIN, não do perfil ---
+                const response = await fetch(`obter_detalhes_pedido.php?id=${idPedidoSelecionado}`);
+                
+                if (!response.ok) { 
+                   throw new Error(`Erro HTTP: ${response.status}`);
                 }
 
                 // Tenta parsear como JSON
                 let result;
                 try {
                     result = await response.json();
-                    console.log('Dados JSON recebidos:', result); // Log para debug
                 } catch (jsonError) {
-                    console.error('Erro ao parsear JSON:', jsonError);
                     throw new Error("Resposta do servidor não é um JSON válido.");
                 }
-
 
                 if (result.sucesso && result.dados) {
                     const { pedido, itens } = result.dados;
 
-                    // 1. Preenche o Endereço (Verifica se os campos existem)
+                    // 1. Preenche o Endereço
                     if (pedido) {
                         modalEndereco.innerHTML = `
                             ${pedido.endereco_rua || 'Rua não informada'}, ${pedido.endereco_numero || 'S/N'}<br>
@@ -122,46 +118,52 @@ document.addEventListener('DOMContentLoaded', () => {
                             Complemento: ${pedido.endereco_complemento || 'Nenhum'}
                         `;
                     } else {
-                        modalEndereco.textContent = 'Dados do pedido não encontrados na resposta.';
+                        modalEndereco.textContent = 'Endereço não encontrado.';
                     }
 
                     // 2. Preenche os Itens
                     modalProdutosDiv.innerHTML = ''; // Limpa o "Carregando..."
                     if (itens && itens.length > 0) {
-                         console.log(`Encontrados ${itens.length} itens.`); // Log para debug
                         itens.forEach(item => {
-                            const precoTotalItem = parseFloat(item.preco_unitario || 0) * parseInt(item.quantidade || 1);
+                            const precoUnit = parseFloat(item.preco_unitario || 0);
+                            const qtd = parseInt(item.quantidade || 1);
+                            const totalItem = precoUnit * qtd;
+                            
+                            // Tenta usar a imagem, se não tiver usa um placeholder
+                            const imgUrl = item.url_img ? item.url_img : '../../img/imgs-icon/icon.png';
+
                             const itemHtml = `
-                                <div class="produto-item">
-                                    <span>(${item.quantidade || 'N/A'}x) ${item.peca_nome || 'Nome Indisponível'}</span>
-                                    <span>R$ ${precoTotalItem.toFixed(2)}</span>
+                                <div class="produto-item" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px;">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <img src="${imgUrl}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">
+                                        <div>
+                                            <strong>${item.peca_nome || 'Produto'}</strong><br>
+                                            <small>Qtd: ${qtd} x R$ ${precoUnit.toFixed(2).replace('.', ',')}</small>
+                                        </div>
+                                    </div>
+                                    <span>R$ ${totalItem.toFixed(2).replace('.', ',')}</span>
                                 </div>
                             `;
                             modalProdutosDiv.innerHTML += itemHtml;
                         });
                     } else {
-                         console.log('Nenhum item encontrado na resposta.'); // Log para debug
                         modalProdutosDiv.innerHTML = '<p>Nenhum item encontrado para este pedido.</p>';
                     }
 
                 } else {
-                    // Se result.sucesso for false ou result.dados não existir
-                    console.error('Falha na resposta do servidor:', result.dados || 'Nenhum dado retornado.'); // Log para debug
-                    modalEndereco.textContent = `Erro: ${result.dados || 'Resposta inválida do servidor.'}`;
+                    modalEndereco.textContent = `Erro: ${result.dados || 'Resposta inválida.'}`;
                     modalProdutosDiv.innerHTML = `<p>Erro ao buscar itens.</p>`;
                 }
             } catch (error) {
-                // Erro no fetch ou no processamento do JSON
-                console.error('Erro geral ao buscar detalhes:', error); // Log detalhado do erro
-                modalEndereco.textContent = `Erro de comunicação: ${error.message}`;
-                modalProdutosDiv.innerHTML = `<p>Erro de comunicação ao buscar itens.</p>`;
+                console.error('Erro geral:', error); 
+                modalEndereco.textContent = `Erro de comunicação.`;
+                modalProdutosDiv.innerHTML = `<p>Não foi possível carregar os itens.</p>`;
             }
         });
     });
 
-    // Função para atualizar o status via AJAX (mantém a mesma)
+    // Função para atualizar o status via AJAX
     async function atualizarStatus(novoStatus) {
-        // ... (código anterior está correto)
          if (!idPedidoSelecionado) return;
         try {
             const response = await fetch('atualizar_status.php', {
@@ -174,22 +176,24 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             const result = await response.json();
             if (result.sucesso) {
+                // Atualiza na tabela
                 spanStatusSelecionado.textContent = result.novoStatus;
                 spanStatusSelecionado.className = 'status ' + result.novaClasse;
+                // Atualiza no modal
                 modalStatus.textContent = result.novoStatus;
                 modalStatus.className = 'status ' + result.novaClasse;
+                
                 mostrarPopup(result.mensagem, 'sucesso');
                 modal.style.display = 'none';
             } else {
                 mostrarPopup(result.mensagem, 'erro');
             }
         } catch (error) {
-            console.error('Erro no Fetch ao atualizar status:', error);
-            mostrarPopup('Erro de comunicação. Tente novamente.', 'erro');
+            console.error('Erro no Fetch:', error);
+            mostrarPopup('Erro de comunicação.', 'erro');
         }
     }
 
-    // Botões e Fechar Modal (mantém os mesmos)
     btnPreparo.onclick = () => atualizarStatus('EM PREPARO');
     btnFinalizar.onclick = () => atualizarStatus('ENVIADO');
     fechar.addEventListener('click', () => modal.style.display = 'none');
@@ -197,9 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === modal) modal.style.display = 'none';
     });
 
-    // Função de Popup (mantém a mesma)
     function mostrarPopup(mensagem, tipo = 'sucesso') {
-       // ... (código anterior está correto)
         const popupExistente = document.getElementById('popup-sucesso-pedido');
         if (popupExistente) popupExistente.remove();
         const popup = document.createElement('div');
@@ -231,7 +233,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 5000);
     }
 
-    // Popups da URL (mantém o mesmo)
     const urlParams = new URLSearchParams(window.location.search);
     const status = urlParams.get('status');
     if (status === 'cancelled') {
