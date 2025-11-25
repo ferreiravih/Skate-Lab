@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 session_start();
 require_once __DIR__ . '/../config/db.php';
 
@@ -98,7 +98,7 @@ $erroPagamento = $_SESSION['pagamento_error'] ?? null;
                 <div class="separarcheckbox">
                     <div class="cardcheckbox">
                         <label for="city">Cidade *</label>
-                        <input type="text" id="city" name="city" placeholder="S�o Paulo" value="<?= htmlspecialchars($cidadeDestino) ?>" required>
+                        <input type="text" id="city" name="city" placeholder="São Paulo" value="<?= htmlspecialchars($cidadeDestino) ?>" required>
                     </div>
                     <div class="cardcheckbox">
                         <label for="state">Estado *</label>

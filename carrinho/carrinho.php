@@ -1,11 +1,9 @@
 ﻿<?php
-// 1. INICIA A SESSÃƒO (DEVE SER A PRIMEIRA COISA)
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// 2. VERIFICAÃ‡ÃƒO DE LOGIN
-// Se 'id_usu' NÃƒO EXISTE na sessÃ£o, o usuÃ¡rio nÃ£o estÃ¡ logado.
+
 if (!isset($_SESSION['id_usu'])) {
     
     // 3. Redireciona para a home (onde estÃ¡ o login) com um erro
@@ -13,8 +11,7 @@ if (!isset($_SESSION['id_usu'])) {
     exit; // Para a execuÃ§Ã£o do script
 }
 
-// O restante do seu cÃ³digo original comeÃ§a aqui
-// Garante que o carrinho exista
+
 if (!isset($_SESSION['carrinho'])) {
     $_SESSION['carrinho'] = [];
 }

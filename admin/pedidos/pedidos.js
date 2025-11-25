@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalNumero = document.getElementById('modalNumero');
     const modalCliente = document.getElementById('modalCliente');
     const modalData = document.getElementById('modalData');
-    const modalTotal = document.getElementById('modalTotal');
+    const modalTotalSection = document.querySelector('.modal-total'); // Alterado para pegar a seção
     const modalStatus = document.getElementById('modalStatus');
     const modalEndereco = document.getElementById('modalEndereco'); 
     const modalProdutosDiv = document.getElementById('modalProdutos'); 
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let spanStatusSelecionado = null;
 
     // Verifica se os elementos do modal foram encontrados
-    if (!modal || !modalEndereco || !modalProdutosDiv) {
+    if (!modal || !modalEndereco || !modalProdutosDiv || !modalTotalSection) {
         console.error("ERRO: Elementos essenciais do modal não encontrados no HTML!");
         return; 
     }
@@ -82,7 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
             modalData.textContent = linha.children[2].textContent;
             modalStatus.textContent = spanStatusSelecionado.textContent;
             modalStatus.className = spanStatusSelecionado.className;
-            modalTotal.textContent = linha.children[4].textContent;
+            
+            // Limpa a seção de total e mostra carregando
+            modalTotalSection.innerHTML = `<h3>Valor Total</h3><p>Carregando...</p>`;
 
             // --- LIMPA PLACEHOLDERS E MOSTRA CARREGANDO ---
             modalEndereco.textContent = 'Carregando endereço...'; 
@@ -117,8 +119,25 @@ document.addEventListener('DOMContentLoaded', () => {
                             CEP: ${pedido.endereco_cep || 'N/A'}<br>
                             Complemento: ${pedido.endereco_complemento || 'Nenhum'}
                         `;
+
+                        // Preenche a seção de valores
+                        const freteValor = parseFloat(pedido.frete_valor) || 0;
+                        const valorTotal = parseFloat(pedido.valor_total) || 0;
+                        const subTotal = valorTotal - freteValor;
+                        const freteDescricao = pedido.frete_descricao || 'Não especificado';
+
+                        modalTotalSection.innerHTML = `
+                            <div class="valores-detalhados">
+                                <p><span>Subtotal</span> <strong>R$ ${subTotal.toFixed(2).replace('.', ',')}</strong></p>
+                                <p><span>Frete (${freteDescricao})</span> <strong>R$ ${freteValor.toFixed(2).replace('.', ',')}</strong></p>
+                                <hr>
+                                <p class="total-final"><span>Valor Total</span> <strong>R$ ${valorTotal.toFixed(2).replace('.', ',')}</strong></p>
+                            </div>
+                        `;
+
                     } else {
                         modalEndereco.textContent = 'Endereço não encontrado.';
+                        modalTotalSection.innerHTML = `<h3>Valor Total</h3><p>Erro ao carregar.</p>`;
                     }
 
                     // 2. Preenche os Itens

@@ -264,9 +264,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 ? `<p class="rastreio-code">${pedido.codigo_rastreio}</p>`
                 : `<p>Nenhum código disponível</p>`;
 
+            // --- Itens do Pedido ---
             let itensHtml = '';
+            let subtotalItens = 0;
             itens.forEach(item => {
-                const precoTotalItem = (parseFloat(item.preco_unitario) * parseInt(item.quantidade)).toFixed(2).replace('.', ',');
+                const precoTotalItem = parseFloat(item.preco_unitario) * parseInt(item.quantidade);
+                subtotalItens += precoTotalItem;
                 itensHtml += `
                     <div class="item-pedido">
                         <img src="${item.url_img}" alt="${item.nome}">
@@ -274,10 +277,31 @@ document.addEventListener('DOMContentLoaded', function() {
                             <p>${item.nome}</p>
                             <span>${item.quantidade} x R$ ${parseFloat(item.preco_unitario).toFixed(2).replace('.', ',')}</span>
                         </div>
-                        <span class="item-preco">R$ ${precoTotalItem}</span>
+                        <span class="item-preco">R$ ${precoTotalItem.toFixed(2).replace('.', ',')}</span>
                     </div>
                 `;
             });
+            
+            // --- Detalhes de Frete e Valores ---
+            const freteValor = parseFloat(pedido.frete_valor) || 0;
+            const freteDescricao = pedido.frete_descricao || "Não especificado";
+            const valorTotal = parseFloat(pedido.valor_total) || 0;
+            // O subtotal dos itens já foi calculado, então usamos ele.
+            
+            let valoresHtml = `
+                <div class="detalhe-bloco">
+                    <label>Subtotal dos Itens</label>
+                    <p>R$ ${subtotalItens.toFixed(2).replace('.', ',')}</p>
+                </div>
+                <div class="detalhe-bloco">
+                    <label>Frete (${freteDescricao})</label>
+                    <p>R$ ${freteValor.toFixed(2).replace('.', ',')}</p>
+                </div>
+                <div class="detalhe-bloco">
+                    <label>Valor Total</label>
+                    <p>R$ ${valorTotal.toFixed(2).replace('.', ',')}</p>
+                </div>
+            `;
 
             const html = `
                 <div class="pedido-detalhes-header">
@@ -290,10 +314,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <label>Data do Pedido</label>
                         <p>${dataPedido}</p>
                     </div>
-                    <div class="detalhe-bloco">
-                        <label>Valor Total</label>
-                        <p>R$ ${parseFloat(pedido.valor_total).toFixed(2).replace('.', ',')}</p>
-                    </div>
+                    ${valoresHtml}
                     <div class="detalhe-bloco full-width">
                         <label>Código de Rastreio</label>
                         ${rastreioHtml}

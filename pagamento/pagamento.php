@@ -26,7 +26,11 @@ $id_usu = $_SESSION['id_usu'];
 $carrinho = $_SESSION['carrinho'];
 $freteCotacao = $_SESSION['frete_cotacao'] ?? null;
 $freteSelecionado = $freteCotacao['selecionado'] ?? null;
+
+// Captura segura dos dados do frete
 $freteValor = isset($freteSelecionado['valor']) ? (float)$freteSelecionado['valor'] : 0.0;
+$freteDescricao = isset($freteSelecionado['label']) ? trim((string)$freteSelecionado['label']) : null;
+
 
 if (!$freteSelecionado) {
     header("Location: ../carrinho/carrinho.php?error=frete_required");
@@ -138,10 +142,12 @@ try {
     // 4. Inserir o PEDIDO na tabela 'pedidos'
     $sql_pedido = "INSERT INTO public.pedidos 
         (id_usu, valor_total, status, 
-         endereco_rua, endereco_numero, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, endereco_complemento)
+         endereco_rua, endereco_numero, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, endereco_complemento,
+         frete_valor, frete_descricao)
         VALUES 
         (:id_usu, :valor_total, 'PENDENTE', 
-         :rua, :numero, :bairro, :cidade, :estado, :cep, :complemento)";
+         :rua, :numero, :bairro, :cidade, :estado, :cep, :complemento,
+         :frete_valor, :frete_descricao)";
     
     $stmt_pedido = $pdo->prepare($sql_pedido);
     $stmt_pedido->execute([
@@ -153,7 +159,9 @@ try {
         ':cidade' => $cidade,
         ':estado' => $estado,
         ':cep' => $cep,
-        ':complemento' => $complemento
+        ':complemento' => $complemento,
+        ':frete_valor' => $freteValor,
+        ':frete_descricao' => $freteDescricao
     ]);
 
     // 5. Obter o ID do pedido que acabamos de criar
