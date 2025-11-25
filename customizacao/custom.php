@@ -226,7 +226,7 @@ if ($customId && $customId > 0) {
 
           <div class="grupo-botoes">
             <h3>CONTROLES</h3>
-            <button type="button" id="salvarBtn" class="form-protegido" onclick="salvarConfiguracao()">SALVAR CONFIGURAÇÃO</button>
+            <button type="button" id="salvarBtn" class="form-protegido">SALVAR CONFIGURAÇÃO</button>
             <button type="button" id="exportarBtn" onclick="exportarImagem()">EXPORTAR IMAGEM</button>
             <button type="button" onclick="resetCamera()">Resetar Câmera</button>
           </div>

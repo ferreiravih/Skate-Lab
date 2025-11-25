@@ -55,23 +55,15 @@ $erroPagamento = $_SESSION['pagamento_error'] ?? null;
 
     <div class="container">
         <div class="containerdados">
-            <form action="pagamento.php" method="POST">
+            <form action="pagamento.php" method="POST" id="checkout-form">
                 <h2>Informações de Entrega</h2>
                 <p>Preencha seus dados para a entrega.</p>
+
                 <?php if ($erroPagamento): ?>
                     <div style="background: #fdeaea; border: 1px solid #f5a6a0; color: #851d1a; padding: 10px 12px; border-radius: 8px; margin-bottom: 16px;">
                         <?= htmlspecialchars($erroPagamento) ?>
                     </div>
-                <?php $_SESSION['pagamento_error'] = null; endif; ?>
-                <?php if (!$freteSelecionado): ?>
-                    <div style="background: #fff4e5; border: 1px solid #f6c89f; color: #8f4a10; padding: 10px 12px; border-radius: 8px; margin-bottom: 16px;">
-                        Ainda não identificamos um frete selecionado. Volte ao carrinho para calcular e garantir prazo e valor exatos.
-                    </div>
-                <?php else: ?>
-                    <div style="background: #e7f7ef; border: 1px solid #88d1b2; color: #10633f; padding: 10px 12px; border-radius: 8px; margin-bottom: 16px;">
-                        Frete escolhido: <strong><?= htmlspecialchars($freteSelecionado['label']) ?></strong>, <?= (int)$freteSelecionado['prazo'] ?> dias úteis.
-                    </div>
-                <?php endif; ?>
+                <?php unset($_SESSION['pagamento_error']); endif; ?>
 
                 <div class="cardcheckbox">
                     <label for="cep">CEP *</label>
@@ -105,6 +97,10 @@ $erroPagamento = $_SESSION['pagamento_error'] ?? null;
                         <input type="text" id="state" name="state" placeholder="SP" value="<?= htmlspecialchars($estadoDestino) ?>" required>
                     </div>
                 </div>
+                <div class="cardcheckbox">
+                    <button type="button" id="calcular-frete-btn-merged" class="botaopagar" style="margin-top: 8px; padding: 10px 15px; font-size: 14px; width: 100%;">Calcular Frete</button>
+                    <div id="frete-resultado" class="frete-resultado" style="margin-top: 12px;"></div>
+                </div>
 
                 <div class="pagamentocontainer">
                     <h2>Forma de Pagamento</h2>
@@ -136,15 +132,10 @@ $erroPagamento = $_SESSION['pagamento_error'] ?? null;
 
                 <button
                     type="submit"
-                    class="botaopagar"
-                    <?= $freteDisponivel ? '' : 'disabled aria-disabled="true" style="opacity: 0.6; cursor: not-allowed;"' ?>>
+                    id="botaopagar"
+                    class="botaopagar">
                     <i class="fa-solid fa-lock"></i> Finalizar Pedido
                 </button>
-                <?php if (!$freteDisponivel): ?>
-                    <small style="display: block; margin-top: 8px; color: #8f4a10;">
-                        Calcule e selecione um frete no <a href="../carrinho/carrinho.php" style="color: inherit; text-decoration: underline;">carrinho</a> para liberar o pagamento.
-                    </small>
-                <?php endif; ?>
             </form>
         </div>
 
@@ -161,35 +152,44 @@ $erroPagamento = $_SESSION['pagamento_error'] ?? null;
             <?php endforeach; ?>
             <hr>
             <div class="totalcard">
-                <p>Subtotal <span>R$ <?= number_format($total, 2, ',', '.') ?></span></p>
-                <p>
-                    Frete
-                    <span>
-                        <?php if ($freteSelecionado): ?>
-                            R$ <?= number_format($freteValor, 2, ',', '.') ?> (<?= htmlspecialchars($freteSelecionado['label']) ?>)
-                        <?php else: ?>
-                            Calcule no carrinho
-                        <?php endif; ?>
-                    </span>
-                </p>
-                <?php if ($freteSelecionado): ?>
-                    <small style="display: block; margin-bottom: 8px; color: #555;">
-                        Prazo estimado: <?= (int)$freteSelecionado['prazo'] ?> dias úteis
-                        <?php if (!empty($destino['cidade']) && !empty($destino['uf'])): ?>
-                            - <?= htmlspecialchars($destino['cidade']) ?>/<?= htmlspecialchars($destino['uf']) ?>
-                        <?php endif; ?>
-                        <?php if ($cepDestino): ?>
-                            - CEP <?= htmlspecialchars($cepDestino) ?>
-                        <?php endif; ?>
-                    </small>
-                <?php endif; ?>
-                <p class="total">Total <span>R$ <?= number_format($totalComFrete, 2, ',', '.') ?></span></p>
+                <p>Subtotal <span id="subtotal">R$ <?= number_format($total, 2, ',', '.') ?></span></p>
+                <p>Frete <span id="valor-frete">A calcular</span></p>
+                <p class="total">Total <span id="total-com-frete">R$ <?= number_format($total, 2, ',', '.') ?></span></p>
             </div>
         </div>
     </div>
 
     <?php include '../componentes/footer.php'; ?>
     <script src="pagamento.js"></script>
+    <script src="../carrinho/frete.js?v=1.0.2"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Inicializa a calculadora de frete para a página de checkout
+        initFreteCalculator({
+            cepInputId: 'cep', // ID do campo de CEP principal
+            calculateBtnId: 'calcular-frete-btn-merged', // ID do novo botão ao lado do CEP
+            resultContainerId: 'frete-resultado',
+            subtotalId: 'subtotal',
+            shippingValueId: 'valor-frete',
+            totalWithShippingId: 'total-com-frete',
+            formId: null // Não há mais um formulário de frete separado
+        });
+
+        // Preenche automaticamente os campos de endereço com base no retorno do frete
+        document.body.addEventListener('frete-calculado', function(e) {
+            const cepCalculado = e.detail.cep.replace(/\D/g, '');
+            const endereco = e.detail.destino;
+
+            // O campo CEP já está preenchido, então não precisa de update
+            if (endereco) {
+                document.getElementById('address').value = endereco.logradouro || '';
+                document.getElementById('bairro').value = endereco.bairro || '';
+                document.getElementById('city').value = endereco.cidade || '';
+                document.getElementById('state').value = endereco.uf || '';
+            }
+        });
+    });
+    </script>
 </body>
 
 </html>

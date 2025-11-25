@@ -181,6 +181,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     </div>
 
     <?php include '../componentes/footer.php'; ?>
-    <script src='frete.js?v=1.0.1'></script>
+    <script src='frete.js?v=1.0.2'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initFreteCalculator({
+                cepInputId: 'cep-frete',
+                calculateBtnId: 'btn-calcular-frete',
+                resultContainerId: 'frete-opcoes',
+                subtotalId: 'subtotal-valor',
+                shippingValueId: 'frete-valor',
+                totalWithShippingId: 'total-valor',
+                formId: 'frete-form'
+            });
+        });
+    </script>
 </body>
 </html>
