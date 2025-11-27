@@ -65,12 +65,19 @@ function initFreteCalculator(config) {
         }
 
         toggleLoading(true);
-        resultContainer.innerHTML = '<p>Calculando...</p>';
+
+        // Garante que o container de opções exista e mostra o feedback de carregamento
+        let optionsContainer = resultContainer.querySelector('.frete-opcoes');
+        if (!optionsContainer) { // Se for o primeiro cálculo
+            resultContainer.innerHTML = '<p>Calculando...</p>';
+        } else { // Se já houver opções, apenas aplica o efeito de carregamento
+            optionsContainer.classList.add('is-loading');
+        }
 
         try {
             const response = await fetch(endpoint, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body: JSON.stringify({ cep: cleanCep, servico: servico }),
             });
 
@@ -122,24 +129,36 @@ function initFreteCalculator(config) {
     };
 
     const renderOptions = (cotacao, selecionado) => {
+        // Garante que o container principal esteja limpo e pronto
+        resultContainer.innerHTML = ''; 
+
+        // Cria o container que vai segurar as opções
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'frete-opcoes';
+
         if (!cotacao || !cotacao.opcoes || cotacao.opcoes.length === 0) {
-            resultContainer.innerHTML = '<p style="color: orange;">Nenhuma opção de frete encontrada para este CEP.</p>';
+            optionsContainer.innerHTML = '<p style="color: orange;">Nenhuma opção de frete encontrada para este CEP.</p>';
+            resultContainer.appendChild(optionsContainer);
             return;
         }
 
-        let html = ``;
         cotacao.opcoes.forEach(opcao => {
             const isChecked = selecionado && selecionado.codigo === opcao.codigo;
-            html += `
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'frete-option';
+            optionDiv.innerHTML = `
                 <div class="frete-option">
                     <input type="radio" id="frete-option-${opcao.codigo}" name="frete-option" value="${opcao.codigo}" ${isChecked ? 'checked' : ''} onchange="enviarCotacao('${cotacao.destino.cep}', this.value)">
-                    <label>
-                        <strong>${opcao.label}</strong> - ${formatCurrency(opcao.valor)} (${opcao.prazo} dias úteis)
-                    </label>
+                    <div class="frete-option__info">
+                        <strong>${opcao.label}</strong>
+                        <span>${formatCurrency(opcao.valor)}</span>
+                        <small>Prazo: ${opcao.prazo} dias úteis</small>
+                    </div>
                 </div>
             `;
+            optionsContainer.appendChild(optionDiv.firstElementChild);
         });
-        resultContainer.innerHTML = html;
+        resultContainer.appendChild(optionsContainer);
     };
     
     if(calculateBtn) {

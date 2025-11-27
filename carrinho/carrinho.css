@@ -214,8 +214,8 @@
   flex: 1;
   border: 1px solid #cfcfcf;
   border-radius: 8px;
-  padding: 10px;
-  font-size: 14px;
+  padding: 6px 10px; /* Diminuído ainda mais o preenchimento vertical */
+  font-size: 13px;  /* Fonte levemente reduzida para um visual mais compacto */
 }
 
 .frete-box button {
@@ -223,7 +223,7 @@
   color: #fff;
   border: none;
   border-radius: 8px;
-  padding: 10px 16px;
+  padding: 6px 16px; /* Diminuído para alinhar com a altura do input */
   font-weight: 600;
   cursor: pointer;
   min-width: 115px;    
@@ -238,7 +238,9 @@
 
 .frete-feedback {
 
-  font-size: 13px;
+  font-size: 1px;
+  min-height: 13px; /* Reduz a altura mínima para diminuir o espaço */
+  padding-top: 5px;
   color: #555;
   display: block;
   /* Garante que o espaço seja ocupado */
@@ -255,6 +257,14 @@
 .frete-opcoes {
   /* A classe .is-visible controlará a exibição via JS se necessário, mas por padrão será visível */
   display: flex;
+  flex-direction: column;
+  gap: 5px; /* Ajuste de espaço */
+}
+
+.frete-opcoes.is-loading {
+  opacity: 0.5;
+  pointer-events: none; /* Desabilita cliques enquanto carrega */
+  transition: opacity 0.2s;
 }
 
 .frete-destino {
@@ -268,38 +278,35 @@
   gap: 12px;
   border: 1px solid #e1d0ff;
   border-radius: 10px;
-  padding: 10px 12px;
+  padding: 6px 10px; /* Ajuste de preenchimento */
   cursor: pointer;
   background: #fff;
-  align-items: flex-start;
+  align-items: center; /* Alinha o radio button com o texto */
 }
 
 .frete-option input {
   flex: none;
   width: 16px;
   height: 16px;
-  margin-top: 6px;
+  margin: 0; /* Remove margem extra */
   accent-color: #4B0082;
 }
 
 .frete-option__info strong {
-  font-size: 14px;
+  font-size: 13px; /* Reduz o tamanho do título (Expresso/Econômico) */
+  font-weight: 600;
   color: #2d114c;
-  display: block;
+  display: inline; /* Coloca na mesma linha do preço */
+  margin-right: 5px;
 }
 
 .frete-option__info span {
-  display: block;
-  font-size: 13px;
+  display: inline; /* Coloca na mesma linha do nome */
+  font-size: 12px; /* Reduz o tamanho do valor */
   color: #555;
 }
 
-.frete-option__info small {
-  display: block;
-  font-size: 12px;
-  color: #777;
-  margin-top: 3px;
-}
+
 
 .sr-only {
   position: absolute;
