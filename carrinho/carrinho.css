@@ -253,12 +253,7 @@
 }
 
 .frete-opcoes {
-  display: none;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.frete-opcoes.is-visible {
+  /* A classe .is-visible controlará a exibição via JS se necessário, mas por padrão será visível */
   display: flex;
 }
 

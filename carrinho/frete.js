@@ -92,6 +92,26 @@ function initFreteCalculator(config) {
             });
             document.body.dispatchEvent(freteCalculadoEvent);
 
+            // Salva o CEP e a opção de frete na sessionStorage
+            try {
+                if (cleanCep) {
+                    sessionStorage.setItem('cepCalculado', cleanCep);
+                }
+                if (payload.selecionado) {
+                    const freteSelecionado = {
+                        id: `frete-option-${payload.selecionado.codigo}`, // Cria um ID único
+                        codigo: payload.selecionado.codigo,
+                        valor: payload.selecionado.valor,
+                        nome: payload.selecionado.label,
+                        prazo: `${payload.selecionado.prazo} dias úteis`
+                    };
+                    sessionStorage.setItem('freteEscolhido', JSON.stringify(freteSelecionado));
+                    console.log('Opção de frete salva na sessão:', freteSelecionado);
+                }
+            } catch (e) {
+                console.error('Falha ao salvar dados do frete na sessão.', e);
+            }
+
 
         } catch (error) {
             console.error('Frete Error:', error);
@@ -112,7 +132,7 @@ function initFreteCalculator(config) {
             const isChecked = selecionado && selecionado.codigo === opcao.codigo;
             html += `
                 <div class="frete-option">
-                    <input type="radio" name="frete-option" value="${opcao.codigo}" ${isChecked ? 'checked' : ''} onchange="enviarCotacao('${cotacao.destino.cep}', this.value)">
+                    <input type="radio" id="frete-option-${opcao.codigo}" name="frete-option" value="${opcao.codigo}" ${isChecked ? 'checked' : ''} onchange="enviarCotacao('${cotacao.destino.cep}', this.value)">
                     <label>
                         <strong>${opcao.label}</strong> - ${formatCurrency(opcao.valor)} (${opcao.prazo} dias úteis)
                     </label>

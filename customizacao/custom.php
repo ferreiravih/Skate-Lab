@@ -41,7 +41,6 @@ try {
 
 // Peças Padrão
 $shape_padrao = ['nome' => 'Shape Branco', 'preco' => 120.00, 'url_m3d' => 'white', 'url_img' => null];
-$truck_padrao = ['nome' => 'Truck Padrão', 'preco' => 0.00, 'url_m3d' => 'padrao', 'url_img' => null];
 
 $customizacaoInicial = null;
 $customId = isset($_GET['custom_id']) ? (int)$_GET['custom_id'] : null;
@@ -158,17 +157,8 @@ if ($customId && $customId > 0) {
             <button class="btn-titulo" type="button" onclick="toggleGrupo('truckGrupo', this)">Truck</button>
             <div id="truckGrupo" class="grupo-colapsado">
 
-              <button class="pena active" type="button"
-                onclick="selecionarTrucks('<?php echo $truck_padrao['url_m3d']; ?>')"
-                data-price="<?php echo $truck_padrao['preco']; ?>"
-                data-name="<?php echo htmlspecialchars($truck_padrao['nome']); ?>">
-                <div class="btn-imagem" style="background-color:#ccc;">O</div>
-                <span class="nome-pena"><?php echo $truck_padrao['nome']; ?></span>
-                <span class="preco-pena">R$ <?php echo number_format($truck_padrao['preco'], 2, ',', '.'); ?></span>
-              </button>
-
-              <?php foreach ($trucks as $truck): ?>
-                <button class="pena" type="button"
+            <?php foreach ($trucks as $truck): ?>
+              <button class="pena" type="button"
                   onclick="selecionarTrucks('<?php echo htmlspecialchars($truck['url_m3d']); ?>')"
                   data-price="<?php echo $truck['preco']; ?>"
                   data-name="<?php echo htmlspecialchars($truck['nome']); ?>">
@@ -869,7 +859,6 @@ if ($customId && $customId > 0) {
         esconderTudo();
         removerRolamentos();
         removerParafusos();
-        selecionarTrucks('padrao'); // Define truck padrão (preço 0)
         mostrarShape('white'); // Define shape padrão (preço 120)
 
         document.getElementById('configAtual').textContent =

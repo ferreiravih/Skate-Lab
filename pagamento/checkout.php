@@ -188,6 +188,43 @@ $erroPagamento = $_SESSION['pagamento_error'] ?? null;
                 document.getElementById('state').value = endereco.uf || '';
             }
         });
+
+        // ===== INÍCIO DA NOVA LÓGICA =====
+        // Preenche e calcula o frete automaticamente com os dados do carrinho
+        try {
+            const cepSalvo = sessionStorage.getItem('cepCalculado');
+            const freteSalvoJSON = sessionStorage.getItem('freteEscolhido');
+
+            if (cepSalvo) {
+                console.log('CEP encontrado na sessão:', cepSalvo);
+                const cepInput = document.getElementById('cep');
+                if (cepInput.value === '' || cepInput.value.replace(/\D/g, '') !== cepSalvo) {
+                    cepInput.value = cepSalvo;
+                }
+
+                // Função para tentar selecionar o frete após o cálculo
+                const tentarSelecionarFrete = (event) => {
+                    if (freteSalvoJSON) {
+                        const freteSalvo = JSON.parse(freteSalvoJSON);
+                        const radioParaMarcar = document.getElementById(freteSalvo.id);
+                        if (radioParaMarcar && !radioParaMarcar.checked) {
+                            console.log('Aplicando opção de frete salva:', freteSalvo.nome);
+                            radioParaMarcar.checked = true;
+                            // Dispara o onchange para atualizar o resumo do pedido
+                            radioParaMarcar.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+                    }
+                    // Remove o listener para não executar de novo sem necessidade
+                    document.body.removeEventListener('frete-calculado', tentarSelecionarFrete);
+                };
+
+                document.body.addEventListener('frete-calculado', tentarSelecionarFrete);
+                window.enviarCotacao(cepSalvo); // Dispara o cálculo de frete
+            }
+        } catch (e) {
+            console.error('Falha ao aplicar dados da sessão.', e);
+        }
+        // ===== FIM DA NOVA LÓGICA =====
     });
     </script>
 </body>
