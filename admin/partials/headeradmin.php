@@ -1,7 +1,5 @@
 <?php
-// Calcula a URL base do projeto (ex: /Skate-Lab)
-// __DIR__ é .../Skate-Lab/admin/partials
-// Subindo 2 níveis (/../..) chegamos na raiz do projeto
+
 $projectRoot = str_replace('\\', '/', realpath(__DIR__ . '/../..'));
 $docRoot = isset($_SERVER['DOCUMENT_ROOT']) ? str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])) : '';
 $baseUrl = '';
@@ -12,7 +10,7 @@ if ($projectRoot !== false && $docRoot) {
     }
 }
 
-// Garante que a barra inicial exista
+
 if ($baseUrl === '' && isset($_SERVER['PHP_SELF'])) {
      $segments = explode('/', trim($_SERVER['PHP_SELF'], '/'));
      if (count($segments) > 0 && $segments[0] == 'Skate-Lab') {

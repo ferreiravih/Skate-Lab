@@ -1,5 +1,5 @@
 <?php
-session_start(); // <-- 1. ADICIONADO
+session_start(); 
 
 if (isset($_POST['id'])) {
     $id = $_POST['id'];
@@ -9,6 +9,5 @@ if (isset($_POST['id'])) {
     }
 }
 
-// 2. CORRIGIDO O CAMINHO DE REDIRECIONAMENTO
 header("Location: ../carrinho.php");
 exit;

@@ -25,7 +25,7 @@ main.dashboard-container {
   color: #222;
 }
 
-/*  Cards de cima  */
+
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -88,7 +88,7 @@ main.dashboard-container {
   color: #666;
 }
 
-/* SEÇÃO DE PRODUTOS  */
+
 .recent-products {
   background: #fff;
   border: 1px solid #e5e7eb;
@@ -174,7 +174,7 @@ main.dashboard-container {
   font-size: 0.9rem;
 }
 
-/* PEDIDOS E PRODUTOS  */
+
 .dashboard-columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -203,7 +203,7 @@ main.dashboard-container {
   color: #333;
 }
 
-/* Listas alinhada */
+
 
 .order-list, .product-list {
     list-style: none;
@@ -254,7 +254,7 @@ main.dashboard-container {
 }
 
 
-/* Status dos pedidos */
+
 .status.entregue {
     background: #dcfce7;
     color: #16a34a;
@@ -295,7 +295,7 @@ main.dashboard-container {
     background-color: #9ca3af;
 }
 
-/* Crescimento dos pedidos */
+
 .growth {
     font-weight: 600;
     font-size: 0.85rem;
@@ -325,7 +325,7 @@ main.dashboard-container {
   }
 }
 
-/*  TABELA  */
+
 .products-table {
   width: 100%;
   border-collapse: separate;
@@ -389,7 +389,7 @@ main.dashboard-container {
   width: 60px;
   border-top-left-radius: 12px;
   border-bottom-left-radius: 12px;
-  padding-left: 20px; /* Espaço extra na primeira célula */
+  padding-left: 20px; 
 }
 
 .products-table tbody tr td:last-child {
@@ -450,7 +450,7 @@ main.dashboard-container {
   background-color: #9ca3af;
 }
 
-/*  BOTÕES  */
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -514,7 +514,7 @@ main.dashboard-container {
   }
 }
 
-/* ==== FEEDBACK DE SUCESSO/ERRO (COPIADO DO PERFIL) ==== */
+
 .feedback {
   padding: 12px 15px;
   border-radius: 8px;

@@ -1,6 +1,5 @@
 <?php
-// Salva a customização do usuário logado
-// Espera JSON: { titulo, config, preco_total, preview_img? }
+
 
 session_start();
 header('Content-Type: application/json');
@@ -130,7 +129,7 @@ if ($titulo === '' || !is_array($config)) {
     resposta(false, "Campos obrigatórios ausentes: 'titulo' ou 'config'.");
 }
 
-// Pequenas validações para evitar valores absurdos vindos do client
+
 if ($preco_total < 0) $preco_total = 0;
 if ($preco_total > 100000) $preco_total = 100000; // limite de segurança
 

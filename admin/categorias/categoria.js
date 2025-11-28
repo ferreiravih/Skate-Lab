@@ -6,44 +6,44 @@ document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("form-nova-categoria");
 
 
-// --- INÍCIO DA LÓGICA DE FILTRO DE BUSCA ---
+
 
     const inputBusca = document.querySelector(".input-busca");
     const tabela = document.querySelector(".tabela-categorias");
 
-    // Verifica se a barra de busca e a tabela existem
+
     if (inputBusca && tabela) {
         
-        // Pega todas as linhas do corpo da tabela (tbody)
+
         const linhas = tabela.querySelectorAll("tbody tr");
 
-        // Adiciona um "ouvinte" que dispara toda vez que você digita
+
         inputBusca.addEventListener("input", () => {
             const termoBusca = inputBusca.value.toLowerCase();
 
             linhas.forEach(linha => {
-                // Pega o texto da linha inteira e converte para minúsculo
+
                 const textoLinha = linha.textContent.toLowerCase();
 
-                // Verifica se o texto da linha inclui o termo digitado
+
                 if (textoLinha.includes(termoBusca)) {
-                    linha.style.display = ""; // Mostra a linha
+                    linha.style.display = ""; 
                 } else {
-                    linha.style.display = "none"; // Esconde a linha
+                    linha.style.display = "none"; 
                 }
             });
         });
     }
 
-    // Abre o modal
+
     btnAbrirModal.addEventListener("click", () => {
         overlay.style.display = "flex";
     });
 
-    // Fecha o modal
+
     const fecharModal = () => {
         overlay.style.display = "none";
-        form.reset(); // Limpa o formulário ao fechar
+        form.reset(); 
     };
     
     btnCancelar.addEventListener("click", fecharModal);
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.target === overlay) fecharModal();
     });
 
-    // Lógica de Salvar com AJAX (Fetch)
+   
     btnSalvar.addEventListener("click", async () => {
         const formData = new FormData(form);
         
@@ -68,7 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (result.sucesso) {
                 mostrarPopup(result.mensagem, 'sucesso');
                 fecharModal();
-                // Recarrega a página para mostrar a nova categoria na tabela
                 setTimeout(() => {
                     window.location.reload();
                 }, 1500);
@@ -85,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
         btnSalvar.textContent = "Salvar";
     });
 
-    // --- Função do Popup ---
+
     function mostrarPopup(mensagem, tipo = 'sucesso') {
         const popupExistente = document.getElementById('popup-sucesso-cat');
         if (popupExistente) popupExistente.remove();
@@ -93,8 +92,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const popup = document.createElement('div');
         popup.id = 'popup-sucesso-cat';
         popup.textContent = mensagem;
-        
-        // Usa o estilo do popup de sucesso do produto (adicionado abaixo)
         popup.className = 'popup-sucesso'; 
         
         if (tipo === 'erro') {
@@ -103,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         document.body.appendChild(popup);
-        popup.classList.add("mostrar"); // Ativa a animação
+        popup.classList.add("mostrar"); 
 
         setTimeout(() => {
             popup.classList.remove("mostrar");
@@ -111,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 5000);
     }
     
-    // --- Lógica para popups da URL (Update/Delete) ---
+
     const urlParams = new URLSearchParams(window.location.search);
     const status = urlParams.get('status');
 
@@ -123,7 +120,6 @@ document.addEventListener("DOMContentLoaded", () => {
         mostrarPopup('Falha ao excluir. A categoria está em uso por produtos.', 'erro');
     }
     
-    // Limpa o status da URL
     if (status) {
         window.history.replaceState({}, document.title, window.location.pathname);
     }

@@ -8,7 +8,7 @@ if (!$id_cat) {
     exit;
 }
 
-// TENTATIVA DE EXCLUSÃO
+
 $sql = "DELETE FROM public.categorias WHERE id_cat = :id_cat";
 
 try {
@@ -19,14 +19,13 @@ try {
     exit;
 
 } catch (PDOException $e) {
-    // ERRO DE CHAVE ESTRANGEIRA! (Código 23503 para PostgreSQL)
-    // Isso acontece se a categoria está em uso em 'pecas'.
+
     if ($e->getCode() == '23503') {
         error_log("Falha ao excluir categoria: " . $e->getMessage());
         header("Location: categoria.php?status=delete_failed");
         exit;
     } else {
-        // Outro erro de banco
+
         error_log("Erro ao excluir categoria: " . $e->getMessage());
         die("Erro ao excluir dados.");
     }

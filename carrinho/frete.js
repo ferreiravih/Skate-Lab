@@ -66,11 +66,11 @@ function initFreteCalculator(config) {
 
         toggleLoading(true);
 
-        // Garante que o container de opções exista e mostra o feedback de carregamento
+        
         let optionsContainer = resultContainer.querySelector('.frete-opcoes');
-        if (!optionsContainer) { // Se for o primeiro cálculo
+        if (!optionsContainer) { 
             resultContainer.innerHTML = '<p>Calculando...</p>';
-        } else { // Se já houver opções, apenas aplica o efeito de carregamento
+        } else { 
             optionsContainer.classList.add('is-loading');
         }
 
@@ -90,7 +90,7 @@ function initFreteCalculator(config) {
             renderOptions(payload.cotacao, payload.selecionado);
             updateSummary(payload.resumo);
             
-            // Dispara evento para preencher endereço no checkout
+            
             const freteCalculadoEvent = new CustomEvent('frete-calculado', {
                 detail: {
                     cep: cleanCep,
@@ -99,14 +99,14 @@ function initFreteCalculator(config) {
             });
             document.body.dispatchEvent(freteCalculadoEvent);
 
-            // Salva o CEP e a opção de frete na sessionStorage
+            
             try {
                 if (cleanCep) {
                     sessionStorage.setItem('cepCalculado', cleanCep);
                 }
                 if (payload.selecionado) {
                     const freteSelecionado = {
-                        id: `frete-option-${payload.selecionado.codigo}`, // Cria um ID único
+                        id: `frete-option-${payload.selecionado.codigo}`, 
                         codigo: payload.selecionado.codigo,
                         valor: payload.selecionado.valor,
                         nome: payload.selecionado.label,
@@ -129,10 +129,10 @@ function initFreteCalculator(config) {
     };
 
     const renderOptions = (cotacao, selecionado) => {
-        // Garante que o container principal esteja limpo e pronto
+        
         resultContainer.innerHTML = ''; 
 
-        // Cria o container que vai segurar as opções
+        
         const optionsContainer = document.createElement('div');
         optionsContainer.className = 'frete-opcoes';
 

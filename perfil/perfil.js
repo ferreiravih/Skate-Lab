@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-    // =================================================================
-    // 1. LÓGICA DO FORMULÁRIO DE PERFIL (COM UPLOAD DE FOTO)
-    // =================================================================
+
     const editBtn = document.getElementById('edit-btn');
     const cancelBtn = document.getElementById('cancel-btn');
     const saveBtn = document.getElementById('save-btn');
@@ -53,16 +51,16 @@ document.addEventListener('DOMContentLoaded', function() {
         editBtn.addEventListener('click', enterEditMode);
         cancelBtn.addEventListener('click', () => exitEditMode(true));
 
-        // --- ENVIO DO FORMULÁRIO ---
+
         profileForm.addEventListener('submit', async (e) => {
             e.preventDefault(); 
             saveBtn.disabled = true;
             saveBtn.textContent = 'Salvando...';
             
-            // 1. Cria o FormData com os dados de texto
+
             const formData = new FormData(profileForm);
 
-            // 2. Adiciona a foto manualmente se houver
+
             if (photoInput && photoInput.files.length > 0) {
                 formData.append('foto_perfil', photoInput.files[0]);
             }
@@ -76,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (usernameDisplay && result.novoNomeDisplay) {
                         usernameDisplay.textContent = result.novoNomeDisplay;
                     }
-                    // Atualiza visualmente os campos
+
                     editableFields.forEach(field => {
                         const span = profileForm.querySelector(`.info-item label[for="${field.name}"] + .info-text`);
                         if (span) {
@@ -84,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     });
                     
-                    // Atualiza a foto imediatamente
+
                     if (result.novaUrlFoto && profilePic) {
                         profilePic.src = result.novaUrlFoto + '?t=' + new Date().getTime();
                     }
@@ -101,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
             saveBtn.textContent = 'Salvar Alterações';
         });
 
-        // Preview da foto antes de salvar
+
         if (photoOverlayBtn && photoInput && profilePic) {
             photoOverlayBtn.addEventListener('click', () => {
                 if (profileContainer && profileContainer.classList.contains('is-editing')) {
@@ -119,9 +117,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // =================================================================
-    // 2. LÓGICA DO MODAL DE SENHA
-    // =================================================================
     const passwordModal = document.getElementById('password-modal');
     const btnShowPasswordModal = document.getElementById('btn-show-password-modal');
     const passwordModalCloseBtn = document.getElementById('password-modal-close-btn');
@@ -196,9 +191,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // =================================================================
-    // 3. LÓGICA DO MODAL DE DETALHES DO PEDIDO (CORRIGIDO)
-    // =================================================================
+
     const pedidoModal = document.getElementById('pedido-detalhes-modal');
     const pedidoModalContent = document.getElementById('pedido-modal-content');
     const pedidoModalCloseBtn = document.getElementById('pedido-modal-close-btn');
@@ -264,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 ? `<p class="rastreio-code">${pedido.codigo_rastreio}</p>`
                 : `<p>Nenhum código disponível</p>`;
 
-            // --- Itens do Pedido ---
+
             let itensHtml = '';
             let subtotalItens = 0;
             itens.forEach(item => {
@@ -282,11 +275,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
             });
             
-            // --- Detalhes de Frete e Valores ---
+  
             const freteValor = parseFloat(pedido.frete_valor) || 0;
             const freteDescricao = pedido.frete_descricao || "Não especificado";
             const valorTotal = parseFloat(pedido.valor_total) || 0;
-            // O subtotal dos itens já foi calculado, então usamos ele.
+
             
             let valoresHtml = `
                 <div class="detalhe-bloco">
@@ -331,9 +324,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // =================================================================
-    // 4. FUNÇÕES GERAIS (FEEDBACK E MÁSCARAS)
-    // =================================================================
+
     const feedbackMessageEl = document.getElementById('feedback-message');
     
     function showGlobalFeedback(message, type = 'success') {
@@ -347,7 +338,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
     }
 
-    // Máscara de Telefone
+
     const telInput = document.getElementById('tell');
     if (telInput) {
         telInput.addEventListener('input', (e) => {
@@ -362,7 +353,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Máscara de Data
+
     const dateInput = document.getElementById('data_nascimento');
     if(dateInput) {
         dateInput.addEventListener('input', (e) => {
@@ -375,7 +366,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Feedback via URL (após login/cadastro)
+
     const urlParams = new URLSearchParams(window.location.search);
     const status = urlParams.get('status');
     if (status) {

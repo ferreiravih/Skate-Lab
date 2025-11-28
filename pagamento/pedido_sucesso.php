@@ -1,10 +1,10 @@
 <?php
-// 1. Inicia a sessão e verifica o login
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// 2. Proteção: Só pode ver esta página se estiver logado
+
 if (!isset($_SESSION['id_usu'])) {
     header("Location: ../home/index.php?error=auth_required");
     exit;

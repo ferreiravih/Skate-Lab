@@ -9,13 +9,13 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 
 $id_cat = filter_input(INPUT_POST, 'id_cat', FILTER_VALIDATE_INT);
 $nome = trim($_POST['nome'] ?? '');
-$descricao = trim($_POST['descricao'] ?? ''); // 'name' do formulário
+$descricao = trim($_POST['descricao'] ?? ''); 
 
 if (!$id_cat || empty($nome) || empty($descricao)) {
     die("Erro: Todos os campos são obrigatórios.");
 }
 
-// Atualiza utilizando o campo padrao 'descricao'
+
 $sql = "UPDATE public.categorias SET 
             nome = :nome, 
             descricao = :descricao 
@@ -25,7 +25,7 @@ try {
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         ':nome' => $nome,
-        ':descricao' => $descricao, // O valor do POST
+        ':descricao' => $descricao, 
         ':id_cat' => $id_cat
     ]);
 

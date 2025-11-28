@@ -29,12 +29,12 @@ body {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  min-height: 0; /* Correção para o flexbox */
+  min-height: 0; 
   background: #f9f9f9;
   border-radius: 20px;
   border: 1px solid #eaeaea;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-  overflow: hidden; /* Esconde o que vazar */
+  overflow: hidden; 
 }
 
 
@@ -104,7 +104,7 @@ body {
   margin-bottom: 20px;
   text-transform: uppercase;
 }
-/* ==== Seções do Painel ==== */
+
 .grupo-botoes h3 {
   color: #7c52d9;
   font-size: 16px;
@@ -123,10 +123,10 @@ body {
   font-size: 16px;
 }
 
-.grupo-botoes h3:nth-of-type(1)::before { content: "👁️"; }    /* Mostrar/Ocultar */
-.grupo-botoes h3:nth-of-type(2)::before { content: "⚙️"; }    /* Rolamentos */
-.grupo-botoes h3:nth-of-type(3)::before { content: "🔩"; }    /* Parafusos */
-.grupo-botoes h3:nth-of-type(4)::before { content: "🧭"; }    /* Controles */
+.grupo-botoes h3:nth-of-type(1)::before { content: "👁️"; }   
+.grupo-botoes h3:nth-of-type(2)::before { content: "⚙️"; }   
+.grupo-botoes h3:nth-of-type(3)::before { content: "🔩"; }    
+.grupo-botoes h3:nth-of-type(4)::before { content: "🧭"; }   
 
 .grupo-botoes h3::before {
   color: #fa9c21;
@@ -236,8 +236,8 @@ body {
   transition: all 0.25s ease;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
   word-break: break-word;
-  display: flex;            /* Liga o Flexbox */
-  flex-direction: column;   /* Empilha os itens verticalmente */
+  display: flex;            
+  flex-direction: column;   
   align-items: center;
 }
 
@@ -299,7 +299,7 @@ body {
 }
 
 
-/* ======== STATUS ======== */
+
 #status {
   margin-bottom: 14px;
   background: rgba(124, 82, 217, 0.1);
@@ -361,11 +361,11 @@ body {
 }
 
 .btn-add-to-cart {
-  background: #fa9c21 !important; /* Cor principal */
+  background: #fa9c21 !important; 
   color: #fff !important;
   font-size: 16px;
   font-weight: 700 !important;
-  padding: 16px 22px !important; /* Mais destaque */
+  padding: 16px 22px !important; 
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -374,7 +374,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08); /* Sombra padrão */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08); 
 }
 .btn-add-to-cart:hover {
   background: #e68a00 !important;
@@ -382,45 +382,44 @@ body {
   box-shadow: 0 8px 15px rgba(250, 156, 33, 0.3);
 }
 
-/* ======== RESPONSIVIDADE ======== */
+
 @media (max-width: 960px) {
   .custom-page {
     grid-template-columns: 1fr;
   }
   
   .controls-area {
-    /* Remove o sticky no mobile */
     position: static; 
     max-height: none;
   }
 
   #ui {
     margin-top: 0;
-    max-height: 500px; /* Devolve o scroll apenas para a UI */
+    max-height: 500px; 
   }
 
-  /* Garante que o checkout não tenha borda estranha no mobile */
+
   #form-carrinho {
-     /* Remove a borda e sombra pai no mobile */
+
      border: none;
      box-shadow: none;
      background: none;
   }
   #ui {
-    /* Devolve a borda e sombra para a UI */
+
      border: 1px solid #eaeaea;
      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-     border-radius: 20px 20px 0 0; /* Arredonda só em cima */
+     border-radius: 20px 20px 0 0; 
   }
   .custom-checkout-area {
-     /* Ajusta o checkout */
+
      margin-top: 0;
      padding: 20px;
      border: 1px solid #eaeaea;
      border-top: none;
      background: #f9f9f9;
      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-     border-radius: 0 0 20px 20px; /* Arredonda só em baixo */
+     border-radius: 0 0 20px 20px; 
   }
 }
 
@@ -476,7 +475,7 @@ body {
     padding: 12px;
     border: 2px solid #ddd;
     border-radius: 8px;
-    box-sizing: border-box; /* Importante! */
+    box-sizing: border-box; 
     font-size: 1rem;
     font-family: "Poppins", sans-serif;
 }
@@ -492,7 +491,7 @@ body {
 }
 
 .salvar-modal-botoes button {
-    flex: 1; /* Ocupa metade do espaço */
+    flex: 1; 
     padding: 12px;
     border: none;
     border-radius: 8px;
@@ -512,7 +511,7 @@ body {
 }
 
 .modal-btn-confirmar {
-    background: #fa9c21; /* Sua cor laranja */
+    background: #fa9c21; 
     color: #fff;
 }
 .modal-btn-confirmar:hover {

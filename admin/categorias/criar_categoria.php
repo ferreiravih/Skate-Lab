@@ -13,9 +13,9 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     enviarResposta(false, "Método inválido.");
 }
 
-// Coleta dados. Atenção ao 'descricao' do formulário
+
 $nome = trim($_POST['nome'] ?? '');
-$descricao = trim($_POST['descricao'] ?? ''); // O 'name' do textarea
+$descricao = trim($_POST['descricao'] ?? ''); 
 
 if (empty($nome)) {
     enviarResposta(false, "Erro: O campo 'Nome' é obrigatório.");
@@ -24,15 +24,14 @@ if (empty($descricao)) {
     enviarResposta(false, "Erro: O campo 'Descrição' é obrigatório.");
 }
 
-// INSERIR NO BANCO
-// Insere utilizando o campo padrao 'descricao'
+
 $sql = "INSERT INTO public.categorias (nome, descricao) VALUES (:nome, :descricao)";
 
 try {
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         ':nome' => $nome,
-        ':descricao' => $descricao // O valor do POST
+        ':descricao' => $descricao 
     ]);
 
     enviarResposta(true, "Categoria criada com sucesso!");

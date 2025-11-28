@@ -1,5 +1,5 @@
 <?php
-// 1. INICIA A SESSÃO E VERIFICA O LOGIN
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -9,10 +9,10 @@ if (!isset($_SESSION['id_usu'])) {
     exit;
 }
 
-// 2. INCLUI O BD
+
 require_once __DIR__ . '/../config/db.php';
 
-// 3. BUSCA OS DADOS DO USUÁRIO
+
 $id_usuario_logado = $_SESSION['id_usu'];
 $usuario = null;
 $pedidos = [];
@@ -20,7 +20,7 @@ $endereco_recente = null;
 $erro_db = null;
 
 try {
-    // Busca dados do usuário (INCLUINDO A FOTO 'url_perfil')
+
     $sql_usu = "SELECT nome, email, tell, data_nascimento, apelido, url_perfil 
                 FROM public.usuario WHERE id_usu = :id";
     $stmt_usu = $pdo->prepare($sql_usu);
@@ -34,7 +34,7 @@ try {
         exit;
     }
 
-    // Busca o endereço do último pedido
+
     $stmt_endereco_fallback = $pdo->prepare(
         "SELECT endereco_rua, endereco_numero, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, endereco_complemento
          FROM public.pedidos
@@ -44,7 +44,7 @@ try {
     $stmt_endereco_fallback->execute([':id' => $id_usuario_logado]);
     $endereco_recente = $stmt_endereco_fallback->fetch(PDO::FETCH_ASSOC);
 
-    // Busca os 5 últimos pedidos
+
     $stmt_pedidos = $pdo->prepare(
         "SELECT id_pedido, status, valor_total, pedido_em, codigo_rastreio 
          FROM public.pedidos 
@@ -117,8 +117,7 @@ try {
                         <div class="card profile-header-card">
                             <div class="photo-container">
                                 <?php
-                                // Lógica da Imagem: Se tiver no banco, usa ela. Senão, usa a padrão.
-                                // Adiciona timestamp para evitar cache do navegador ao atualizar
+
                                 $foto_src = !empty($usuario['url_perfil'])
                                     ? htmlspecialchars($usuario['url_perfil']) . "?t=" . time()
                                     : '../img/imgs-home/home-passo3.png';

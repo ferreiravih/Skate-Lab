@@ -1,13 +1,13 @@
 <?php
-// 1. Inclui a conexão
+
 require_once __DIR__ . '/config/db.php';
 
-// 2. Definições do Admin
+
 $email_admin = 'admin@skatelab.com';
-$senha_admin_plana = 'admin1234'; // A senha que você vai usar para logar
+$senha_admin_plana = 'admin1234'; 
 $nome_admin = 'Admin Skatelab';
 
-// 3. Criar o HASH da senha (A parte importante!)
+
 $hash_senha = password_hash($senha_admin_plana, PASSWORD_DEFAULT);
 
 echo "<h1>Criando Admin...</h1>";
@@ -16,14 +16,14 @@ echo "Senha Plana: " . $senha_admin_plana . "<br>";
 echo "Hash Gerado: " . $hash_senha . "<br><hr>";
 
 try {
-    // 4. Verifica se o usuário já existe
+
     $sql_check = "SELECT id_usu FROM public.usuario WHERE email = :email";
     $stmt_check = $pdo->prepare($sql_check);
     $stmt_check->execute([':email' => $email_admin]);
     $usuario_existente = $stmt_check->fetch();
 
     if ($usuario_existente) {
-        // 5. Se existir, ATUALIZA a senha e o tipo para 'admin'
+
         echo "Usuário encontrado. Atualizando para admin e resetando a senha...<br>";
         $sql_update = "UPDATE public.usuario SET senha = :senha, tipo = 'admin' WHERE id_usu = :id";
         $stmt_update = $pdo->prepare($sql_update);
@@ -34,7 +34,7 @@ try {
         echo "<h2 style='color: green;'>SUCESSO! Senha do admin atualizada.</h2>";
 
     } else {
-        // 6. Se não existir, CRIA o novo usuário admin
+
         echo "Usuário não encontrado. Criando novo admin...<br>";
         $sql_insert = "INSERT INTO public.usuario (nome, email, senha, tipo) 
                        VALUES (:nome, :email, :senha, 'admin')";

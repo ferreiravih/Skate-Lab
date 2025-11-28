@@ -2,13 +2,13 @@
 require_once __DIR__ . '/../admin_auth.php';
 require_once __DIR__ . '/../../config/db.php';
 
-// 1. VERIFICAR O MÉTODO
+
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     header("Location: produtos.php");
     exit;
 }
 
-// 2. Coletar dados
+
 $id_pecas = filter_input(INPUT_POST, 'id_pecas', FILTER_VALIDATE_INT);
 $nome = trim($_POST['nome'] ?? '');
 $url_img = trim($_POST['url_img'] ?? '');
@@ -19,12 +19,12 @@ $preco = filter_var($_POST['preco'] ?? '', FILTER_VALIDATE_FLOAT);
 $estoque = filter_var($_POST['estoque'] ?? 0, FILTER_VALIDATE_INT);
 $status = ($_POST['status'] ?? 'INATIVO') === 'ATIVO' ? 'ATIVO' : 'INATIVO';
 
-// 3. Validação
+
 if (!$id_pecas || empty($nome) || empty($url_img) || !$id_cat || $preco === false) {
     die("Erro: ID, Nome, URL, Preço e Categoria são obrigatórios.");
 }
 
-// 4. SQL de ATUALIZAÇÃO
+
 $sql = "UPDATE public.pecas SET
             id_cat = :id_cat,
             nome = :nome,
@@ -37,7 +37,7 @@ $sql = "UPDATE public.pecas SET
         WHERE id_pecas = :id_pecas";
 
 try {
-    // 5. Prepared Statement
+
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         ':id_cat' => $id_cat,
@@ -51,7 +51,7 @@ try {
         ':id_pecas' => $id_pecas
     ]);
 
-    // 6. Redirecionar com sucesso
+
     header("Location: produtos.php?status=updated");
     exit;
 

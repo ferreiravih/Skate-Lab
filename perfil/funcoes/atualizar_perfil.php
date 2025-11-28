@@ -62,7 +62,7 @@ if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] === UPLOAD_
         exit;
     }
 
-    // Cria diretório se não existir
+
     $diretorioDestino = __DIR__ . '/../../img/usuarios/';
     if (!is_dir($diretorioDestino)) {
         mkdir($diretorioDestino, 0777, true);
@@ -72,7 +72,6 @@ if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] === UPLOAD_
     $caminhoCompleto = $diretorioDestino . $novoNomeArquivo;
 
     if (move_uploaded_file($arquivo['tmp_name'], $caminhoCompleto)) {
-        // Caminho relativo para salvar no banco
         $caminho_foto_db = "../img/usuarios/" . $novoNomeArquivo;
         $novaUrlFotoFrontend = $caminho_foto_db;
     } else {
@@ -81,7 +80,7 @@ if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] === UPLOAD_
     }
 }
 
-// --- Atualização no Banco ---
+// --- atualização no banco ---
 try {
     if ($caminho_foto_db) {
         $sql = "UPDATE public.usuario SET 
@@ -118,11 +117,11 @@ try {
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
 
-    // Atualiza nome na sessão
+    // atualiza nome na sessão
     $nome_display = !empty($apelido_db) ? $apelido_db : $nome;
     $_SESSION['nome_usu'] = $nome_display;
 
-    // --- IMPORTANTE: Atualiza a foto na sessão se houve upload ---
+    // --- atualiza a foto na sessão se houve upload ---
     if ($caminho_foto_db) {
         $_SESSION['url_perfil'] = $caminho_foto_db;
     }

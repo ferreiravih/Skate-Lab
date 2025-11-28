@@ -19,7 +19,6 @@ if (empty($email) || empty($senha)) {
 }
 
 try {
-    // 1. MUDANÇA: Adicionei 'url_perfil' no SELECT
     $sql = "SELECT id_usu, nome, email, senha, tipo, verificado, url_perfil 
             FROM public.usuario WHERE email = :email";
             

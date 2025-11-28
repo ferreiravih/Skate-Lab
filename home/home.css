@@ -12,11 +12,7 @@ img, video {
   display: block;
 }
 
-/*-----------------------------------------------*/
 
-/* HOME - CAPA */
-
-/* GARANTIR QUE A PÁGINA NÃO ESTOURE A LARGURA */
 html, body {
   width: 100%;
   overflow-x: hidden;
@@ -24,7 +20,7 @@ html, body {
   padding: 0;
 }
 
-/* CAPA */
+
 #capa {
   background: url("../img/imgs-home/home-capa.png") no-repeat center center;
   background-size: cover;
@@ -93,23 +89,21 @@ html, body {
   }
 }
 
-/*-----------------------------------------------*/
 
-/*HOME - BENEFICIOS*/
 #beneficios {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  flex-wrap: wrap; /* permite quebrar linha em telas pequenas */
+  flex-wrap: wrap;
   gap: 2rem;
   padding: 2rem 1rem;
-  text-align: center; /* centraliza os textos */
+  text-align: center; 
 }
 
 .beneficio-item {
   display: flex;
-  flex-direction: column; /* ícone em cima, texto embaixo */
-  align-items: center; /* centraliza o conteúdo horizontalmente */
+  flex-direction: column; 
+  align-items: center; 
   justify-content: center;
   max-width: 220px;
 }
@@ -121,7 +115,7 @@ html, body {
   display: block;
 }
 
-/* Texto */
+
 .beneficio-item p {
   font-weight: bold;
   font-size: 1rem;
@@ -156,9 +150,7 @@ html, body {
   }
 }
 
-/*-----------------------------------------------*/
 
-/*HOME - CUSTOMIZAÇÃO*/
 #customizacao {
   padding: 60px 5vw;
   background: #fff;
@@ -188,7 +180,7 @@ html, body {
   margin-bottom: 25px;
 }
 
-/* BOTÃO CUSTOMIZAÇÃO */
+
 .btn-customizacao {
   display: inline-block;
   background-color: #e67e00;
@@ -218,9 +210,7 @@ html, body {
   height: auto;
 }
 
-/*-----------------------------------------------*/
 
-/*HOME - PASSOS*/
 .passos {
     background-color: #482770;
     color: #fff;
@@ -268,9 +258,7 @@ html, body {
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
-/*-----------------------------------------------*/
 
-/*HOME - KITS*/
 .kits {
     background-color: #fff;
     padding: 80px 5% 120px;
@@ -286,7 +274,7 @@ html, body {
     text-align: center;
 }
 
-/* Galeria de kits */
+
 .galeria-kits {
     display: flex;
     flex-wrap: wrap;
@@ -297,7 +285,7 @@ html, body {
     margin: 0 auto 60px; 
 }
 
-/* Cartão de kit */
+
 .kit {
     background-color: #fcfafa;
     border-radius: 10px;
@@ -305,7 +293,7 @@ html, body {
     width: 300px;
     display: flex;
     flex-direction: column;
-    align-items: center; /* centraliza tudo */
+    align-items: center; 
     justify-content: space-between;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -317,7 +305,7 @@ html, body {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* Imagens */
+
 .kit img {
     width: 85%;
     height: auto;
@@ -328,7 +316,7 @@ html, body {
     margin-right: auto;
 }
 
-/* Textos */
+
 .nome-kit {
     font-weight: 700;
     font-size: 1rem;
@@ -351,7 +339,7 @@ html, body {
     margin-bottom: 15px;
 }
 
-/* Botão Ver Mais */
+
 .botao-ver-mais {
     background-color: #e67e00;
     color: #fff;
@@ -368,7 +356,7 @@ html, body {
     transform: translateY(-3px);
 }
 
-/* Botão Descubra Mais */
+
 .nov {
     display: flex;
     justify-content: center;
@@ -403,7 +391,7 @@ html, body {
 
 @media (max-width: 600px) {
     .kits {
-        padding: 50px 5% 100px; /* mantém espaçamento no mobile */
+        padding: 50px 5% 100px; 
     }
 
     .kit {
@@ -434,12 +422,12 @@ html, body {
 }
 
 body {
-  padding-top: 80px; /* ajuste de acordo com a altura do seu header fixo */
+  padding-top: 80px; 
 }
 
-/*-----------------------------------------------*/
 
-/*HOME - NOVIDADES*/
+
+
 .novidades {
     background: url("../img/imgs-home/img-novidades.png") no-repeat center center/cover;
     color: #ffffff;
@@ -475,7 +463,7 @@ body {
     border-radius: 3px;
 }
 
-/* BOTÃO CADASTRAR */
+
 .formulario-novidades .botao-cadastrar {
     padding: 15px 40px;
     background-color: #e67e00;
@@ -489,9 +477,7 @@ body {
     transform: translateY(-3px);
 }
 
-/*-----------------------------------------------*/
 
-/*HOME - AVALIAÇÕES*/
 .avaliacoes {
     background-color: var(--cinza-claro);
     padding: 80px 5%;
@@ -539,7 +525,7 @@ body {
     color: var(--roxo-escuro);
 }
 
-/* BOTÃO SETA */
+
 .seta {
     background: #e67e00;
     color: #ffffff;
@@ -557,9 +543,7 @@ body {
     transform: translateX(3px);
 }
 
-/* ===============================
-   AJUSTES GERAIS RESPONSIVOS
-   =============================== */
+
 
 section, div, header, footer, main {
   max-width: 100vw;

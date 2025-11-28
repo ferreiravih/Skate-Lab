@@ -2,13 +2,13 @@
 require_once __DIR__ . '/../admin_auth.php';
 require_once __DIR__ . '/../../config/db.php';
 
-// 1. Pegar o ID do produto da URL
+
 $id_pecas = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 if (!$id_pecas) {
     die("ID do produto inválido.");
 }
 
-// 2. Buscar o produto no banco
+
 try {
     $stmt_peca = $pdo->prepare("SELECT * FROM public.pecas WHERE id_pecas = :id");
     $stmt_peca->execute([':id' => $id_pecas]);
@@ -18,7 +18,7 @@ try {
         die("Produto não encontrado.");
     }
 
-    // 3. Buscar todas as categorias
+
     $stmt_cat = $pdo->query("SELECT id_cat, nome FROM public.categorias ORDER BY nome");
     $categorias = $stmt_cat->fetchAll();
 

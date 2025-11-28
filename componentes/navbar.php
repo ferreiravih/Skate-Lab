@@ -1,10 +1,10 @@
 <?php
-// Inicia a sessão
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// --- CORREÇÃO AUTOMÁTICA DE SESSÃO ---
+
 if (isset($_SESSION['id_usu']) && !isset($_SESSION['url_perfil']) && isset($pdo)) {
     try {
         $stmtFoto = $pdo->prepare("SELECT url_perfil FROM public.usuario WHERE id_usu = :id");

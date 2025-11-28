@@ -3,47 +3,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectStatusPedidos = document.querySelector(".filtro-status");
     const tabelaPedidos = document.querySelector(".tabela-pedidos");
 
-    // Verifica se todos os elementos necessários existem
+
     if (inputBuscaPedidos && selectStatusPedidos && tabelaPedidos) {
         
         const linhasPedidos = tabelaPedidos.querySelectorAll("tbody tr");
 
-        // 1. Cria a função de filtro principal
+
         function filtrarPedidos() {
-            // Pega os valores atuais dos dois filtros
             const termoBusca = inputBuscaPedidos.value.toLowerCase();
-            const statusSelecionado = selectStatusPedidos.value; // ex: "PENDENTE" ou "todos"
+            const statusSelecionado = selectStatusPedidos.value; 
 
             linhasPedidos.forEach(linha => {
                 const textoLinha = linha.textContent.toLowerCase();
                 
-                // Pega o texto do status da linha (ex: "PENDENTE")
-                // Usamos .trim() para remover espaços em branco
+                
                 const statusDaLinha = linha.querySelector(".status").textContent.trim();
 
-                // --- Regras de visibilidade ---
 
-                // Regra 1: O texto da busca bate?
-                // (Se o termo de busca estiver vazio, passa direto)
                 const passouNaBusca = (termoBusca === "" || textoLinha.includes(termoBusca));
 
-                // Regra 2: O status bate?
-                // (Se "Todos" estiver selecionado, passa direto)
+
                 const passouNoStatus = (statusSelecionado === "todos" || statusDaLinha === statusSelecionado);
 
-                // A linha SÓ aparece se passar nos DOIS filtros
+
                 if (passouNaBusca && passouNoStatus) {
-                    linha.style.display = ""; // Mostra a linha
+                    linha.style.display = ""; 
                 } else {
-                    linha.style.display = "none"; // Esconde a linha
+                    linha.style.display = "none"; 
                 }
             });
         }
 
-        // 2. Adiciona o "ouvinte" na barra de busca
+
         inputBuscaPedidos.addEventListener("input", filtrarPedidos);
 
-        // 3. Adiciona o "ouvinte" no select de status
         selectStatusPedidos.addEventListener("change", filtrarPedidos);
     }
     
@@ -52,11 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnPreparo = document.getElementById('btnPreparo');
     const btnFinalizar = document.getElementById('btnFinalizar');
 
-    // Elementos do Modal
+
     const modalNumero = document.getElementById('modalNumero');
     const modalCliente = document.getElementById('modalCliente');
     const modalData = document.getElementById('modalData');
-    const modalTotalSection = document.querySelector('.modal-total'); // Alterado para pegar a seção
+    const modalTotalSection = document.querySelector('.modal-total'); 
     const modalStatus = document.getElementById('modalStatus');
     const modalEndereco = document.getElementById('modalEndereco'); 
     const modalProdutosDiv = document.getElementById('modalProdutos'); 
@@ -64,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let idPedidoSelecionado = null;
     let spanStatusSelecionado = null;
 
-    // Verifica se os elementos do modal foram encontrados
+  
     if (!modal || !modalEndereco || !modalProdutosDiv || !modalTotalSection) {
         console.error("ERRO: Elementos essenciais do modal não encontrados no HTML!");
         return; 
@@ -76,31 +69,30 @@ document.addEventListener('DOMContentLoaded', () => {
             idPedidoSelecionado = linha.dataset.idPedido;
             spanStatusSelecionado = linha.querySelector('.status');
 
-            // Pré-preenche o modal com dados da tabela
+
             modalNumero.textContent = linha.children[0].textContent;
             modalCliente.textContent = linha.children[1].textContent;
             modalData.textContent = linha.children[2].textContent;
             modalStatus.textContent = spanStatusSelecionado.textContent;
             modalStatus.className = spanStatusSelecionado.className;
             
-            // Limpa a seção de total e mostra carregando
+
             modalTotalSection.innerHTML = `<h3>Valor Total</h3><p>Carregando...</p>`;
 
-            // --- LIMPA PLACEHOLDERS E MOSTRA CARREGANDO ---
             modalEndereco.textContent = 'Carregando endereço...'; 
             modalProdutosDiv.innerHTML = '<p>Carregando itens...</p>'; 
             modal.style.display = 'flex';
             
-            // Buscar Detalhes com AJAX
+
             try {
-                // --- CORREÇÃO AQUI: Apontando para o arquivo local do ADMIN, não do perfil ---
+
                 const response = await fetch(`obter_detalhes_pedido.php?id=${idPedidoSelecionado}`);
                 
                 if (!response.ok) { 
                    throw new Error(`Erro HTTP: ${response.status}`);
                 }
 
-                // Tenta parsear como JSON
+
                 let result;
                 try {
                     result = await response.json();
@@ -111,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (result.sucesso && result.dados) {
                     const { pedido, itens } = result.dados;
 
-                    // 1. Preenche o Endereço
+
                     if (pedido) {
                         modalEndereco.innerHTML = `
                             ${pedido.endereco_rua || 'Rua não informada'}, ${pedido.endereco_numero || 'S/N'}<br>
@@ -120,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             Complemento: ${pedido.endereco_complemento || 'Nenhum'}
                         `;
 
-                        // Preenche a seção de valores
+
                         const freteValor = parseFloat(pedido.frete_valor) || 0;
                         const valorTotal = parseFloat(pedido.valor_total) || 0;
                         const subTotal = valorTotal - freteValor;
@@ -140,15 +132,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         modalTotalSection.innerHTML = `<h3>Valor Total</h3><p>Erro ao carregar.</p>`;
                     }
 
-                    // 2. Preenche os Itens
-                    modalProdutosDiv.innerHTML = ''; // Limpa o "Carregando..."
+
+                    modalProdutosDiv.innerHTML = ''; 
                     if (itens && itens.length > 0) {
                         itens.forEach(item => {
                             const precoUnit = parseFloat(item.preco_unitario || 0);
                             const qtd = parseInt(item.quantidade || 1);
                             const totalItem = precoUnit * qtd;
                             
-                            // Tenta usar a imagem, se não tiver usa um placeholder
+ 
                             const imgUrl = item.url_img ? item.url_img : '../../img/imgs-icon/icon.png';
 
                             const itemHtml = `
@@ -181,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Função para atualizar o status via AJAX
+
     async function atualizarStatus(novoStatus) {
          if (!idPedidoSelecionado) return;
         try {
@@ -195,10 +187,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             const result = await response.json();
             if (result.sucesso) {
-                // Atualiza na tabela
                 spanStatusSelecionado.textContent = result.novoStatus;
                 spanStatusSelecionado.className = 'status ' + result.novaClasse;
-                // Atualiza no modal
                 modalStatus.textContent = result.novoStatus;
                 modalStatus.className = 'status ' + result.novaClasse;
                 

@@ -15,7 +15,7 @@ if (!$id_pedido) {
 }
 
 try {
-    // 1. Buscar os dados do pedido (incluindo o endereço snapshot)
+
     $stmt_pedido = $pdo->prepare("SELECT * FROM public.pedidos WHERE id_pedido = :id");
     $stmt_pedido->execute([':id' => $id_pedido]);
     $pedido = $stmt_pedido->fetch();
@@ -24,7 +24,7 @@ try {
         enviarResposta(false, "Pedido não encontrado.");
     }
 
-    // 2. Buscar os itens do pedido (com JOIN em 'pecas')
+
     $sql_itens = "SELECT pi.*, p.nome AS peca_nome, p.url_img
                   FROM public.pedido_itens pi
                   JOIN public.pecas p ON pi.id_pecas = p.id_pecas
@@ -33,7 +33,7 @@ try {
     $stmt_itens->execute([':id' => $id_pedido]);
     $itens = $stmt_itens->fetchAll();
 
-    // 3. Montar a resposta
+
     $dados_completos = [
         'pedido' => $pedido,
         'itens' => $itens

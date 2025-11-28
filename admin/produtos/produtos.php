@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../admin_auth.php';
 require_once __DIR__ . '/../../config/db.php';
 
-// Busca produtos e junta com categorias
+
 try {
     $sql = "SELECT p.*, c.nome AS categoria_nome 
             FROM public.pecas p 

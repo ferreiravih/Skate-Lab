@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../admin_auth.php';
 require_once __DIR__ . '/../../config/db.php';
 
-// BUSCAR CATEGORIAS (READ)
+
 try {
     $stmt = $pdo->query("SELECT * FROM public.categorias ORDER BY nome");
     $categorias = $stmt->fetchAll();

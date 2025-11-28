@@ -1,5 +1,5 @@
 <?php
-// 1. Inicia a sessão e verifica o login
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -8,7 +8,7 @@ if (!isset($_SESSION['id_usu'])) {
     exit;
 }
 
-// 2. Inclui o BD
+
 require_once __DIR__ . '/../../config/db.php';
 header('Content-Type: application/json');
 
@@ -21,8 +21,7 @@ if (!$id_pedido) {
 }
 
 try {
-    // 3. Busca os dados principais do pedido
-    // (Verifica se o id_usu corresponde por segurança)
+
     $stmt_pedido = $pdo->prepare(
         "SELECT * FROM public.pedidos 
          WHERE id_pedido = :id_pedido AND id_usu = :id_usu"
@@ -38,8 +37,7 @@ try {
         exit;
     }
 
-    // 4. Busca os itens desse pedido
-    // (JOIN com a tabela 'pecas' para obter o nome e a imagem)
+
     $stmt_itens = $pdo->prepare(
         "SELECT pi.quantidade, pi.preco_unitario, p.nome, p.url_img
          FROM public.pedido_itens pi
@@ -49,7 +47,7 @@ try {
     $stmt_itens->execute([':id_pedido' => $id_pedido]);
     $itens = $stmt_itens->fetchAll(PDO::FETCH_ASSOC);
 
-    // 5. Combina tudo e envia
+
     $dados_completos = [
         'pedido' => $pedido,
         'itens' => $itens
