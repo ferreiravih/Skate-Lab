@@ -57,7 +57,6 @@ html, body {
   color: #ffffff;
 }
 
-/* BOTÕES PADRONIZADOS */
 .btn-saiba-mais {
   display: inline-block;
   background-color: #e67e00;
@@ -75,7 +74,6 @@ html, body {
   transform: translateY(-3px);
 }
 
-/* RESPONSIVIDADE */
 @media (max-width: 768px) {
   #capa {
     flex-direction: column;
@@ -88,7 +86,6 @@ html, body {
     max-width: 90%;
   }
 }
-
 
 #beneficios {
   display: flex;
@@ -115,7 +112,6 @@ html, body {
   display: block;
 }
 
-
 .beneficio-item p {
   font-weight: bold;
   font-size: 1rem;
@@ -130,7 +126,6 @@ html, body {
   color: #333;
 }
 
-/* ===== Responsividade ===== */
 @media (max-width: 768px) {
   #beneficios {
     flex-direction: column;
@@ -149,7 +144,6 @@ html, body {
     font-size: 0.85rem;
   }
 }
-
 
 #customizacao {
   padding: 60px 5vw;
@@ -180,7 +174,6 @@ html, body {
   margin-bottom: 25px;
 }
 
-
 .btn-customizacao {
   display: inline-block;
   background-color: #e67e00;
@@ -209,7 +202,6 @@ html, body {
   max-width: 700px;
   height: auto;
 }
-
 
 .passos {
     background-color: #482770;
@@ -258,7 +250,6 @@ html, body {
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
-
 .kits {
     background-color: #fff;
     padding: 80px 5% 120px;
@@ -273,7 +264,6 @@ html, body {
     font-weight: 900;
     text-align: center;
 }
-
 
 .galeria-kits {
     display: flex;
@@ -356,7 +346,6 @@ html, body {
     transform: translateY(-3px);
 }
 
-
 .nov {
     display: flex;
     justify-content: center;
@@ -379,7 +368,6 @@ html, body {
     transform: translateY(-3px);
 }
 
-/* ===== Responsividade ===== */
 @media (max-width: 992px) {
     .galeria-kits {
         gap: 20px;
@@ -425,9 +413,6 @@ body {
   padding-top: 80px; 
 }
 
-
-
-
 .novidades {
     background: url("../img/imgs-home/img-novidades.png") no-repeat center center/cover;
     color: #ffffff;
@@ -463,7 +448,6 @@ body {
     border-radius: 3px;
 }
 
-
 .formulario-novidades .botao-cadastrar {
     padding: 15px 40px;
     background-color: #e67e00;
@@ -476,7 +460,6 @@ body {
     background-color: #482770;
     transform: translateY(-3px);
 }
-
 
 .avaliacoes {
     background-color: var(--cinza-claro);
@@ -544,7 +527,6 @@ body {
 }
 
 
-
 section, div, header, footer, main {
   max-width: 100vw;
   box-sizing: border-box;
@@ -592,4 +574,3 @@ img, video {
 * {
   box-sizing: border-box;
 }
-
