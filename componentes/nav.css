@@ -15,8 +15,9 @@
   height: auto;
   flex-wrap: wrap;
   gap: 10px;
-  position: sticky;
+  position: fixed;
   top: 0;
+  width: 100%;
   z-index: 999;
 }
 

@@ -175,15 +175,15 @@ try {
             <div class="carrossel-avaliacoes">
                 <button class="seta esquerda">&lt;</button>
                 <div class="card-avaliacao">
-                    <p>Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                    <p>Como iniciante no skate, estava perdido sobre quais peças escolher. A ferramenta de customização em tempo real foi incrível! Pude visualizar meu skate completo enquanto escolhia cada componente, e o resultado final foi exatamente como imaginei!</p>
                     <p class="nome-avaliador">Pomni</p>
                 </div>
                 <div class="card-avaliacao">
-                    <p>Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                    <p>Comprei um skate personalizado para meu filho de 15 anos. A interface é tão intuitiva que até eu, que não entendo nada de skate, consegui montar um completo de qualidade. Meu filho amou! O atendimento foi excelente para tirar dúvidas sobre medidas adequadas.</p>
                     <p class="nome-avaliador">Neon</p>
                 </div>
                 <div class="card-avaliacao">
-                    <p>Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                    <p>Já montei vários skates, mas nunca com tanta precisão. A variedade de marcas e componentes é impressionante. O sistema me permitiu experimentar combinações que nunca teria pensado, e o skate chegou montado perfeitamente. Preço super justo!</p>
                     <p class="nome-avaliador">Jax</p>
                 </div>
                 <button class="seta direita">&gt;</button>
