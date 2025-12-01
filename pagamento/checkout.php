@@ -48,49 +48,6 @@ $erroPagamento = $_SESSION['pagamento_error'] ?? null;
     <link rel="stylesheet" href="pagamento.css?v=1.0.3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/png" href="../../Skate-Lab/img/imgs-icon/icon.png">
-    <style>
-        
-        .frete-resultado {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .frete-resultado .frete-option {
-            display: flex !important;
-            gap: 10px !important;
-            border: 1px solid #e1d0ff !important;
-            border-radius: 8px !important;
-            padding: 8px 10px !important;
-            cursor: pointer;
-            background-color: #fff !important;
-            align-items: center !important;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .frete-resultado .frete-option:hover {
-            border-color: #9c6bff !important;
-        }
-
-        .frete-resultado .frete-option input[type="radio"] {
-            flex: none !important;
-            width: 16px !important;
-            height: 16px !important;
-            margin: 0 !important;
-            accent-color: #4B0082;
-        }
-
-        .frete-resultado .frete-option label {
-            font-size: 13px !important;
-            color: #555 !important;
-            line-height: 1.4 !important;
-            margin-bottom: 0 !important;
-            font-weight: normal !important;
-        }
-        .frete-resultado .frete-option label strong {
-            font-weight: 600 !important;
-        }
-    </style>
 </head>
 
 <body>
@@ -140,9 +97,9 @@ $erroPagamento = $_SESSION['pagamento_error'] ?? null;
                         <input type="text" id="state" name="state" placeholder="SP" value="<?= htmlspecialchars($estadoDestino) ?>" required>
                     </div>
                 </div>
-                <div class="cardcheckbox">
-                    <button type="button" id="calcular-frete-btn-merged" class="botaopagar" style="margin-top: 8px; padding: 10px 15px; font-size: 14px; width: 100%;">Calcular Frete</button>
-                    <div id="frete-resultado" class="frete-resultado" style="margin-top: 12px;"></div>
+                <div class="frete-container">
+                    <button type="button" id="calcular-frete-btn-merged" class="botaopagar">Calcular Frete</button>
+                    <div id="frete-resultado" class="frete-resultado"></div>
                 </div>
 
                 <div class="pagamentocontainer">

@@ -134,7 +134,7 @@ function initFreteCalculator(config) {
 
         
         const optionsContainer = document.createElement('div');
-        optionsContainer.className = 'frete-opcoes';
+        optionsContainer.className = 'frete-opcoes-container';
 
         if (!cotacao || !cotacao.opcoes || cotacao.opcoes.length === 0) {
             optionsContainer.innerHTML = '<p style="color: orange;">Nenhuma opção de frete encontrada para este CEP.</p>';
@@ -147,16 +147,14 @@ function initFreteCalculator(config) {
             const optionDiv = document.createElement('div');
             optionDiv.className = 'frete-option';
             optionDiv.innerHTML = `
-                <div class="frete-option">
-                    <input type="radio" id="frete-option-${opcao.codigo}" name="frete-option" value="${opcao.codigo}" ${isChecked ? 'checked' : ''} onchange="enviarCotacao('${cotacao.destino.cep}', this.value)">
-                    <div class="frete-option__info">
-                        <strong>${opcao.label}</strong>
-                        <span>${formatCurrency(opcao.valor)}</span>
-                        <small>Prazo: ${opcao.prazo} dias úteis</small>
-                    </div>
-                </div>
+                <input type="radio" id="frete-option-${opcao.codigo}" name="frete-option" value="${opcao.codigo}" ${isChecked ? 'checked' : ''} onchange="enviarCotacao('${cotacao.destino.cep}', this.value)">
+                <label for="frete-option-${opcao.codigo}" class="frete-option__info">
+                    <strong>${opcao.label}</strong>
+                    <span>${formatCurrency(opcao.valor)}</span>
+                    <small>Prazo: ${opcao.prazo} dias úteis</small>
+                </label>
             `;
-            optionsContainer.appendChild(optionDiv.firstElementChild);
+            optionsContainer.appendChild(optionDiv);
         });
         resultContainer.appendChild(optionsContainer);
     };
