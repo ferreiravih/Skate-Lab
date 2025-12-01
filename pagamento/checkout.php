@@ -128,14 +128,13 @@ $erroPagamento = $_SESSION['pagamento_error'] ?? null;
                     <div id="boleto" class="conteudopagamento">
                         <p>O pagamento com Boleto será simulado. Ao clicar em "Finalizar", o pedido será registrado como "PENDENTE".</p>
                     </div>
+                    <button
+                        type="submit"
+                        id="botaopagar"
+                        class="botaopagar">
+                        <i class="fa-solid fa-lock"></i> Finalizar Pedido
+                    </button>
                 </div>
-
-                <button
-                    type="submit"
-                    id="botaopagar"
-                    class="botaopagar">
-                    <i class="fa-solid fa-lock"></i> Finalizar Pedido
-                </button>
             </form>
         </div>
 

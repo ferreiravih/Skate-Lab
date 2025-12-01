@@ -156,6 +156,8 @@ input:focus {
     width: 90%;
     max-width: 900px;
     text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .pagamentocontainer h2 {
