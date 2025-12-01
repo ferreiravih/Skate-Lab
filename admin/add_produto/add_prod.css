@@ -35,7 +35,7 @@ body {
   padding: 24px;
 }
 
-/* GRID PRINCIPAL */
+
 .form-produto {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -43,7 +43,7 @@ body {
   align-items: start;
 }
 
-/* PAINEL DIREITO */
+
 .painel-direito {
   display: flex;
   flex-direction: column;
@@ -51,7 +51,7 @@ body {
   align-self: start;
 }
 
-/* CARD DE CATEGORIA */
+
 .categoria-status {
   background: #fff;
   border: 1px solid #eee;
@@ -65,7 +65,7 @@ body {
   color: #111;
 }
 
-/* STATUS */
+
 .status {
   display: flex;
   align-items: center;
@@ -73,7 +73,7 @@ body {
   margin-top: 15px;
 }
 
-/* BOTÕES COLADOS ABAIXO */
+
 .botoes-form {
   background: #fff;
   border-top: none;
@@ -111,7 +111,7 @@ body {
   background: #e0e0e0;
 }
 
-/* CAMPOS GERAIS */
+
 label {
   display: block;
   font-weight: 500;
@@ -145,7 +145,7 @@ input[type="number"] {
 }
 
 
-/* SWITCH */
+
 .switch {
   position: relative;
   display: inline-block;
@@ -171,7 +171,7 @@ input[type="number"] {
   transition: background-color 0.4s ease;
 }
 
-/* bolinha */
+
 .slider::before {
   content:"✖";
   position: absolute;
@@ -190,7 +190,7 @@ input[type="number"] {
   transition: transform 0.4s ease, background-color 0.4s ease, color 0.4s ease;
 }
 
-/* quando marcado */
+
 input:checked + .slider {
   background-color: #5a189a;
 }
@@ -209,12 +209,11 @@ input:checked + .slider::before {
   transform: translateX(22px);
 }
 
-/* Estilo do popup */
-/* Estilo do popup */
+
 #popup-sucesso {
   position: fixed;
-  bottom: 20px;      /* distância da parte inferior */
-  right: 20px;       /* distância da lateral direita */
+  bottom: 20px;      
+  right: 20px;       
   background-color: #ffffff;
   color: #5a2472;
   padding: 20px 30px;
@@ -231,7 +230,7 @@ input:checked + .slider::before {
   text-align: center;
 }
 
-/* Quando visível */
+
 #popup-sucesso.show {
   opacity: 1;
   transform: translateY(0);

@@ -1,21 +1,19 @@
-/* /perfil/funcoes/customizacoes.css */
+
 
 .titulo { 
-    display: none; /* Desativado, pois usamos o card de cabeçalho */
+    display: none; 
 }
 
-/* Esta regra centraliza o H3 do card de cabeçalho.
-*/
+
+
 .profile-content .favoritos-header-card h3 {
     justify-content: center;
 }
 
 
-/* ESTILIZAÇÃO DA GRID E CARDS 
-*/
+
 .grid { 
     display: grid;
-    /* 280px para dar espaço aos botões. */
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
     gap: 20px;
     padding: 10px 0;
@@ -72,34 +70,23 @@
     font-weight: 700;
 }
 
-/* =================================== */
-/* 4. ESTILIZAÇÃO DOS BOTÕES (REFEITO) */
-/* =================================== */
 
-/* O container principal dos botões */
 .grid .acoes { 
     display: flex; 
     gap: 10px; 
-    margin-top: auto; /* Empurra para o final do card */
+    margin-top: auto; 
    
     padding: 16px;
     border-top: 1px solid #f0f0f0;
     background-color: #fafafa;
 }
 
-/* * A REGRA MAIS IMPORTANTE:
- * Diz aos 3 filhos DIRETOS (<a>, <form>, <button>) 
- * para dividirem o espaço igualmente.
-*/
+
 .grid .acoes > * {
     flex:  1 1 0;
 }
 
-/* * A SEGUNDA REGRA IMPORTANTE:
- * O <form> é um dos filhos, então ele precisa:
- * 1. Ter altura total (para se igualar aos irmãos)
- * 2. Ser um container flex (para o botão dentro dele esticar)
-*/
+
 .grid .acoes form {
     margin: 0;
     padding: 0;
@@ -107,10 +94,7 @@
     height: 100%;
 }
 
-/* * A TERCEIRA REGRA IMPORTANTE:
- * O estilo base do botão, que será usado por TODOS os botões.
- * (O <a>, o <button> dentro do form, e o <button> de excluir)
-*/
+
 .grid .acoes .btn { 
     display: inline-flex; 
     align-items: center;
@@ -139,9 +123,7 @@
     border-color: #ccc;
 }
 
-/* --- Cores dos Botões --- */
 
-/* Botão "Carrinho" (Roxo) */
 .grid .acoes .btn.primary { 
     background: #6f42c1;
     color: #fff; 
@@ -152,7 +134,7 @@
     border-color: #5a359a;
 }
 
-/* Botão Excluir (Vermelho) */
+
 .grid .acoes .btn-excluir { 
     background: transparent;
     color: var(--danger-color, #dc3545);
@@ -164,7 +146,7 @@
     border-color: transparent;
 }
 
-/* Botão "Ver" (Laranja) */
+
 .grid .acoes .btn:not(.primary):not(.btn-excluir) {
     background-color: transparent;
     color: #fd7e14;
@@ -177,8 +159,6 @@
 }
 
 
-/* ESTADO DE VAZIO 
-*/
 .vazio { 
     text-align: center;
     padding: 40px 20px;
@@ -198,7 +178,7 @@
     color: #555;
     margin: 0 0 20px 0;
 }
-/* Botão "Criar" no estado de vazio (Roxo também) */
+
 .vazio .btn.primary {
     display: inline-flex; 
     align-items: center; 
@@ -210,18 +190,17 @@
     padding: 10px 20px;
     font-weight: 600;
     border-radius: 6px;
-    background: #6f42c1; /* Roxo */
+    background: #6f42c1; 
     color: #fff; 
-    border: 1px solid #6f42c1; /* Roxo */
+    border: 1px solid #6f42c1; 
 }
 .vazio .btn.primary:hover {
-    background: #5a359a; /* Roxo Escuro */
-    border-color: #5a359a; /* Roxo Escuro */
+    background: #5a359a; 
+    border-color: #5a359a; 
 }
 
 
-/* MODAL DE EXCLUSÃO
-*/
+
 .salvar-modal-overlay {
     position: fixed;
     top: 0;
@@ -269,7 +248,7 @@
     gap: 8px;
 }
 .salvar-modal-box h2::before {
-    content: '\EA03'; /* Remixicon ri-error-warning-line */
+    content: '\EA03'; 
     font-family: 'Remixicon' !important;
     font-weight: normal;
     font-size: 1.5rem;

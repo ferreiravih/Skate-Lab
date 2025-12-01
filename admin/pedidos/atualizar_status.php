@@ -14,7 +14,7 @@ function enviarResposta($sucesso, $mensagem, $novoStatus = null, $novaClasse = n
     exit;
 }
 
-// Aceita dados via POST (do AJAX)
+
 $input = json_decode(file_get_contents('php://input'), true);
 $id_pedido = $input['id_pedido'] ?? null;
 $novo_status = $input['novo_status'] ?? null;
@@ -23,13 +23,13 @@ if (!$id_pedido || !$novo_status) {
     enviarResposta(false, "ID do pedido ou novo status não fornecido.");
 }
 
-// Lista de status válidos (do seu schema)
+
 $status_validos = ['PENDENTE', 'EM PREPARO', 'ENVIADO', 'ENTREGUE', 'CANCELADO'];
 if (!in_array($novo_status, $status_validos)) {
     enviarResposta(false, "Status inválido.");
 }
 
-// ATUALIZAR NO BANCO
+
 $sql = "UPDATE public.pedidos SET status = :status WHERE id_pedido = :id_pedido";
 
 try {
@@ -39,7 +39,7 @@ try {
         ':id_pedido' => $id_pedido
     ]);
 
-    // Prepara a classe CSS para a resposta
+
     $novaClasse = strtolower(str_replace(' ', '', $novo_status));
     enviarResposta(true, "Status atualizado!", $novo_status, $novaClasse);
 

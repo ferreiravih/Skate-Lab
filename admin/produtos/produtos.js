@@ -1,27 +1,27 @@
 // produtos.js
 document.addEventListener("DOMContentLoaded", () => {
-  // Seleciona todos os botões de ação (cada botão pode ter diferentes ícones)
+
   const botoes = document.querySelectorAll(".acoes .btn-acao");
 
   botoes.forEach(btn => {
-    // Só queremos atuar nos botões que tenham um ícone de olho dentro
-    const icone = btn.querySelector("i.ri-eye-line, i.ri-eye-off-line");
-    if (!icone) return; // se não for botão de "ver", ignora
 
-    // adiciona o listener no botão (não só no <i>) para garantir clique em qualquer lugar do botão
+    const icone = btn.querySelector("i.ri-eye-line, i.ri-eye-off-line");
+    if (!icone) return; 
+
+
     btn.addEventListener("click", (e) => {
-      // impede outros comportamentos indesejados (se houver)
+
       e.preventDefault();
 
-      // pega a linha (<tr>) correspondente
+
       const linha = btn.closest("tr");
       if (!linha) return;
 
-      // procura o span de status nessa linha (procura especificamente pelas classes)
+
       const statusSpan = linha.querySelector("span.ativo, span.inativo");
       if (!statusSpan) return;
 
-      // alterna o ícone e o status
+
       if (statusSpan.classList.contains("ativo")) {
         statusSpan.classList.remove("ativo");
         statusSpan.classList.add("inativo");
@@ -43,22 +43,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (inputBuscaProdutos && tabelaProdutos) {
       
-      // Pega todas as linhas do corpo da tabela (tbody)
+
       const linhasProdutos = tabelaProdutos.querySelectorAll("tbody tr");
 
-      // Adiciona um "ouvinte" que dispara toda vez que você digita
+
       inputBuscaProdutos.addEventListener("input", () => {
           const termoBusca = inputBuscaProdutos.value.toLowerCase();
 
           linhasProdutos.forEach(linha => {
-              // Pega o texto da linha inteira
+
               const textoLinha = linha.textContent.toLowerCase();
 
-              // Verifica se o texto da linha inclui o termo digitado
+
               if (textoLinha.includes(termoBusca)) {
-                  linha.style.display = ""; // Mostra a linha
+                  linha.style.display = ""; 
               } else {
-                  linha.style.display = "none"; // Esconde a linha
+                  linha.style.display = "none"; 
               }
           });
       });

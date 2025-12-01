@@ -1,5 +1,5 @@
 ﻿<?php
-// Lista as customizaÃ§Ãµes salvas do usuÃ¡rio e permite aÃ§Ãµes (ver no carrinho / excluir)
+
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();

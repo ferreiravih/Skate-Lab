@@ -1,9 +1,7 @@
-// Arquivo: Skate-Lab/componentes/nav.js (Corrigido)
 
-// Espera o HTML carregar antes de rodar o script
 document.addEventListener("DOMContentLoaded", () => {
 
-  // --- LÓGICA EXISTENTE DA SIDEBAR ---
+
   const userIcon = document.getElementById("userIcon");
   const sidebarLogin = document.getElementById("sidebarLogin");
   const sidebarCadastro = document.getElementById("sidebarCadastro");
@@ -12,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const voltarLoginBtn = document.getElementById("voltarLogin");
   const authModal = document.getElementById("auth-modal-overlay");
   
-  // --- NOSSAS DIVS DE ERRO ---
+
   const loginErrorDiv = document.getElementById("login-error-message");
   const registerErrorDiv = document.getElementById("register-error-message");
 
@@ -53,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   
-  // --- LÓGICA PARA MOSTRAR/OCULTAR SENHA ---
+
 
   const togglePasswordVisibility = (toggleBtn, input) => {
     if (input.type === "password") {
@@ -91,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // --- LÓGICA PARA VALIDAR "CONFIRMAR SENHA" (Front-end) ---
+
   const registerForm = document.getElementById("formCadastro");
 
   if (registerForm && registerInput && confirmInput) {
@@ -100,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (registerInput.value !== confirmInput.value) {
         e.preventDefault(); 
         
-        // MOSTRA O ERRO NA DIV QUE CRIAMOS
+
         if(registerErrorDiv) {
             registerErrorDiv.textContent = "As senhas não coincidem. Por favor, verifique.";
             registerErrorDiv.style.display = "block";
@@ -112,8 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // --- LÓGICA PARA MOSTRAR ERROS DE LOGIN/CADASTRO NA SIDEBAR ---
-  // (MOVIDO PARA DENTRO DO DOMCONTENTLOADED)
+
   
   const urlParams = new URLSearchParams(window.location.search);
   const error = urlParams.get('error');
@@ -165,6 +162,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
       window.history.replaceState({}, document.title, window.location.pathname);
   }
-  // --- FIM DA LÓGICA DE ERROS ---
 
-}); // Fim do DOMContentLoaded
+}); 

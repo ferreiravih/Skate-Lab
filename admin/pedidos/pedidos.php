@@ -2,13 +2,12 @@
 require_once __DIR__ . '/../admin_auth.php';
 require_once __DIR__ . '/../../config/db.php';
 
-// BUSCAR PEDIDOS (READ)
-// Usamos JOIN para pegar o nome do usuário da tabela 'usuario'
+
 try {
     $sql = "SELECT p.*, u.nome AS cliente_nome 
             FROM public.pedidos p
             JOIN public.usuario u ON p.id_usu = u.id_usu
-            ORDER BY p.pedido_em DESC"; // Mostrar mais recentes primeiro
+            ORDER BY p.pedido_em DESC"; 
     
     $stmt = $pdo->query($sql);
     $pedidos = $stmt->fetchAll();

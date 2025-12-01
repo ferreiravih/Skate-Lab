@@ -2,14 +2,14 @@
 require_once __DIR__ . '/../admin_auth.php';
 require_once __DIR__ . '/../../config/db.php';
 
-// 3. BUSCAR AS CATEGORIAS NO BANCO (Precisa ter categorias cadastradas)
+
 try {
     $stmt_cat = $pdo->query("SELECT id_cat, nome FROM categorias ORDER BY nome");
     $categorias = $stmt_cat->fetchAll();
 } catch (PDOException $e) {
-    // Se falhar, registra o erro e continua com um array vazio
+
     error_log("Erro ao buscar categorias: " . $e->getMessage());
-    $categorias = []; // Isso evita que a página quebre
+    $categorias = []; 
 }
 ?>
 
@@ -35,7 +35,7 @@ try {
     <div class="form-container">
       <form action="criar_produto.php" id="form-add-produto" method="POST" class="form-produto">
         
-      <!-- LADO ESQUERDO -->
+
         <div class="info-basica">
           <h2>Informações Básicas</h2>
 
@@ -63,7 +63,7 @@ try {
           <textarea id="descricao_completa" name="dsc_longa" placeholder="Descrição detalhada do produto..." rows="5"></textarea>
         </div>
 
-        <!-- LADO DIREITO -->
+
         <div class="painel-direito">
 
           <div class="categoria-status">

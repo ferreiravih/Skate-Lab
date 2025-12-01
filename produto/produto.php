@@ -2,7 +2,7 @@
 session_start();
 require_once __DIR__ . '/../config/db.php';
 
-// 1. PEGAR O ID DA URL E VALIDAR
+
 $id_peca = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $produto = null;
 $avaliacoes = [];
@@ -31,7 +31,7 @@ if ($id_peca > 0) {
         }
         $produto = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // --- MUDANÇA 1: Buscar url_perfil na consulta de avaliações ---
+
         if ($produto) {
             $sql_av = "SELECT a.*, u.nome as nome_usuario, u.apelido, u.url_perfil
                        FROM avaliacoes a

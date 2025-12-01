@@ -2,7 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
-// 1. INCLUI O BD
+
 require_once __DIR__ . '/../config/db.php';
 
 try {
@@ -15,7 +15,7 @@ try {
   $stmt_shapes->execute();
   $shapes = $stmt_shapes->fetchAll(PDO::FETCH_ASSOC);
 
-  // Busca Trucks
+
   $stmt_trucks = $pdo->prepare(
     "SELECT p.nome, p.preco, p.url_img, p.url_m3d
          FROM public.pecas p
@@ -25,7 +25,7 @@ try {
   $stmt_trucks->execute();
   $trucks = $stmt_trucks->fetchAll(PDO::FETCH_ASSOC);
 
-  // Busca Rodinhas
+
   $stmt_rodinhas = $pdo->prepare(
     "SELECT p.nome, p.preco, p.url_img, p.url_m3d
          FROM public.pecas p
@@ -39,7 +39,7 @@ try {
   $erro_db = "Erro ao carregar peças. Verifique a conexão com o banco.";
 }
 
-// Peças Padrão
+
 $shape_padrao = ['nome' => 'Shape Branco', 'preco' => 120.00, 'url_m3d' => 'white', 'url_img' => null];
 
 $customizacaoInicial = null;
@@ -261,7 +261,7 @@ if ($customId && $customId > 0) {
   <script src="custom.js?v=1.10"></script>
 
   <script>
-    // VARIÁVEIS GLOBAIS
+ 
     let scene, camera, renderer, controls;
     let skateBase = null;
     let todasAsPecas = {};
@@ -277,23 +277,23 @@ if ($customId && $customId > 0) {
 
     const PRECOS = {
       shape: 120, 
-      truck: 0,
+      truck: 0, 
       rodinha: 0, 
       rolamento: 0,
       parafuso: 0
     };
 
     function atualizarPrecoTotal() {
-      // 1. Soma todos os preços
+
       const total = PRECOS.shape + PRECOS.truck + PRECOS.rodinha + PRECOS.rolamento + PRECOS.parafuso;
 
-      // 2. Formata como R$
+
       const precoFormatado = `R$ ${total.toFixed(2).replace('.', ',')}`;
 
-      // 3. Atualiza o visor no topo
+
       document.getElementById('preco-total-display').textContent = precoFormatado;
 
-      // 4. Atualiza os inputs escondidos do formulário
+
       const nomeShape = shapeAtual.charAt(0).toUpperCase() + shapeAtual.slice(1);
       const nomeTruck = trucks === trucksModelos.padrao ? 'Padrão' : (Object.keys(trucksModelos).find(key => trucksModelos[key] === trucks) || 'Padrão');
       const nomeRodinha = rodinhasAtuais ? (rodinhasAtuais.charAt(0).toUpperCase() + rodinhasAtuais.slice(1)) : 'Nenhuma';
@@ -309,7 +309,7 @@ if ($customId && $customId > 0) {
     }
 
 
-    // util: liga/desliga visibilidade de uma lista de nomes de meshes
+
     function setListaVisible(lista, on) {
       (lista || []).forEach(n => {
         const m = todasAsPecas[n];
@@ -317,7 +317,7 @@ if ($customId && $customId > 0) {
       });
     }
 
-    // util: atualiza label do botão
+
     function setBtnLabel(id, mostrar) {
       const el = document.getElementById(id);
       if (!el) return;
@@ -332,7 +332,7 @@ if ($customId && $customId > 0) {
       el.textContent = (mostrar ? 'Mostrar ' : 'Ocultar ') + base;
     }
 
-    // ========== TOGGLES ==========
+
     function toggleShape() {
       const tipo = shapeAtual || 'white';
       const lista = shapes[tipo] || [];
@@ -357,18 +357,16 @@ if ($customId && $customId > 0) {
     function toggleRolamentos() {
       visRolamentos = !visRolamentos;
       setListaVisible(rolamentos, visRolamentos);
-      // setBtnLabel('btnRolamentos', !visRolamentos); // Botão não existe
+
     }
 
     function toggleParafusos() {
       visParafusos = !visParafusos;
       setListaVisible(parafusos, visParafusos);
-      // setBtnLabel('btnParafusos', !visParafusos); // Botão não existe
+
     }
 
-    // ========== INTEGRAÇÃO SUAVE ==========
-    // (Esta seção foi removida para simplificar,
-    // as funções originais abaixo agora cuidam disso)
+
 
     // 🎯 SHAPES
     const shapes = {
@@ -446,7 +444,7 @@ if ($customId && $customId > 0) {
       lisa: []
     };
 
-    // ✅ TRUCKS
+
     const trucks_padrao = [];
     const trucks_kuromi = [
       'Circle002', 'Circle003', 'Circle002_1', 'Circle002_2', 'Circle002_3', 'Circle002_4',
@@ -487,9 +485,9 @@ if ($customId && $customId > 0) {
       hq: trucks_hq,
       lisa: trucks_lisa
     };
-    let trucks = trucksModelos.padrao; // conjunto ativo de trucks
-    let shapeAtual = 'white'; // shape atual
-    let rodinhasAtuais = null; // modelo de rodinha ativo (ou null)
+    let trucks = trucksModelos.padrao; 
+    let shapeAtual = 'white'; 
+    let rodinhasAtuais = null; 
 
     // ✅ ROLAMENTOS & PARAFUSOS
     const rolamentos_padrao = [
@@ -504,7 +502,7 @@ if ($customId && $customId > 0) {
     ];
 
 
-    // Estados ativos (vazios ao iniciar)
+
     let rolamentos = [];
     let parafusos = [];
 
@@ -515,7 +513,7 @@ if ($customId && $customId > 0) {
       padrao: parafusos_padrao,
     };
 
-    // ===== Utils UI =====
+
     function atualizarStatus(mensagem, tipo = 'info') {
       const status = document.getElementById('status');
       status.innerHTML = mensagem;
@@ -523,38 +521,35 @@ if ($customId && $customId > 0) {
         (tipo === 'sucesso') ? '#00ff88' : '#9c6bff';
     }
 
-    // ===== Seletores =====
+
     function selecionarTrucks(modelo) {
-      // Esconde todos os trucks
+
       const todas = Object.values(trucksModelos).flat();
       todas.forEach(n => {
         if (todasAsPecas[n]) todasAsPecas[n].visible = false;
       });
 
-      // Mostra o modelo selecionado
+
       const lista = trucksModelos[modelo] || [];
       lista.forEach(n => {
         const mesh = todasAsPecas[n];
         if (mesh) {
-          mesh.visible = visTrucks; // Respeita o toggle
+          mesh.visible = visTrucks; 
           if (mesh.material && mesh.material.color) mesh.material.color.set(corTrucksAtual);
         } else {
           console.warn('Truck não encontrado no GLB:', n);
         }
       });
-      trucks = lista; // Atualiza o estado
+      trucks = lista; 
 
-      // =============================================
-      // ATUALIZA O PREÇO
-      // =============================================
-      // Encontra o botão que foi clicado para pegar o data-price
+
       const
         botaoClicado = [...document.querySelectorAll('#truckGrupo .pena')].find(b => b.getAttribute('onclick') === `selecionarTrucks('${modelo}')`);
       PRECOS.truck = parseFloat(botaoClicado?.dataset.price || 0);
       atualizarPrecoTotal();
     }
 
-    // 🔁 SELECIONAR ROLAMENTOS
+
     function selecionarRolamentos(modelo) {
       const todosRolos = Object.values(rolamentosModelos).flat();
       todosRolos.forEach(n => {
@@ -565,20 +560,18 @@ if ($customId && $customId > 0) {
       lista.forEach(n => {
         const mesh = todasAsPecas[n];
         if (mesh) {
-          mesh.visible = visRolamentos; // Respeita o toggle
+          mesh.visible = visRolamentos; 
         }
       });
       rolamentos = lista;
 
-      // =============================================
-      // ATUALIZA O PREÇO
-      // =============================================
+
       const botaoClicado = document.querySelector(`button[onclick="selecionarRolamentos('${modelo}')"]`);
       PRECOS.rolamento = parseFloat(botaoClicado?.dataset.price || 0);
       atualizarPrecoTotal();
     }
 
-    // 🔁 SELECIONAR PARAFUSOS
+
     function selecionarParafusos(modelo) {
       const todosParafusos = Object.values(parafusosModelos).flat();
       todosParafusos.forEach(n => {
@@ -589,14 +582,12 @@ if ($customId && $customId > 0) {
       lista.forEach(n => {
         const mesh = todasAsPecas[n];
         if (mesh) {
-          mesh.visible = visParafusos; // Respeita o toggle
+          mesh.visible = visParafusos; 
         }
       });
       parafusos = lista;
 
-      // =============================================
-      // ATUALIZA O PREÇO
-      // =============================================
+
       const botaoClicado = document.querySelector(`button[onclick="selecionarParafusos('${modelo}')"]`);
       PRECOS.parafuso = parseFloat(botaoClicado?.dataset.price || 0);
       atualizarPrecoTotal();
@@ -610,14 +601,12 @@ if ($customId && $customId > 0) {
       });
       rolamentos = [];
 
-      // =============================================
-      // ATUALIZA O PREÇO
-      // =============================================
+
       PRECOS.rolamento = 0;
       atualizarPrecoTotal();
     }
 
-    // ❌ REMOVER PARAFUSOS
+
     function removerParafusos() {
       const todosParafusos = Object.values(parafusosModelos).flat();
       todosParafusos.forEach(n => {
@@ -625,9 +614,7 @@ if ($customId && $customId > 0) {
       });
       parafusos = [];
 
-      // =============================================
-      // ATUALIZA O PREÇO
-      // =============================================
+
       PRECOS.parafuso = 0;
       atualizarPrecoTotal();
     }
@@ -695,74 +682,68 @@ if ($customId && $customId > 0) {
       atualizarStatus('💾 Configuração salva!', 'sucesso');
     }
 
-    // ===== Mostrar =====
+
     function mostrarShape(tipo) {
-      // Esconde apenas os shapes atuais
+
       const todosShapes = Object.values(shapes).flat();
       todosShapes.forEach(n => {
         if (todasAsPecas[n]) todasAsPecas[n].visible = false;
       });
 
-      // Mostra o shape selecionado
+
       let pecasEncontradas = 0;
       (shapes[tipo] || []).forEach(nome => {
         if (todasAsPecas[nome]) {
-          todasAsPecas[nome].visible = visShape; // Respeita o toggle
+          todasAsPecas[nome].visible = visShape; 
           pecasEncontradas++;
         }
       });
       shapeAtual = tipo;
 
-      // Re-aplica as outras partes (trucks, rodas, etc.)
-      // para que apareçam com o novo shape
+
       setListaVisible(trucks || [], visTrucks);
       const rodasLista = rodinhasAtuais ? (rodinhasModelos[rodinhasAtuais] || []) : [];
       setListaVisible(rodasLista, visRodinhas);
       setListaVisible(rolamentos || [], visRolamentos);
       setListaVisible(parafusos || [], visParafusos);
 
-      // =============================================
-      // ATUALIZA O PREÇO
-      // =============================================
+
       const botaoClicado = [...document.querySelectorAll('#shapeGrupo .pena')].find(b => b.getAttribute('onclick') === `mostrarShape('${tipo}')`);
       PRECOS.shape = parseFloat(botaoClicado?.dataset.price || 0);
       atualizarPrecoTotal();
 
-      // Atualiza UI dos botões
+
       document.querySelectorAll('#shapeGrupo .pena').forEach(btn => btn.classList.remove('ativo'));
       if (botaoClicado) botaoClicado.classList.add('ativo');
     }
 
     function mostrarRodinhas(tipo) {
-      // Esconde todas as rodinhas
+
       const todas = Object.values(rodinhasModelos).flat();
       todas.forEach(nome => {
         if (todasAsPecas[nome]) todasAsPecas[nome].visible = false;
       });
 
-      // Mostra o modelo selecionado
+
       const lista = rodinhasModelos[tipo] || [];
       lista.forEach(nome => {
         if (todasAsPecas[nome]) {
-          todasAsPecas[nome].visible = visRodinhas; // Respeita o toggle
+          todasAsPecas[nome].visible = visRodinhas; 
         }
       });
       rodinhasAtuais = tipo;
 
-      // =============================================
-      // ATUALIZA O PREÇO
-      // =============================================
+
       const botaoClicado = [...document.querySelectorAll('#rodinhaGrupo .pena')].find(b => b.getAttribute('onclick') === `mostrarRodinhas('${tipo}')`);
       PRECOS.rodinha = parseFloat(botaoClicado?.dataset.price || 0);
       atualizarPrecoTotal();
 
-      // Atualiza UI dos botões
+
       document.querySelectorAll('#rodinhaGrupo .pena').forEach(btn => btn.classList.remove('ativo'));
       if (botaoClicado) botaoClicado.classList.add('ativo');
     }
 
 
-    // ===== Init 3D =====
     function ajustarTamanhoCanvas() {
       if (!renderer || !camera) return;
       const container = document.getElementById('container');
@@ -818,18 +799,17 @@ if ($customId && $customId > 0) {
       carregarSkate();
       animate();
     }
-    // Função que organiza todas as peças do modelo 3D
     function organizarTodasAsPecas(modelo) {
-      todasAsPecas = {}; // limpa o dicionário
+      todasAsPecas = {}; 
       modelo.traverse((child) => {
         if (child.isMesh && child.name) {
           todasAsPecas[child.name] = child;
         }
       });
-      console.log("Peças detectadas:", Object.keys(todasAsPecas)); // debug
+      console.log("Peças detectadas:", Object.keys(todasAsPecas)); 
     }
 
-    // Função que esconde todas as peças do modelo
+
     function esconderTudo() {
       if (!todasAsPecas) return;
       Object.values(todasAsPecas).forEach(peca => {
@@ -852,18 +832,18 @@ if ($customId && $customId > 0) {
         scene.add(skateBase);
         organizarTodasAsPecas(skateBase);
 
-        // Inicializa o estado padrão
+
         esconderTudo();
         removerRolamentos();
         removerParafusos();
-        mostrarShape('white'); // Define shape padrão (preço 120)
+        mostrarShape('white'); 
 
         document.getElementById('configAtual').textContent =
           'Shape: White | Rodinhas: — | Truck: Padrão';
 
         atualizarStatus('✅ Modelo carregado com sucesso!', 'sucesso');
 
-        // Define o preço inicial
+
         atualizarPrecoTotal();
         if (CONFIG_SALVA) {
           aplicarConfiguracaoSalva(CONFIG_SALVA);
@@ -886,8 +866,7 @@ if ($customId && $customId > 0) {
     init();
   </script>
   <script>
-    // Sobrescreve salvarConfiguracao para salvar no perfil (backend)
-    // 
+
     function salvarConfiguracao() {
         const overlay = document.getElementById('salvar-overlay');
         const input = document.getElementById('salvar-nome-input');

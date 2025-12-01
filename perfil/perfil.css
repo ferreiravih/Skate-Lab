@@ -1,11 +1,11 @@
 body {
   margin: 0;
-  background-color: #ffffff; /* Fundo cinza MUITO claro */
+  background-color: #ffffff; 
   font-family: 'Poppins', sans-serif;
   color: #333;
 }
 
-/* Impede o scroll da página quando o modal estiver aberto */
+
 body.modal-open {
   overflow: hidden;
 }
@@ -20,27 +20,27 @@ header {
   flex-shrink: 0; 
   position: sticky; 
   top: 0;
-  z-index: 999; /* Menor que o modal */
+  z-index: 999; 
   background: #fff;
 }
 
 footer {
   flex-shrink: 0; 
-  margin-top: auto; /* Empurra o footer para o fim */
+  margin-top: auto; 
 }
 
 .main-container {
   display: flex;
   flex: 1; 
   width: 100%;
-  max-width: 1200px; /* Largura máxima da página */
+  max-width: 1200px; 
   margin: 20px auto; 
   padding: 0 20px;
   gap: 20px;
   box-sizing: border-box;
 }
 
-/* ------------- 2. ESTILOS DA SIDEBAR ------------- */
+
 .profile-sidebar {
   width: 240px; 
   flex-shrink: 0;
@@ -206,17 +206,17 @@ footer {
 }
 .btn-edit:hover, .btn-edit-inline:hover { background: #4a1d5d; }
 
-/* Botão de editar do card de endereço */
+
 .btn-edit-inline {
   padding: 4px 8px;
   font-size: 0.8rem;
   float: right;
 }
 .is-editing-address .btn-edit-inline {
-  display: none; /* Esconde "Editar" */
+  display: none; 
 }
 
-/* Card 2: Informações Pessoais */
+
 .info-card {
   grid-area: info;
   display: flex;
@@ -268,13 +268,13 @@ footer {
   cursor: not-allowed;
   color: #777;
 }
-/* Input pequeno para "Nº" e "UF" */
+
 .info-item input.input-small {
   max-width: 70px;
   margin-left: 10px;
 }
 
-/* Lógica de Edição: Esconde/Mostra inputs */
+
 .info-item .info-text { display: block; }
 .info-item input { display: none; }
 .info-item .btn-link { display: inline-block; } 
@@ -289,7 +289,6 @@ footer {
   display: block;
 }
 
-/* Botões Salvar/Cancelar */
 .form-actions {
   display: none; 
   gap: 10px;
@@ -329,7 +328,7 @@ footer {
 .btn-cancel:hover { background: #e8e8e8; }
 
 
-/* Card 3: Card de Segurança */
+
 .security-card {
   grid-area: security;
   display: flex;
@@ -357,7 +356,7 @@ footer {
   filter: blur(0);
 }
 
-/* Estilo para campos de senha (usado no Modal) */
+
 .form-group-col {
   display: flex;
   flex-direction: column;
@@ -382,11 +381,11 @@ footer {
 }
 
 
-/* Card 4 & 5: Endereço e Pagamento */
+
 .address-card { grid-area: address; }
 .payment-card { grid-area: payment; }
 
-/* Estilo para Endereço Preenchido */
+
 .address-card-full {
   display: flex;
   flex-direction: column;
@@ -408,7 +407,7 @@ footer {
   padding: 5px;
   border-radius: 4px;
 }
-/* Lógica de edição do endereço */
+
 .is-editing-address #address-fields { display: block; }
 .is-editing-address .empty-state { display: none; }
 .is-editing-address .address-card-full .info-text { display: none; }
@@ -469,7 +468,7 @@ footer {
 .btn-add-new:disabled:hover { background: #f4f4f8; }
 
 
-/* Card 6: Histórico de Pedidos */
+
 .history-card { grid-area: history; }
 .history-card h3 { margin: 0 0 15px 0; font-size: 1.3rem; }
 
@@ -481,7 +480,7 @@ footer {
   flex-direction: column;
   gap: 10px;
 }
-/* MUDANÇA: de <li> para <button> */
+
 .order-item-button {
   display: flex;
   justify-content: space-between;
@@ -544,7 +543,7 @@ footer {
 .empty-state.compact p { font-size: 0.9rem; margin: 0; }
 
 
-/* Mensagens de Feedback (Sucesso/Erro) */
+
 .feedback {
   padding: 12px 15px;
   border-radius: 8px;
@@ -564,7 +563,7 @@ footer {
 }
 
 
-/* ------------- 5. ESTILOS DO MODAL (SENHA E PEDIDO) ------------- */
+
 .modal-overlay {
   display: none; 
   position: fixed;
@@ -573,7 +572,7 @@ footer {
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px); /* O efeito "blur" */
+  backdrop-filter: blur(5px);
   z-index: 1001; 
   justify-content: center;
   align-items: center;
@@ -604,7 +603,7 @@ footer {
   transform: scale(1);
 }
 .modal-content.modal-lg {
-  max-width: 600px; /* Modal maior para detalhes do pedido */
+  max-width: 600px;
 }
 .modal-content h3 {
   margin: 0 0 5px 0;
@@ -640,7 +639,7 @@ footer {
   border-top: 1px solid #f0f0f0;
 }
 
-/* --- ESTILOS DO MODAL DE DETALHES DO PEDIDO --- */
+
 .pedido-modal-loading {
   display: flex;
   flex-direction: column;
@@ -693,7 +692,7 @@ footer {
   color: #333;
 }
 .detalhe-bloco.full-width {
-  grid-column: 1 / -1; /* Ocupa a largura toda */
+  grid-column: 1 / -1; 
 }
 .detalhe-bloco p.rastreio-code {
   font-weight: 600;
@@ -743,7 +742,7 @@ footer {
 }
 
 
-/* ------------- 6. RESPONSIVIDADE ------------- */
+
 
 @media (max-width: 1024px) {
   .profile-content > .profile-grid {
@@ -800,6 +799,6 @@ footer {
       text-align: left; 
   }
   .pedido-detalhes-grid {
-    grid-template-columns: 1fr; /* Coluna única em telemóveis */
+    grid-template-columns: 1fr; 
   }
 }

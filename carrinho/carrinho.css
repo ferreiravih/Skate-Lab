@@ -1,4 +1,4 @@
-/* ======== ESTILO BASE ======== */
+
 .carrinho {
   display: flex;
   align-items: center;
@@ -111,7 +111,6 @@
   background: #ce3b2b;
 }
 
-/* ======== CARD TOTAL (MODIFICADO) ======== */
 .cardtotal {
   flex: 1;
   background: #f4f4f4;
@@ -214,8 +213,8 @@
   flex: 1;
   border: 1px solid #cfcfcf;
   border-radius: 8px;
-  padding: 6px 10px; /* Diminuído ainda mais o preenchimento vertical */
-  font-size: 13px;  /* Fonte levemente reduzida para um visual mais compacto */
+  padding: 6px 10px; 
+  font-size: 13px;  
 }
 
 .frete-box button {
@@ -223,7 +222,7 @@
   color: #fff;
   border: none;
   border-radius: 8px;
-  padding: 6px 16px; /* Diminuído para alinhar com a altura do input */
+  padding: 6px 16px; 
   font-weight: 600;
   cursor: pointer;
   min-width: 115px;    
@@ -239,11 +238,10 @@
 .frete-feedback {
 
   font-size: 1px;
-  min-height: 13px; /* Reduz a altura mínima para diminuir o espaço */
+  min-height: 13px; 
   padding-top: 5px;
   color: #555;
   display: block;
-  /* Garante que o espaço seja ocupado */
 }
 
 .frete-feedback.success {
@@ -255,15 +253,14 @@
 }
 
 .frete-opcoes {
-  /* A classe .is-visible controlará a exibição via JS se necessário, mas por padrão será visível */
   display: flex;
   flex-direction: column;
-  gap: 5px; /* Ajuste de espaço */
+  gap: 5px; 
 }
 
 .frete-opcoes.is-loading {
   opacity: 0.5;
-  pointer-events: none; /* Desabilita cliques enquanto carrega */
+  pointer-events: none; 
   transition: opacity 0.2s;
 }
 
@@ -278,31 +275,31 @@
   gap: 12px;
   border: 1px solid #e1d0ff;
   border-radius: 10px;
-  padding: 6px 10px; /* Ajuste de preenchimento */
+  padding: 6px 10px; 
   cursor: pointer;
   background: #fff;
-  align-items: center; /* Alinha o radio button com o texto */
+  align-items: center; 
 }
 
 .frete-option input {
   flex: none;
   width: 16px;
   height: 16px;
-  margin: 0; /* Remove margem extra */
+  margin: 0; 
   accent-color: #4B0082;
 }
 
 .frete-option__info strong {
-  font-size: 13px; /* Reduz o tamanho do título (Expresso/Econômico) */
+  font-size: 13px; 
   font-weight: 600;
   color: #2d114c;
-  display: inline; /* Coloca na mesma linha do preço */
+  display: inline; 
   margin-right: 5px;
 }
 
 .frete-option__info span {
-  display: inline; /* Coloca na mesma linha do nome */
-  font-size: 12px; /* Reduz o tamanho do valor */
+  display: inline; 
+  font-size: 12px; 
   color: #555;
 }
 

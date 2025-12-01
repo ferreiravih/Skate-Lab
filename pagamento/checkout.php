@@ -2,19 +2,19 @@
 session_start();
 require_once __DIR__ . '/../config/db.php';
 
-// Proteção: Verifica se o usuário está logado
+// verifica se o usuário está logado
 if (!isset($_SESSION['id_usu'])) {
-    header("Location: ../home/index.php?error=not_logged_in"); // Manda para o login se não estiver
+    header("Location: ../home/index.php?error=not_logged_in"); // manda para o login se não estiver
     exit;
 }
 
-// Proteção: Verifica se o carrinho não está vazio
+// verifica se o carrinho não está vazio
 if (empty($_SESSION['carrinho'])) {
     header("Location: ../carrinho/carrinho.php?error=empty_cart");
     exit;
 }
 
-// Calcular o total
+// calcula o total
 $total = 0;
 foreach ($_SESSION['carrinho'] as $item) {
     $total += $item['preco'] * $item['quantidade'];
@@ -49,7 +49,7 @@ $erroPagamento = $_SESSION['pagamento_error'] ?? null;
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/png" href="../../Skate-Lab/img/imgs-icon/icon.png">
     <style>
-        /* Estilos para as opções de frete - Inseridos diretamente para garantir a aplicação */
+        
         .frete-resultado {
             display: flex;
             flex-direction: column;
@@ -207,23 +207,23 @@ $erroPagamento = $_SESSION['pagamento_error'] ?? null;
     <script src="../carrinho/frete.js?v=1.0.2"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Inicializa a calculadora de frete para a página de checkout
+
         initFreteCalculator({
-            cepInputId: 'cep', // ID do campo de CEP principal
-            calculateBtnId: 'calcular-frete-btn-merged', // ID do novo botão ao lado do CEP
+            cepInputId: 'cep', 
+            calculateBtnId: 'calcular-frete-btn-merged', 
             resultContainerId: 'frete-resultado',
             subtotalId: 'subtotal',
             shippingValueId: 'valor-frete',
             totalWithShippingId: 'total-com-frete',
-            formId: null // Não há mais um formulário de frete separado
+            formId: null 
         });
 
-        // Preenche automaticamente os campos de endereço com base no retorno do frete
+
         document.body.addEventListener('frete-calculado', function(e) {
             const cepCalculado = e.detail.cep.replace(/\D/g, '');
             const endereco = e.detail.destino;
 
-            // O campo CEP já está preenchido, então não precisa de update
+
             if (endereco) {
                 document.getElementById('address').value = endereco.logradouro || '';
                 document.getElementById('bairro').value = endereco.bairro || '';
@@ -232,8 +232,7 @@ $erroPagamento = $_SESSION['pagamento_error'] ?? null;
             }
         });
 
-        // ===== INÍCIO DA NOVA LÓGICA =====
-        // Preenche e calcula o frete automaticamente com os dados do carrinho
+
         try {
             const cepSalvo = sessionStorage.getItem('cepCalculado');
             const freteSalvoJSON = sessionStorage.getItem('freteEscolhido');
@@ -245,7 +244,7 @@ $erroPagamento = $_SESSION['pagamento_error'] ?? null;
                     cepInput.value = cepSalvo;
                 }
 
-                // Função para tentar selecionar o frete após o cálculo
+
                 const tentarSelecionarFrete = (event) => {
                     if (freteSalvoJSON) {
                         const freteSalvo = JSON.parse(freteSalvoJSON);
@@ -253,21 +252,20 @@ $erroPagamento = $_SESSION['pagamento_error'] ?? null;
                         if (radioParaMarcar && !radioParaMarcar.checked) {
                             console.log('Aplicando opção de frete salva:', freteSalvo.nome);
                             radioParaMarcar.checked = true;
-                            // Dispara o onchange para atualizar o resumo do pedido
+                            
                             radioParaMarcar.dispatchEvent(new Event('change', { bubbles: true }));
                         }
                     }
-                    // Remove o listener para não executar de novo sem necessidade
+                  
                     document.body.removeEventListener('frete-calculado', tentarSelecionarFrete);
                 };
 
                 document.body.addEventListener('frete-calculado', tentarSelecionarFrete);
-                window.enviarCotacao(cepSalvo); // Dispara o cálculo de frete
+                window.enviarCotacao(cepSalvo); 
             }
         } catch (e) {
             console.error('Falha ao aplicar dados da sessão.', e);
         }
-        // ===== FIM DA NOVA LÓGICA =====
     });
     </script>
 </body>

@@ -2,7 +2,6 @@
 session_start();
 
 if (!isset($_POST['id']) || !isset($_POST['acao'])) {
-    // CORRIGIDO O CAMINHO DE REDIRECIONAMENTO DE ERRO
     header('Location: ../carrinho.php'); 
     exit;
 }
@@ -22,6 +21,6 @@ if (isset($_SESSION['carrinho'][$id])) {
     }
 }
 
-// CORRIGIDO O CAMINHO DE REDIRECIONAMENTO DE SUCESSO
+
 header('Location: ../carrinho.php');
 exit;

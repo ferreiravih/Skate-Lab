@@ -1,22 +1,22 @@
 <?php
 session_start();
-// 1. Conexão do base
+
 require_once __DIR__ . '/../config/db.php';
 
-// 2. busca as categorias do filtro
+
 try {
     $stmt_cattegorias = $pdo->query("SELECT nome FROM categorias WHERE nome <> 'Arquivados' ORDER BY nome");
     $categorias = $stmt_cattegorias->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo "Erro ao buscar categorias: " . $e->getMessage();
-    $categorias = []; // para garantir a varialvel
+    $categorias = []; 
 }
 
-// 3. Busca produtos e junta com categorias
+
 $filtro_categoria = isset($_GET['categoria']) ? $_GET['categoria'] : 'todos';
 
 try {
-    // Query base que junta pecas e categorias; carregamos tudo para filtrar no front-end
+
     $sql = "SELECT p.*, c.nome AS categoria_nome 
             FROM pecas p
             JOIN categorias c ON p.id_cat = c.id_cat
@@ -26,7 +26,7 @@ try {
     $produtos = $stmt_produtos->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo "Erro ao buscar produtos: " . $e->getMessage();
-    $produtos = []; // Garante que a variável exista
+    $produtos = []; 
 }
 ?>
 
@@ -38,9 +38,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SkateShop</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Corrigido para carregar o CSS da mesma pasta -->
     <link rel="stylesheet" href="skateee.css">
-    <!-- Font Awesome (para ícones) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/png" href="../../Skate-Lab/img/imgs-icon/icon.png">
 </head>
@@ -55,11 +53,7 @@ try {
         </div>
     </section>
 
-    <!-- ================================== -->
-    <!-- NOVA ORDEM DO LAYOUT (Sua sugestão) -->
-    <!-- ================================== -->
 
-    <!-- 1. BARRA DE PESQUISA (Veio para cima) -->
     <div class="search-container">
         <div class="search-bar">
             <input type="text" placeholder="Pesquisar produtos...">
@@ -69,7 +63,7 @@ try {
         </div>
     </div>
 
-    <!-- 2. TÍTULOS H2/P (Continuam no meio) -->
+
     <div class="hhh">
         <div class="letras">
             <h2 class="desta"> produtos em destaque </h2>
@@ -77,7 +71,7 @@ try {
         </div>
     </div>
     
-    <!-- 3. FILTROS (Vieram para baixo, mais perto dos produtos) -->
+
     <nav class="categories" data-default="<?php echo htmlspecialchars($filtro_categoria, ENT_QUOTES, 'UTF-8'); ?>">
         <button type="button" data-categoria="todos" class="<?php echo ($filtro_categoria == 'todos') ? 'active' : ''; ?>">
             Todos
@@ -85,20 +79,19 @@ try {
 
         <?php foreach ($categorias as $categoria) : ?>
             <?php
-            // Prepara o nome da categoria para o botão
+
             $nome_categoria = htmlspecialchars($categoria['nome'], ENT_QUOTES, 'UTF-8');
-            // Verifica se é o filtro ativo para aplicar a classe 'active'
             $classe_ativa = ($filtro_categoria == $nome_categoria) ? 'active' : '';
             ?>
             <button type="button" data-categoria="<?php echo $nome_categoria; ?>" class="<?php echo $classe_ativa; ?>">
-                <?php echo $nome_categoria; // Ex: "Shapes", "Rodas", etc. 
+                <?php echo $nome_categoria; 
                 ?>
             </button>
         <?php endforeach; ?>
     </nav>
 
 
-    <!-- 4. GRADE DE PRODUTOS (Onde o AJAX/JS vai funcionar) -->
+
     <main class="content">
         <section class="produtos">
             <div class="containershop">
