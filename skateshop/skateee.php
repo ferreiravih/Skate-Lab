@@ -5,7 +5,7 @@ require_once __DIR__ . '/../config/db.php';
 
 // 2. busca as categorias do filtro
 try {
-    $stmt_cattegorias = $pdo->query("SELECT nome FROM categorias ORDER BY nome");
+    $stmt_cattegorias = $pdo->query("SELECT nome FROM categorias WHERE nome <> 'Arquivados' ORDER BY nome");
     $categorias = $stmt_cattegorias->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo "Erro ao buscar categorias: " . $e->getMessage();

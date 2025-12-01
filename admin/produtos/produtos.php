@@ -7,6 +7,7 @@ try {
     $sql = "SELECT p.*, c.nome AS categoria_nome 
             FROM public.pecas p 
             LEFT JOIN public.categorias c ON p.id_cat = c.id_cat 
+            WHERE p.status = 'ATIVO'
             ORDER BY p.nome";
     $stmt = $pdo->query($sql);
     $pecas = $stmt->fetchAll();

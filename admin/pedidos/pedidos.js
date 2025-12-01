@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="valores-detalhados">
                                 <p><span>Subtotal</span> <strong>R$ ${subTotal.toFixed(2).replace('.', ',')}</strong></p>
                                 <p><span>Frete (${freteDescricao})</span> <strong>R$ ${freteValor.toFixed(2).replace('.', ',')}</strong></p>
-                                <hr>
+                                
                                 <p class="total-final"><span>Valor Total</span> <strong>R$ ${valorTotal.toFixed(2).replace('.', ',')}</strong></p>
                             </div>
                         `;

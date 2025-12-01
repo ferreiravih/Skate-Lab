@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../config/db.php';
 
 // BUSCAR CATEGORIAS (READ)
 try {
-    $stmt = $pdo->query("SELECT * FROM public.categorias ORDER BY nome");
+    $stmt = $pdo->query("SELECT * FROM public.categorias WHERE nome <> 'Arquivados' ORDER BY nome");
     $categorias = $stmt->fetchAll();
 } catch (PDOException $e) {
     error_log("Erro ao buscar categorias: " . $e->getMessage());

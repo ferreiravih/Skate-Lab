@@ -275,13 +275,10 @@ if ($customId && $customId > 0) {
     const CONFIG_SALVA = (typeof window.CUSTOMIZACAO_SALVA !== 'undefined') ? window.CUSTOMIZACAO_SALVA : null;
     let configInicialAplicada = false;
 
-    // =============================================
-    // NOVO: LÓGICA DE PREÇO
-    // =============================================
     const PRECOS = {
-      shape: 120, // Preço base do shape 'white'
-      truck: 0, // Preço base do truck 'padrao'
-      rodinha: 0, // Preço base (sem rodinha)
+      shape: 120, 
+      truck: 0,
+      rodinha: 0, 
       rolamento: 0,
       parafuso: 0
     };
