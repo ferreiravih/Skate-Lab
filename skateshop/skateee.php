@@ -5,7 +5,7 @@ require_once __DIR__ . '/../config/db.php';
 
 
 try {
-    $stmt_cattegorias = $pdo->query("SELECT nome FROM categorias WHERE nome <> 'Arquivados' ORDER BY nome");
+    $stmt_cattegorias = $pdo->query("SELECT nome FROM categorias WHERE nome <> 'Arquivados' AND nome <> '_gerado_automaticamente' ORDER BY nome");
     $categorias = $stmt_cattegorias->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo "Erro ao buscar categorias: " . $e->getMessage();
@@ -20,7 +20,7 @@ try {
     $sql = "SELECT p.*, c.nome AS categoria_nome 
             FROM pecas p
             JOIN categorias c ON p.id_cat = c.id_cat
-            WHERE p.status = 'ATIVO'";
+            WHERE p.status = 'ATIVO' AND c.nome <> '_gerado_automaticamente'";
 
     $stmt_produtos = $pdo->query($sql);
     $produtos = $stmt_produtos->fetchAll(PDO::FETCH_ASSOC);
