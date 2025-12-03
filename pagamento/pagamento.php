@@ -37,16 +37,18 @@ if (!$freteSelecionado) {
     exit;
 }
 
-function obterOuCriarCategoriaCustom(PDO $pdo): int
+function obterOuCriarCategoriaFantasma(PDO $pdo): int
 {
     static $cachedId = null;
     if ($cachedId !== null) {
         return $cachedId;
     }
 
-    $buscar = $pdo->prepare("SELECT id_cat FROM public.categorias WHERE LOWER(nome) = LOWER(:nome) LIMIT 1");
-    $buscar->execute([':nome' => 'Custom']);
+    $nomeCategoria = '_gerado_automaticamente';
+    $buscar = $pdo->prepare("SELECT id_cat FROM public.categorias WHERE nome = :nome LIMIT 1");
+    $buscar->execute([':nome' => $nomeCategoria]);
     $existente = $buscar->fetchColumn();
+
     if ($existente) {
         $cachedId = (int)$existente;
         return $cachedId;
@@ -54,8 +56,8 @@ function obterOuCriarCategoriaCustom(PDO $pdo): int
 
     $inserir = $pdo->prepare("INSERT INTO public.categorias (nome, descricao) VALUES (:nome, :descricao) RETURNING id_cat");
     $inserir->execute([
-        ':nome' => 'Custom',
-        ':descricao' => 'Itens personalizados gerados automaticamente',
+        ':nome' => $nomeCategoria,
+        ':descricao' => 'Categoria para itens de sistema. Não deve ser visível ou editada.',
     ]);
     $novoId = (int)$inserir->fetchColumn();
     $cachedId = $novoId;
@@ -81,7 +83,7 @@ function criarProdutoCustomizado(PDO $pdo, array $item): int
         $imagem = null;
     }
 
-    $categoriaId = obterOuCriarCategoriaCustom($pdo);
+    $categoriaId = obterOuCriarCategoriaFantasma($pdo);
     $stmt = $pdo->prepare("
         INSERT INTO public.pecas
             (id_cat, nome, url_img, url_m3d, preco, estoque, desc_curta, dsc_longa, status)

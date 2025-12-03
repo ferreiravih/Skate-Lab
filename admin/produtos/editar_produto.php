@@ -19,7 +19,7 @@ try {
     }
 
 
-    $stmt_cat = $pdo->query("SELECT id_cat, nome FROM public.categorias ORDER BY nome");
+    $stmt_cat = $pdo->query("SELECT id_cat, nome FROM public.categorias WHERE nome <> 'Arquivados' AND nome <> 'Custom' ORDER BY nome");
     $categorias = $stmt_cat->fetchAll();
 
 } catch (PDOException $e) {

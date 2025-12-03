@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../config/db.php';
 
 
 try {
-    $stmt_cat = $pdo->query("SELECT id_cat, nome FROM categorias ORDER BY nome");
+    $stmt_cat = $pdo->query("SELECT id_cat, nome FROM categorias WHERE nome <> 'Arquivados' AND nome <> 'Custom' ORDER BY nome");
     $categorias = $stmt_cat->fetchAll();
 } catch (PDOException $e) {
 

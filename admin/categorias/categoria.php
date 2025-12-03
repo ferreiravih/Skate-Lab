@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../config/db.php';
 
 
 try {
-    $stmt = $pdo->query("SELECT * FROM public.categorias WHERE nome <> 'Arquivados' ORDER BY nome");
+    $stmt = $pdo->query("SELECT * FROM public.categorias WHERE nome <> 'Arquivados' AND nome <> 'Custom' AND nome NOT LIKE '\_%' ORDER BY nome");
     $categorias = $stmt->fetchAll();
 } catch (PDOException $e) {
     error_log("Erro ao buscar categorias: " . $e->getMessage());

@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/config/db.php';
-require_once __DIR__ . '/admin/admin_auth.php';
+require_once __DIR__ . '/resolver_custom.php';
 
 echo "Iniciando processo para remover a categoria 'Custom'...\n<br>";
 
